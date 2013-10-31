@@ -7,6 +7,7 @@
 //
 
 #import "DCViewController.h"
+#import "CHWebBrowserViewController.h"
 
 @interface DCViewController ()
 
@@ -18,6 +19,13 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+}
+
+- (IBAction)openWebBrowserModally:(id)sender
+{
+    [CHWebBrowserViewController openWebBrowserControllerModallyWithUrl:_urlTextField.text animated:YES completion:^{
+        NSLog(@"Modal animation completed");
+    }];
 }
 
 - (void)didReceiveMemoryWarning

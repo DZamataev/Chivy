@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface DCViewController : UIViewController
+@property (nonatomic, strong) IBOutlet UITextField *urlTextField;
 
+- (IBAction)openWebBrowserModally:(id)sender;
 @end

@@ -1,1 +1,13 @@
+PODS:
+  - AutoScrollLabel (0.2.1)
+  - iOS-blur (0.0.2)
+
+DEPENDENCIES:
+  - AutoScrollLabel
+  - iOS-blur (= 0.0.2)
+
+SPEC CHECKSUMS:
+  AutoScrollLabel: 4978b57536512a3ebf4705b1b5618354bcf4ac84
+  iOS-blur: 1f211234742ce078bf2ab78f5237a63b18b5ed0f
+
 COCOAPODS: 0.27.1

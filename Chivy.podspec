@@ -13,6 +13,10 @@ Pod::Spec.new do |s|
       :git => "https://github.com/DZamataev/Chivy.git",
       :tag => s.version.to_s
     }
+	
+  s.dependency 'iOS-blur', '0.0.2'
+  s.dependency 'AutoScrollLabel'
+	
   
   s.default_subspec = 'Core'
 
