@@ -1,8 +1,8 @@
 Pod::Spec.new do |s|
-  s.name         = "TestFlightFeedback"
-  s.version      = "2.0.0"
-  s.summary      = "Dropdown replacement for the feedback view controller functionality which was cuted from TestFlight SDK"
-  s.homepage     = "https://github.com/DZamataev/TestFlightFeedback"
+  s.name         = "Chivy"
+  s.version      = "0.1.0"
+  s.summary      = "iOS web browser control which looks and behaves like modern Safari and is highly customizable"
+  s.homepage     = "https://github.com/DZamataev/Chivy.git"
   s.license      = { :type => 'MIT', :file => 'LICENSE'}
   s.author       = { "Denis Zamataev" => "denis.zamataev@gmail.com" }
 
@@ -10,12 +10,10 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '7.0'
 
   s.source       = {
-      :git => "https://github.com/DZamataev/TestFlightFeedback.git",
+      :git => "https://github.com/DZamataev/Chivy.git",
       :tag => s.version.to_s
     }
   
-  s.dependency 'TestFlightSDK', '>= 2.0'
-
   s.default_subspec = 'Core'
 
   s.subspec 'Core' do |c|
@@ -27,8 +25,8 @@ Pod::Spec.new do |s|
   s.subspec 'Demo' do |d|
     d.source_files = 'Demo/Source/*'
     d.resources = 'Demo/Resources/*'
-    d.preserve_paths = "TestFlightFeedback.xcodeproj", "Podfile"
-    d.dependency 'TestFlightFeedback/Core'
+    d.preserve_paths = "Chivy.xcodeproj", "Podfile"
+    d.dependency 'Chivy/Core'
   end
 
 end
