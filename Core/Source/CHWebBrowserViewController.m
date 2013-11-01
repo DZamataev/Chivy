@@ -71,25 +71,17 @@ enum actionSheetButtonIndex {
     
     //self.navigationController.navigationBar.hidden = YES;
     
+    self.wasOpenedModally = [self isModal];
     if ([self isModal]) {
-        //_webView.scrollView.contentInset = UIEdgeInsetsMake(66, 0, 44, 0);
     }
     else {
-        //_webView.scrollView.contentInset = UIEdgeInsetsMake(0, 0, 44, 0);
+
         [self.localTitleView removeFromSuperview];
-        
         self.navigationItem.titleView = self.localTitleView;
-        [self.view removeConstraint:self.webViewVerticalSpaceConstraint];
-        NSArray *constraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(0)-[webView]"
-                                                                       options:0
-                                                                       metrics:nil
-                                                                         views:@{@"webView" : self.webView}];
-        
-        
-        self.webViewVerticalSpaceConstraint = constraints[0];
-        [self.view addConstraint:self.webViewVerticalSpaceConstraint];
-        self.localNavigationBar.hidden = YES;
+        [self.localNavigationBar removeFromSuperview];
+        //self.localNavigationBar = nil;
     }
+    [self updateInsets];
 }
 
 - (BOOL)isModal {
@@ -119,6 +111,13 @@ enum actionSheetButtonIndex {
 - (void)toggleBackForwardButtons {
     _navigateBackButton.enabled = _webView.canGoBack;
     _navigateForwardButton.enabled = _webView.canGoForward;
+}
+
+- (void)updateInsets
+{
+    _webView.scrollView.scrollIndicatorInsets = UIEdgeInsetsMake(66, 0, 44, 0);
+    _webView.scrollView.contentInset = UIEdgeInsetsMake(66, 0, 44, 0);
+
 }
 
 
@@ -231,15 +230,15 @@ enum actionSheetButtonIndex {
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
     [self toggleBackForwardButtons];
-    
+    [self updateInsets];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     NSString *pageTitle = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
     _titleLabel.text = pageTitle;
-    
-    
     [self toggleBackForwardButtons];
+    [self updateInsets];
+    self.webView.hidden = NO;
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {

@@ -8,6 +8,7 @@
             <connections>
                 <outlet property="actionButton" destination="szP-jm-iiN" id="Gbx-sL-Qjb"/>
                 <outlet property="bottomToolbar" destination="dkI-8x-Vos" id="aQ5-bS-G1Z"/>
+                <outlet property="dismissButton" destination="hKR-WT-p41" id="baD-A3-JjO"/>
                 <outlet property="localNavigationBar" destination="Ig9-bL-VHb" id="yUl-ht-zNP"/>
                 <outlet property="localTitleView" destination="AZq-qW-Szc" id="50A-lG-skR"/>
                 <outlet property="navigateBackButton" destination="srx-io-Le6" id="qCk-af-Kwi"/>
@@ -16,7 +17,7 @@
                 <outlet property="titleLabel" destination="45c-ZR-gcT" id="A5S-O6-aww"/>
                 <outlet property="view" destination="1" id="3"/>
                 <outlet property="webView" destination="T7w-qf-GG4" id="xXt-Af-noh"/>
-                <outlet property="webViewVerticalSpaceConstraint" destination="crn-yj-Dqs" id="gO6-f9-ciQ"/>
+                <outlet property="webViewVerticalSpaceConstraint" destination="52N-FY-Tku" id="7Uh-b6-qDa"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -24,8 +25,8 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T7w-qf-GG4">
-                    <rect key="frame" x="0.0" y="66" width="320" height="458"/>
+                <webView hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T7w-qf-GG4">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <connections>
@@ -35,9 +36,6 @@
                 <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dkI-8x-Vos">
                     <rect key="frame" x="0.0" y="524" width="320" height="44"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="44" id="C4P-Nr-Lj7"/>
-                    </constraints>
                     <items>
                         <barButtonItem image="arrow_back.png" style="plain" id="srx-io-Le6">
                             <connections>
@@ -73,19 +71,10 @@
                     <items>
                         <navigationItem id="Y3T-eV-Opk">
                             <nil key="title"/>
-                            <barButtonItem key="leftBarButtonItem" id="Vx8-zl-bFh">
-                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="jQz-vw-DRy">
-                                    <rect key="frame" x="16" y="11" width="21" height="21"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                    <state key="normal" image="close_cross.png">
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="dismissModally:" destination="-1" eventType="touchUpInside" id="FIH-UI-Qjf"/>
-                                    </connections>
-                                </button>
+                            <barButtonItem key="leftBarButtonItem" image="close_cross.png" id="hKR-WT-p41">
+                                <connections>
+                                    <action selector="dismissModally:" destination="-1" id="9iJ-Qw-oCo"/>
+                                </connections>
                             </barButtonItem>
                             <view key="titleView" contentMode="scaleToFill" id="AZq-qW-Szc">
                                 <rect key="frame" x="96" y="6" width="128" height="33"/>
@@ -115,12 +104,12 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="dkI-8x-Vos" secondAttribute="bottom" id="4MM-ol-Frv"/>
+                <constraint firstItem="T7w-qf-GG4" firstAttribute="top" secondItem="1" secondAttribute="top" id="52N-FY-Tku"/>
                 <constraint firstItem="T7w-qf-GG4" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="7XV-KH-VpT"/>
                 <constraint firstItem="Ig9-bL-VHb" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="TEd-Yk-2uY"/>
                 <constraint firstItem="dkI-8x-Vos" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="YoQ-iG-vIG"/>
-                <constraint firstItem="T7w-qf-GG4" firstAttribute="top" secondItem="Ig9-bL-VHb" secondAttribute="bottom" id="crn-yj-Dqs"/>
                 <constraint firstItem="Ig9-bL-VHb" firstAttribute="top" secondItem="1" secondAttribute="top" constant="22" id="dUn-gu-fwh"/>
-                <constraint firstItem="dkI-8x-Vos" firstAttribute="top" secondItem="T7w-qf-GG4" secondAttribute="bottom" id="f2R-xH-skl"/>
+                <constraint firstAttribute="bottom" secondItem="T7w-qf-GG4" secondAttribute="bottom" id="fWB-bO-UIe"/>
                 <constraint firstAttribute="trailing" secondItem="Ig9-bL-VHb" secondAttribute="trailing" id="u5P-Yi-HIa"/>
                 <constraint firstAttribute="trailing" secondItem="T7w-qf-GG4" secondAttribute="trailing" id="wwh-lJ-oIa"/>
                 <constraint firstAttribute="trailing" secondItem="dkI-8x-Vos" secondAttribute="trailing" id="yaa-T0-CjN"/>

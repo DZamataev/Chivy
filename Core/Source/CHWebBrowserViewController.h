@@ -26,11 +26,14 @@
 
 @property (nonatomic, strong) IBOutlet UINavigationBar *localNavigationBar;
 @property (nonatomic, strong) IBOutlet UIView *localTitleView;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *dismissButton;
 
 @property (nonatomic, strong) IBOutlet CBAutoScrollLabel *titleLabel;
 @property (nonatomic, strong) IBOutlet CBAutoScrollLabel *urlLabel;
 
 @property (nonatomic, strong) NSString *requestUrl;
+
+@property (nonatomic, assign) BOOL wasOpenedModally;
 
 
 
