@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 #import <CBAutoScrollLabel.h>
 
+@class DZScrollingInspector;
+@class CHScrollingInspector;
+
 @interface CHWebBrowserViewController : UIViewController <UIWebViewDelegate, UIActionSheetDelegate, UIBarPositioningDelegate>
 {
     NSString *_requestUrl;
@@ -35,7 +38,9 @@
 
 @property (nonatomic, assign) BOOL wasOpenedModally;
 
-
+@property (nonatomic, strong) CHScrollingInspector *navBarYPositionInspector;
+@property (nonatomic, strong) CHScrollingInspector *navBarContentAlphaInspector;
+@property (nonatomic, strong) CHScrollingInspector *toolbarYPositionInspector;
 
 
 + (id)initWithDefaultNib;

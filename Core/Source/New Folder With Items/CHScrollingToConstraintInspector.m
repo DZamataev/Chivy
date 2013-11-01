@@ -9,40 +9,36 @@
 //  Copyright (c) 2013 Denis Zamataev. All rights reserved.
 //
 
-#import "CHScrollingInspector.h"
+#import "CHScrollingToConstraintInspector.h"
 
-@implementation CHScrollingInspector
+@implementation CHScrollingToConstraintInspector
 
 @synthesize limits = _limits;
 
 - (id)initWithObservedScrollView:(UIScrollView *)scrollView
                 andOffsetKeyPath:(NSString *)offsetKeyPath
                  andInsetKeypath:(NSString *)insetKeyPath
-                       andTarget:(NSObject *)target
-                  andSetterBlock:(void (^)(NSObject *target, float newValue))setterBlock
-                  andGetterBlock:(float (^)(NSObject *target))getterBlock
+             andTargetConstraint:(NSLayoutConstraint *)target
                        andLimits:(DZScrollingInspectorTwoOrientationsLimits)limits
 {
     if (self = [super init])
     {
         // defaults
         _isSuspended = NO;
-        _isAnimatingTarget = NO;
+        _isAnimatingTargetConstraint = NO;
         
         // arguments to properties
         _scrollView = scrollView;
-        _target = target;
+        _targetConstraint = target;
         _limits = limits;
         _offsetKeypath = offsetKeyPath;
         _insetKeypath = insetKeyPath;
-        self.getterBlock = getterBlock;
-        self.setterBlock = setterBlock;
         
         // get more parameters from target
-        _offset = [CHScrollingInspector contentOffsetValueForKey:offsetKeyPath fromObject:scrollView];
-        _inset = [CHScrollingInspector contentInsetValueForKey:insetKeyPath fromObject:scrollView];
+        _offset = [CHScrollingToConstraintInspector contentOffsetValueForKey:offsetKeyPath fromObject:scrollView];
+        _inset = [CHScrollingToConstraintInspector contentInsetValueForKey:insetKeyPath fromObject:scrollView];
         
-        _targetInitialValue = self.getterBlock(_target);
+        _targetConstraintInitialConstant = target.constant;
         
         [self registerAsObserver];
     }
@@ -90,7 +86,7 @@
     
     if ([keyPath isEqual:DZScrollingInspector_CONTENT_OFFSET_KEYPATH]) {
         NSValue *newValue = [change objectForKey:NSKeyValueChangeNewKey];
-        offset = [CHScrollingInspector contentOffsetValueForKey:_offsetKeypath fromCGPoint:newValue.CGPointValue];
+        offset = [CHScrollingToConstraintInspector contentOffsetValueForKey:_offsetKeypath fromCGPoint:newValue.CGPointValue];
         
         if (offset != _offset)
             offsetChanged = YES;
@@ -100,7 +96,7 @@
     if ([keyPath isEqual:DZScrollingInspector_CONTENT_INSET_KEYPATH]) {
         NSValue *newValue = [change objectForKey:NSKeyValueChangeNewKey];
         
-        inset = [CHScrollingInspector contentInsetValueForKey:_insetKeypath fromUIEdgeInsets:newValue.UIEdgeInsetsValue];
+        inset = [CHScrollingToConstraintInspector contentInsetValueForKey:_insetKeypath fromUIEdgeInsets:newValue.UIEdgeInsetsValue];
         
         if (inset != _inset)
             insetChanged = YES;
@@ -142,8 +138,8 @@
     if (!_isSuspended) {
         if (insetChanged || offsetChanged) {
             
-            if ((_scrollView.isDragging && !_isAnimatingTarget) ||
-                (- offset < _inset && !_isAnimatingTarget)) {
+            if ((_scrollView.isDragging && !_isAnimatingTargetConstraint) ||
+                (- offset < _inset && !_isAnimatingTargetConstraint)) {
                 [self assumeShiftDeltaAndApplyToTargetAccordingToOffset:offset andInset:inset];
             }
         }
@@ -154,7 +150,7 @@
                 scrollingBeyondBounds = YES;
             }
             
-            if (endedDragging && ![self isLimitForCurrentInterfaceOrientationReached] && !scrollingBeyondBounds && !_isAnimatingTarget) {
+            if (endedDragging && ![self isLimitForCurrentInterfaceOrientationReached] && !scrollingBeyondBounds && !_isAnimatingTargetConstraint) {
                 [self animateTargetToReachLimitForCurrentDirection];
             }
         }
@@ -221,7 +217,7 @@
     
     if (existingValuePassesLimitation && !scrollingBeyondBounds) {
         CGFloat shiftedValue = existingValue + delta * directionCoefficient;
-        shiftedValue = [CHScrollingInspector clampFloat:shiftedValue withMinimum:l.min andMaximum:l.max];
+        shiftedValue = [CHScrollingToConstraintInspector clampFloat:shiftedValue withMinimum:l.min andMaximum:l.max];
         
         
         
@@ -273,16 +269,16 @@
     
     
     if (targetValueThatMatchesLimit) {
-        if ([_target isKindOfClass:[NSObject class]]) {
+        if ([_targetConstraint isKindOfClass:[NSLayoutConstraint class]]) {
             [UIView animateWithDuration:animationDuration
                                   delay:0.0f
                                 options:UIViewAnimationOptionAllowAnimatedContent | UIViewAnimationOptionBeginFromCurrentState
                              animations:^{
-                _isAnimatingTarget = true;
+                _isAnimatingTargetConstraint = true;
                 [self setTargetNewValue:targetValueThatMatchesLimit.floatValue];
             }
                              completion:^(BOOL finished) {
-                _isAnimatingTarget = false;
+                _isAnimatingTargetConstraint = false;
             }];
         }
     }
@@ -303,12 +299,12 @@
 
 - (CGFloat)getTargetCurrentValue
 {
-    return self.getterBlock(_target);
+    return _targetConstraint.constant;
 }
 
 - (void)setTargetNewValue:(CGFloat)newValue
 {
-    self.setterBlock(_target, newValue);
+    _targetConstraint.constant = newValue;
 }
 
 -(void)dealloc
@@ -359,7 +355,7 @@
     }
     
     NSValue *contentOffsetValue = [object valueForKeyPath:DZScrollingInspector_CONTENT_OFFSET_KEYPATH];
-    CGFloat contentOffsetFloat = [CHScrollingInspector contentOffsetValueForKey:key fromCGPoint:contentOffsetValue.CGPointValue];
+    CGFloat contentOffsetFloat = [CHScrollingToConstraintInspector contentOffsetValueForKey:key fromCGPoint:contentOffsetValue.CGPointValue];
     return contentOffsetFloat;
 }
 
@@ -398,7 +394,7 @@
     NSValue *contentInsetValue = [object valueForKeyPath:DZScrollingInspector_CONTENT_INSET_KEYPATH];
     UIEdgeInsets contentInsetEdgeInsets = contentInsetValue.UIEdgeInsetsValue;
     
-    return [CHScrollingInspector contentInsetValueForKey:key fromUIEdgeInsets:contentInsetEdgeInsets];
+    return [CHScrollingToConstraintInspector contentInsetValueForKey:key fromUIEdgeInsets:contentInsetEdgeInsets];
 }
 
 +(CGFloat)contentInsetValueForKey:(NSString*)key fromUIEdgeInsets:(UIEdgeInsets)contentInsetEdgeInsets

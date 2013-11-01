@@ -1,16 +1,12 @@
 //
-//  CHScrollingInspector.h
-//  Chivy
-//  Derived from DZScrollingInspector.h
-//  DZTSMiniWebBrowser
-//
+//  DZScrollingInspector.h
+//  TSMiniWebBrowserDemo
 //
 //  Created by Denis Zamataev on 9/2/13.
-//  Copyright (c) 2013 Denis Zamataev. All rights reserved.
+//
 //
 
 #import <Foundation/Foundation.h>
-#import "DZScrollingInspector.h"
 
 //#define DZScrollingInspector_LOGGING_ENABLED
 
@@ -30,14 +26,32 @@
 #define DZScrollingInspector_PAN_STATE_KEYPATH @"pan.state"
 #define DZScrollingInspector_ANIMATION_DURATION_PER_ONE_PIXEL 0.0068181818f
 
-@interface CHScrollingInspector : NSObject
+typedef enum {
+    DZScrollingInspectorTargetPropertySetterOptionNumber,
+    DZScrollingInspectorTargetPropertySetterOptionFrameOriginY
+} DZScrollingInspectorTargetPropertySetterOption;
+
+typedef struct {
+    CGFloat max;
+    CGFloat min;
+} DZScrollingInspectorLimit;
+
+typedef struct {
+    DZScrollingInspectorLimit portraitLimit;
+    DZScrollingInspectorLimit landscapeLimit;
+} DZScrollingInspectorTwoOrientationsLimits;
+
+
+
+@interface DZScrollingInspector : NSObject
 {
     UIScrollView *_scrollView;
     BOOL _scrollViewIsDragging;
     
-    NSObject *_target;
-    CGFloat _targetInitialValue;
-    BOOL _isAnimatingTarget;
+    NSObject *_targetObject;
+    NSString *_targetFramePropertyKeyPath;
+    CGFloat _targetFramePropertyInitialValue;
+    BOOL _isAnimatingTargetObject;
     
     DZScrollingInspectorTwoOrientationsLimits _limits;
     
@@ -51,15 +65,11 @@
 -(id)initWithObservedScrollView:(UIScrollView*)scrollView
                andOffsetKeyPath:(NSString*)offsetKeyPath
                 andInsetKeypath:(NSString*)insetKeyPath
-                      andTarget:(NSObject*)target
-                 andSetterBlock:(void (^)(NSObject *target, float newValue))setterBlock
-                 andGetterBlock:(float (^)(NSObject *target))getterBlock
+                andTargetObject:(NSObject*)target
+  andTargetFramePropertyKeyPath:(NSString*)keypath
                       andLimits:(DZScrollingInspectorTwoOrientationsLimits)limits;
 
 @property DZScrollingInspectorTwoOrientationsLimits limits;
-
-@property (nonatomic, copy) void (^setterBlock)(NSObject *_target, float newValue);
-@property (nonatomic, copy) float (^getterBlock)(NSObject *_target);
 
 -(void)suspend;
 -(void)resume;

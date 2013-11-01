@@ -12,7 +12,7 @@
 #import <Foundation/Foundation.h>
 #import "DZScrollingInspector.h"
 
-//#define DZScrollingInspector_LOGGING_ENABLED
+#define DZScrollingInspector_LOGGING_ENABLED
 
 #ifdef DZScrollingInspector_LOGGING_ENABLED
 #	define DZScrollingInspectorLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
@@ -30,14 +30,14 @@
 #define DZScrollingInspector_PAN_STATE_KEYPATH @"pan.state"
 #define DZScrollingInspector_ANIMATION_DURATION_PER_ONE_PIXEL 0.0068181818f
 
-@interface CHScrollingInspector : NSObject
+@interface CHScrollingToConstraintInspector : NSObject
 {
     UIScrollView *_scrollView;
     BOOL _scrollViewIsDragging;
     
-    NSObject *_target;
-    CGFloat _targetInitialValue;
-    BOOL _isAnimatingTarget;
+    NSLayoutConstraint *_targetConstraint;
+    CGFloat _targetConstraintInitialConstant;
+    BOOL _isAnimatingTargetConstraint;
     
     DZScrollingInspectorTwoOrientationsLimits _limits;
     
@@ -51,15 +51,10 @@
 -(id)initWithObservedScrollView:(UIScrollView*)scrollView
                andOffsetKeyPath:(NSString*)offsetKeyPath
                 andInsetKeypath:(NSString*)insetKeyPath
-                      andTarget:(NSObject*)target
-                 andSetterBlock:(void (^)(NSObject *target, float newValue))setterBlock
-                 andGetterBlock:(float (^)(NSObject *target))getterBlock
+            andTargetConstraint:(NSLayoutConstraint*)target
                       andLimits:(DZScrollingInspectorTwoOrientationsLimits)limits;
 
 @property DZScrollingInspectorTwoOrientationsLimits limits;
-
-@property (nonatomic, copy) void (^setterBlock)(NSObject *_target, float newValue);
-@property (nonatomic, copy) float (^getterBlock)(NSObject *_target);
 
 -(void)suspend;
 -(void)resume;

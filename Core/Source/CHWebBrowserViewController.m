@@ -7,6 +7,8 @@
 //
 
 #import "CHWebBrowserViewController.h"
+#import "CHScrollingInspector.h"
+#import "DZScrollingInspector.h"
 
 enum actionSheetButtonIndex {
 	kSafariButtonIndex,
@@ -63,13 +65,6 @@ enum actionSheetButtonIndex {
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    if (_requestUrl) {
-        [_webView loadRequest: [NSURLRequest requestWithURL:[NSURL URLWithString:_requestUrl]]];
-    }
-    
-    //_webView.scrollView.scrollIndicatorInsets = UIEdgeInsetsMake(66, 0, 44, 0);
-    
-    //self.navigationController.navigationBar.hidden = YES;
     
     self.wasOpenedModally = [self isModal];
     if ([self isModal]) {
@@ -81,7 +76,14 @@ enum actionSheetButtonIndex {
         [self.localNavigationBar removeFromSuperview];
         //self.localNavigationBar = nil;
     }
+    
     [self updateInsets];
+    
+    [self performSelector:@selector(createScrollingInspectors) withObject:Nil afterDelay:0.1f];
+    
+    if (_requestUrl) {
+        [_webView loadRequest: [NSURLRequest requestWithURL:[NSURL URLWithString:_requestUrl]]];
+    }
 }
 
 - (BOOL)isModal {
@@ -104,6 +106,57 @@ enum actionSheetButtonIndex {
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Scrolling inspectors related methods
+
+- (void)createScrollingInspectors
+{
+    UINavigationBar *topBar = self.wasOpenedModally ? self.localNavigationBar : self.navigationController.navigationBar;
+    self.navBarYPositionInspector = [[CHScrollingInspector alloc] initWithObservedScrollView:_webView.scrollView
+                                                                   andOffsetKeyPath:@"y"
+                                                                    andInsetKeypath:@"top"
+                                                                          andTarget:topBar
+                                                                              andSetterBlock:^void(NSObject *target, float newValue) {
+                                                                                  NSLog(@"setting frame %f", newValue);
+                                                                        CGRect frame = ((UINavigationBar*)target).frame;
+                                                                        ((UINavigationBar*)target).frame = CGRectMake(frame.origin.x, newValue, frame.size.width, frame.size.height);
+                                                                    } andGetterBlock:^float(NSObject *target) {
+                                                                        return ((UINavigationBar*)target).frame.origin.y;
+                                                                    } andLimits:DZScrollingInspectorTwoOrientationsLimitsMake(topBar.frame.origin.y,
+                                                                                                                              topBar.frame.origin.y-topBar.frame.size.height,
+                                                                                                                              topBar.frame.origin.y,
+                                                                                                                              topBar.frame.origin.y-topBar.frame.size.height)];
+    
+    self.navBarContentAlphaInspector = [[CHScrollingInspector alloc] initWithObservedScrollView:_webView.scrollView
+                                                                            andOffsetKeyPath:@"y"
+                                                                             andInsetKeypath:@"top"
+                                                                                   andTarget:self.localTitleView
+                                                                              andSetterBlock:^void(NSObject *target, float newValue) {
+                                                                                  NSLog(@"setting %f", newValue);
+                                                                                  float newAlpha = newValue / topBar.frame.size.height;
+                                                                                  ((UIView*)target).alpha = newAlpha;
+                                                                                  UIColor *tint = self.dismissButton.tintColor;
+                                                                                  float red, green, blue, oldAlpha;
+                                                                                  [tint getRed:&red green:&green blue:&blue alpha:&oldAlpha];
+                                                                                  self.dismissButton.tintColor = [UIColor colorWithRed:red green:green blue:blue alpha:newAlpha];
+                                                                              } andGetterBlock:^float(NSObject *target) {
+                                                                                  return ((UIView*)target).alpha * topBar.frame.size.height;
+                                                                              } andLimits:DZScrollingInspectorTwoOrientationsLimitsMake(topBar.frame.size.height,
+                                                                                                                                        0,
+                                                                                                                                        topBar.frame.size.height,
+                                                                                                                                        0)];
+    
+    self.toolbarYPositionInspector = [[CHScrollingInspector alloc] initWithObservedScrollView:_webView.scrollView
+                                                                            andOffsetKeyPath:@"y"
+                                                                             andInsetKeypath:@"top"
+                                                                                   andTarget:self.bottomToolbar
+                                                                              andSetterBlock:^void(NSObject *target, float newValue) {
+                                                                                  CGRect frame = ((UIToolbar*)target).frame;
+                                                                                  ((UIToolbar*)target).frame = CGRectMake(frame.origin.x, newValue, frame.size.width, frame.size.height);
+                                                                              } andGetterBlock:^float(NSObject *target) {
+                                                                                  return ((UIToolbar*)target).frame.origin.y;
+                                                                              } andLimits:DZScrollingInspectorTwoOrientationsLimitsMake(_bottomToolbar.frame.origin.y, _bottomToolbar.frame.origin.y+_bottomToolbar.frame.size.height, _bottomToolbar.frame.origin.y, _bottomToolbar.frame.origin.y+_bottomToolbar.frame.size.height)];
 }
 
 #pragma mark - View state related methods
