@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <CBAutoScrollLabel.h>
 
-@interface CHWebBrowserViewController : UIViewController <UIWebViewDelegate, UIActionSheetDelegate>
+@interface CHWebBrowserViewController : UIViewController <UIWebViewDelegate, UIActionSheetDelegate, UIBarPositioningDelegate>
 {
     NSString *_requestUrl;
 }
@@ -21,16 +21,22 @@
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *actionButton;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *refreshButton;
 
-@property (nonatomic, strong) IBOutlet UIView *topView;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *navBarTopOffsetConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *webViewVerticalSpaceConstraint;
+
+@property (nonatomic, strong) IBOutlet UINavigationBar *localNavigationBar;
+@property (nonatomic, strong) IBOutlet UIView *localTitleView;
+
 @property (nonatomic, strong) IBOutlet CBAutoScrollLabel *titleLabel;
 @property (nonatomic, strong) IBOutlet CBAutoScrollLabel *urlLabel;
-@property (nonatomic, strong) IBOutlet UIButton *closeButton;
 
 @property (nonatomic, strong) NSString *requestUrl;
 
 
 
 
++ (id)initWithDefaultNib;
++ (id)initWithDefaultNibAndRequestUrl:(NSString*)requestUrl;
 + (void)openWebBrowserControllerModallyWithUrl:(NSString*)urlString animated:(BOOL)animated completion:(void (^)(void))completion;
 
 @end

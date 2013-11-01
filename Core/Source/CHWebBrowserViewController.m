@@ -20,7 +20,7 @@ enum actionSheetButtonIndex {
 @implementation CHWebBrowserViewController
 
 + (void)openWebBrowserControllerModallyWithUrl:(NSString*)urlString animated:(BOOL)animated completion:(void (^)(void))completion {
-    CHWebBrowserViewController *webBrowserController = [[CHWebBrowserViewController alloc] initWithNibName:[CHWebBrowserViewController nibFileName]
+    CHWebBrowserViewController *webBrowserController = [[CHWebBrowserViewController alloc] initWithNibName:[CHWebBrowserViewController defaultNibFileName]
                                                                                                     bundle:nil];
     webBrowserController.requestUrl = urlString;
     UIWindow *window = [UIApplication sharedApplication].keyWindow;
@@ -28,7 +28,20 @@ enum actionSheetButtonIndex {
     [rootViewController presentViewController:webBrowserController animated:animated completion:completion];
 }
 
-+ (NSString*)nibFileName {
++ (id)initWithDefaultNib
+{
+    return [CHWebBrowserViewController initWithDefaultNibAndRequestUrl:nil];
+}
+
++ (id)initWithDefaultNibAndRequestUrl:(NSString*)requestUrl
+{
+    CHWebBrowserViewController *webBrowserController = [[CHWebBrowserViewController alloc] initWithNibName:[CHWebBrowserViewController defaultNibFileName]
+                                                                                                    bundle:nil];
+    webBrowserController.requestUrl = requestUrl;
+    return webBrowserController;
+}
+
++ (NSString*)defaultNibFileName {
     return @"CHWebBrowserViewController";
 }
 
@@ -50,10 +63,39 @@ enum actionSheetButtonIndex {
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    if (_requestUrl) {
+        [_webView loadRequest: [NSURLRequest requestWithURL:[NSURL URLWithString:_requestUrl]]];
+    }
     
-    [_webView loadRequest: [NSURLRequest requestWithURL:[NSURL URLWithString:_requestUrl]]];
-    _webView.scrollView.contentInset = UIEdgeInsetsMake(66, 0, 44, 0);
     //_webView.scrollView.scrollIndicatorInsets = UIEdgeInsetsMake(66, 0, 44, 0);
+    
+    //self.navigationController.navigationBar.hidden = YES;
+    
+    if ([self isModal]) {
+        //_webView.scrollView.contentInset = UIEdgeInsetsMake(66, 0, 44, 0);
+    }
+    else {
+        //_webView.scrollView.contentInset = UIEdgeInsetsMake(0, 0, 44, 0);
+        [self.localTitleView removeFromSuperview];
+        
+        self.navigationItem.titleView = self.localTitleView;
+        [self.view removeConstraint:self.webViewVerticalSpaceConstraint];
+        NSArray *constraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(0)-[webView]"
+                                                                       options:0
+                                                                       metrics:nil
+                                                                         views:@{@"webView" : self.webView}];
+        
+        
+        self.webViewVerticalSpaceConstraint = constraints[0];
+        [self.view addConstraint:self.webViewVerticalSpaceConstraint];
+        self.localNavigationBar.hidden = YES;
+    }
+}
+
+- (BOOL)isModal {
+    return self.presentingViewController.presentedViewController == self
+    || self.navigationController.presentingViewController.presentedViewController == self.navigationController
+    || [self.tabBarController.presentingViewController isKindOfClass:[UITabBarController class]];
 }
 
 - (void)setRequestUrl:(NSString *)urlToLoad
@@ -163,6 +205,10 @@ enum actionSheetButtonIndex {
     [self showActionSheet];
 }
 
+- (IBAction)dismissModally:(id)sender {
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
+}
+
 #pragma mark - UIWebViewDelegate
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
@@ -213,5 +259,11 @@ enum actionSheetButtonIndex {
 	[alert show];
 }
 
+#pragma mark - UIBarPositioningDelegate
+
+- (UIBarPosition)positionForBar:(id <UIBarPositioning>)bar
+{
+    return UIBarPositionTopAttached;
+}
 
 @end

@@ -28,6 +28,11 @@
     }];
 }
 
+- (IBAction)pushWebBrowser:(id)sender
+{
+    [self.navigationController pushViewController:[CHWebBrowserViewController initWithDefaultNibAndRequestUrl:_urlTextField.text] animated:YES];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

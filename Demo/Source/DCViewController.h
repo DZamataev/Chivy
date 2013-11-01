@@ -12,4 +12,5 @@
 @property (nonatomic, strong) IBOutlet UITextField *urlTextField;
 
 - (IBAction)openWebBrowserModally:(id)sender;
+- (IBAction)pushWebBrowser:(id)sender;
 @end

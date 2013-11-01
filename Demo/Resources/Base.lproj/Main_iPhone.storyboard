@@ -1,9 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="H5g-k5-WyR">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
     </dependencies>
     <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="vly-kr-iKj">
+            <objects>
+                <navigationController definesPresentationContext="YES" id="H5g-k5-WyR" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="el2-Pz-xpU">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="vXZ-lx-hvc" kind="relationship" relationship="rootViewController" id="yy9-ya-Yug"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="olh-CM-7j9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-10" y="258"/>
+        </scene>
         <!--View Controller-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
@@ -23,26 +38,40 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ebX-zg-71a">
-                                <rect key="frame" x="60" y="269" width="201" height="30"/>
+                                <rect key="frame" x="35" y="269" width="251" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Open browser control">
+                                <state key="normal" title="Open browser control modally">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <action selector="openWebBrowserModally:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="JB4-AJ-58c"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CV4-BU-5V7">
+                                <rect key="frame" x="35" y="307" width="250" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Push browser control">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="pushWebBrowser:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="WH5-v0-pPX"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="ebX-zg-71a" firstAttribute="top" secondItem="7tl-3n-OX3" secondAttribute="bottom" constant="10" id="0On-qz-R2X"/>
-                            <constraint firstItem="ebX-zg-71a" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="60" id="2OP-fQ-LNY"/>
+                            <constraint firstItem="ebX-zg-71a" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="35" id="2OP-fQ-LNY"/>
                             <constraint firstAttribute="trailing" secondItem="7tl-3n-OX3" secondAttribute="trailing" constant="9" id="BL8-an-Svw"/>
                             <constraint firstItem="7tl-3n-OX3" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="11" id="Ofz-Ie-GsY"/>
+                            <constraint firstItem="CV4-BU-5V7" firstAttribute="centerX" secondItem="ebX-zg-71a" secondAttribute="centerX" id="TS9-yo-UUV"/>
                             <constraint firstItem="ebX-zg-71a" firstAttribute="centerY" secondItem="kh9-bI-dsS" secondAttribute="centerY" id="aIp-mm-WVg"/>
+                            <constraint firstItem="CV4-BU-5V7" firstAttribute="top" secondItem="ebX-zg-71a" secondAttribute="bottom" constant="8" symbolic="YES" id="mh3-IR-Pwo"/>
+                            <constraint firstItem="CV4-BU-5V7" firstAttribute="leading" secondItem="ebX-zg-71a" secondAttribute="leading" id="rnO-ve-BrA"/>
                             <constraint firstItem="ebX-zg-71a" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="z1W-xe-Ob5"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="EWz-Fc-G8H"/>
                     <connections>
                         <outlet property="urlTextField" destination="7tl-3n-OX3" id="7k8-Rf-oRh"/>
                     </connections>
