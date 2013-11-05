@@ -9,7 +9,3 @@
 #import <Foundation/Foundation.h>
 #import "CHScrollingInspector.h"
 #import "CHWebBrowserViewController.h"
-
-@interface Chivy : NSObject
-
-@end
