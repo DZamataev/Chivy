@@ -13,6 +13,7 @@
                 <outlet property="localTitleView" destination="AZq-qW-Szc" id="50A-lG-skR"/>
                 <outlet property="navigateBackButton" destination="srx-io-Le6" id="qCk-af-Kwi"/>
                 <outlet property="navigateForwardButton" destination="shM-CK-peR" id="oKU-9A-iLf"/>
+                <outlet property="readerButton" destination="U6f-z1-9aA" id="Cb3-Jc-FEP"/>
                 <outlet property="refreshButton" destination="YM5-0e-Eu1" id="vQH-Ez-Keq"/>
                 <outlet property="titleLabel" destination="45c-ZR-gcT" id="A5S-O6-aww"/>
                 <outlet property="view" destination="1" id="3"/>
@@ -71,7 +72,7 @@
                     <items>
                         <navigationItem id="Y3T-eV-Opk">
                             <nil key="title"/>
-                            <barButtonItem key="leftBarButtonItem" image="close_cross.png" id="hKR-WT-p41">
+                            <barButtonItem key="leftBarButtonItem" image="exit.png" id="hKR-WT-p41">
                                 <connections>
                                     <action selector="dismissModally:" destination="-1" id="9iJ-Qw-oCo"/>
                                 </connections>
@@ -81,7 +82,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="45c-ZR-gcT" customClass="CBAutoScrollLabel">
-                                        <rect key="frame" x="0.0" y="0.0" width="240" height="33"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="180" height="33"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </view>
@@ -90,10 +91,15 @@
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="45c-ZR-gcT" secondAttribute="bottom" id="MG0-Ib-hbz"/>
                                     <constraint firstItem="45c-ZR-gcT" firstAttribute="leading" secondItem="AZq-qW-Szc" secondAttribute="leading" id="d3F-ba-GIC"/>
-                                    <constraint firstAttribute="trailing" secondItem="45c-ZR-gcT" secondAttribute="trailing" constant="-60" id="wJe-iK-78z"/>
+                                    <constraint firstAttribute="trailing" secondItem="45c-ZR-gcT" secondAttribute="trailing" id="wJe-iK-78z"/>
                                     <constraint firstItem="45c-ZR-gcT" firstAttribute="top" secondItem="AZq-qW-Szc" secondAttribute="top" id="xpW-TY-Av0"/>
                                 </constraints>
                             </view>
+                            <barButtonItem key="rightBarButtonItem" image="read.png" id="U6f-z1-9aA">
+                                <connections>
+                                    <action selector="readingModeToggle:" destination="-1" id="Eb3-Hm-xRy"/>
+                                </connections>
+                            </barButtonItem>
                         </navigationItem>
                     </items>
                     <connections>
@@ -121,6 +127,7 @@
     <resources>
         <image name="arrow_back.png" width="11" height="20"/>
         <image name="arrow_forward.png" width="11" height="20"/>
-        <image name="close_cross.png" width="21" height="21"/>
+        <image name="exit.png" width="21" height="21"/>
+        <image name="read.png" width="21" height="21"/>
     </resources>
 </document>

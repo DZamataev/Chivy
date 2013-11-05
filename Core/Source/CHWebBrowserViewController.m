@@ -75,6 +75,7 @@ enum actionSheetButtonIndex {
 
         [self.localTitleView removeFromSuperview];
         self.navigationItem.titleView = self.localTitleView;
+        self.navigationItem.rightBarButtonItem = self.readerButton;
         [self.localNavigationBar removeFromSuperview];
         //self.localNavigationBar = nil;
         [self SuProgressForWebView:_webView];
@@ -272,6 +273,10 @@ enum actionSheetButtonIndex {
 
 - (IBAction)dismissModally:(id)sender {
     [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
+}
+
+- (IBAction)readingModeToggle:(id)sender {
+    
 }
 
 #pragma mark - UIWebViewDelegate
