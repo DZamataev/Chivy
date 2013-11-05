@@ -28,8 +28,8 @@
 
 @property (nonatomic, strong) IBOutlet UINavigationBar *localNavigationBar;
 @property (nonatomic, strong) IBOutlet UIView *localTitleView;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *dismissButton;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *readerButton;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *dismissBarButtonItem;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *readBarButtonItem;
 
 
 @property (nonatomic, strong) IBOutlet CBAutoScrollLabel *titleLabel;
@@ -47,5 +47,4 @@
 + (id)initWithDefaultNib;
 + (id)initWithDefaultNibAndRequestUrl:(NSString*)requestUrl;
 + (void)openWebBrowserControllerModallyWithUrl:(NSString*)urlString animated:(BOOL)animated completion:(void (^)(void))completion;
-
 @end

@@ -15,6 +15,14 @@ enum actionSheetButtonIndex {
 	kChromeButtonIndex,
 };
 
+#ifndef CHWebBrowserDefaultTintColor
+#define CHWebBrowserDefaultTintColor [UIApplication sharedApplication].keyWindow.tintColor
+#endif
+
+#ifndef SuProgressBarTag
+#define SuProgressBarTag 51381
+#endif
+
 @interface CHWebBrowserViewController ()
 
 @end
@@ -70,20 +78,24 @@ enum actionSheetButtonIndex {
     self.wasOpenedModally = [self isModal];
     if ([self isModal]) {
         [self SuProgressForWebView:_webView inView:self.localNavigationBar];
+        
     }
     else {
-
         [self.localTitleView removeFromSuperview];
         self.navigationItem.titleView = self.localTitleView;
-        self.navigationItem.rightBarButtonItem = self.readerButton;
+        self.navigationItem.rightBarButtonItem = self.readBarButtonItem;
         [self.localNavigationBar removeFromSuperview];
         //self.localNavigationBar = nil;
         [self SuProgressForWebView:_webView];
     }
     
-    [self updateInsets];
+    [self resetInsets];
     
     [self performSelector:@selector(createScrollingInspectors) withObject:Nil afterDelay:0.1f];
+    
+    [self setCustomButtonsTintColor:CHWebBrowserDefaultTintColor];
+    
+    [[self SuProgressBar] setHidden:NO];
     
     if (_requestUrl) {
         [_webView loadRequest: [NSURLRequest requestWithURL:[NSURL URLWithString:_requestUrl]]];
@@ -122,6 +134,14 @@ enum actionSheetButtonIndex {
     [memoryWarningAlert show];
 }
 
+-(void) viewWillDisappear:(BOOL)animated {
+    if ([self.navigationController.viewControllers indexOfObject:self]==NSNotFound) {
+        // back button was pressed.  We know this is true because self is no longer
+        // in the navigation stack.
+        [[self SuProgressBar] setHidden:YES];
+    }
+    [super viewWillDisappear:animated];
+}
 #pragma mark - Scrolling inspectors related methods
 
 - (void)createScrollingInspectors
@@ -150,10 +170,20 @@ enum actionSheetButtonIndex {
                                                                                   NSLog(@"setting %f", newValue);
                                                                                   float newAlpha = newValue / topBar.frame.size.height;
                                                                                   ((UIView*)target).alpha = newAlpha;
-                                                                                  UIColor *tint = self.dismissButton.tintColor;
-                                                                                  float red, green, blue, oldAlpha;
-                                                                                  [tint getRed:&red green:&green blue:&blue alpha:&oldAlpha];
-                                                                                  self.dismissButton.tintColor = [UIColor colorWithRed:red green:green blue:blue alpha:newAlpha];
+                                                                                  self.dismissBarButtonItem.customView.alpha = newAlpha;
+                                                                                  self.readBarButtonItem.customView.alpha = newAlpha;
+                                                                                  UIBarButtonItem *backButtonItem = self.navigationController.navigationBar.topItem.backBarButtonItem;
+                                                                                  if (backButtonItem) {
+                                                                                      backButtonItem.tintColor = [backButtonItem.tintColor colorWithAlphaComponent:newAlpha];
+                                                                                  }
+                                                                                  _webView.scrollView.scrollIndicatorInsets = UIEdgeInsetsMake(22+newValue, 0, newValue, 0);
+                                                                                  [self.navBarContentAlphaInspector suspend];
+                                                                                  [self.navBarYPositionInspector suspend];
+                                                                                  [self.toolbarYPositionInspector suspend];
+                                                                                  _webView.scrollView.contentInset = UIEdgeInsetsMake(22+newValue, 0, newValue, 0);
+                                                                                  [self.navBarContentAlphaInspector resume];
+                                                                                  [self.navBarYPositionInspector resume];
+                                                                                  [self.toolbarYPositionInspector resume];
                                                                               } andGetterBlock:^float(NSObject *target) {
                                                                                   return ((UIView*)target).alpha * topBar.frame.size.height;
                                                                               } andLimits:DZScrollingInspectorTwoOrientationsLimitsMake(topBar.frame.size.height,
@@ -180,12 +210,48 @@ enum actionSheetButtonIndex {
     _navigateForwardButton.enabled = _webView.canGoForward;
 }
 
-- (void)updateInsets
+- (void)resetInsets
 {
     _webView.scrollView.scrollIndicatorInsets = UIEdgeInsetsMake(66, 0, 44, 0);
     _webView.scrollView.contentInset = UIEdgeInsetsMake(66, 0, 44, 0);
-
 }
+
+- (void)setTitle:(NSString *)title
+{
+    [super setTitle:title];
+    self.titleLabel.text = title;
+}
+
+- (void)setCustomButtonsTintColor:(UIColor*)tintColor
+{
+//    self.navigateBackButton.tintColor = tintColor;
+//    self.navigateForwardButton.tintColor = tintColor;
+//    self.actionButton.tintColor = tintColor;
+//    self.refreshButton.tintColor = tintColor;
+//    self.navigationItem.backBarButtonItem.tintColor = tintColor;
+    UIButton* backButton = (UIButton*)self.dismissBarButtonItem.customView;
+    UIButton* readButton = (UIButton*)self.readBarButtonItem.customView;
+    if ([backButton isKindOfClass:[UIButton class]]) {
+        [backButton setImage:[CHWebBrowserViewController tintImage:[backButton imageForState:UIControlStateNormal] withColor:tintColor] forState:UIControlStateNormal];
+    }
+    if ([readButton isKindOfClass:[UIButton class]]) {
+        [readButton setImage:[CHWebBrowserViewController tintImage:[readButton imageForState:UIControlStateNormal] withColor:tintColor] forState:UIControlStateNormal];
+    }
+    
+    [[self SuProgressBar] setTintColor:tintColor];
+}
+
+- (UIView*)SuProgressBar
+{
+    UIView *result = nil;
+    result = [self.localNavigationBar viewWithTag:SuProgressBarTag];
+    if (!result) {
+        result = [self.navigationController.navigationBar viewWithTag:SuProgressBarTag];
+    }
+    return result;
+}
+
+#pragma mark
 
 
 #pragma mark - Action Sheet
@@ -301,14 +367,14 @@ enum actionSheetButtonIndex {
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
     [self toggleBackForwardButtons];
-    [self updateInsets];
+    [self resetInsets];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     NSString *pageTitle = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
     _titleLabel.text = pageTitle;
     [self toggleBackForwardButtons];
-    [self updateInsets];
+    [self resetInsets];
     self.webView.hidden = NO;
 }
 
@@ -334,6 +400,49 @@ enum actionSheetButtonIndex {
 - (UIBarPosition)positionForBar:(id <UIBarPositioning>)bar
 {
     return UIBarPositionTopAttached;
+}
+
+#pragma mark - Helpers
+
+// baseImage is the grey scale image. color is the desired tint color
++ (UIImage *)tintImage:(UIImage *)baseImage withColor:(UIColor *)color {
+    /* iOS 6 way */
+//    UIGraphicsBeginImageContextWithOptions(baseImage.size, NO, baseImage.scale);
+//    
+//    CGContextRef ctx = UIGraphicsGetCurrentContext();
+//    CGRect area = CGRectMake(0, 0, baseImage.size.width, baseImage.size.height);
+//    
+//    CGContextScaleCTM(ctx, 1, -1);
+//    CGContextTranslateCTM(ctx, 0, -area.size.height);
+//    
+//    CGContextSaveGState(ctx);
+//    CGContextClipToMask(ctx, area, baseImage.CGImage);
+//    
+//    [color set];
+//    CGContextFillRect(ctx, area);
+//    CGContextRestoreGState(ctx);
+//    
+//    CGContextSetBlendMode(ctx, kCGBlendModeOverlay);
+//    
+//    CGContextDrawImage(ctx, area, baseImage.CGImage);
+//    
+//    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+//    
+//    UIGraphicsEndImageContext();
+//    
+//    // If the original image was stretchable, make the new image stretchable
+//    if (baseImage.leftCapWidth || baseImage.topCapHeight) {
+//        newImage = [newImage stretchableImageWithLeftCapWidth:baseImage.leftCapWidth topCapHeight:baseImage.topCapHeight];
+//    }
+//    
+//    return newImage;
+    
+    /* iOS 7 way which somehow ignored imageView.tintColor and uses keyWindow.tintColor */
+    UIImage* imageForRendering = [baseImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIImageView* imageView = [[UIImageView alloc] initWithImage:imageForRendering];
+    imageView.tintColor = color;
+    imageView = Nil;
+    return imageForRendering;
 }
 
 @end

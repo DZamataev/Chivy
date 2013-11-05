@@ -28,6 +28,15 @@
     }];
 }
 
+float randomFloat(float Min, float Max){
+    return ((arc4random()%RAND_MAX)/(RAND_MAX*1.0))*(Max-Min)+Min;
+}
+
+- (IBAction)randomizeTintColor:(id)sender
+{
+    [[UIApplication sharedApplication].keyWindow setTintColor:[UIColor colorWithRed:randomFloat(0, 1) green:randomFloat(0, 1) blue:randomFloat(0, 1) alpha:1.0f]];
+}
+
 - (IBAction)pushWebBrowser:(id)sender
 {
     [self.navigationController pushViewController:[CHWebBrowserViewController initWithDefaultNibAndRequestUrl:_urlTextField.text] animated:YES];

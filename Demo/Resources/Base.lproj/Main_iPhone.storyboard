@@ -32,13 +32,13 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="http://kanobu.ru" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7tl-3n-OX3">
-                                <rect key="frame" x="11" y="229" width="300" height="30"/>
+                                <rect key="frame" x="10" y="98" width="300" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ebX-zg-71a">
-                                <rect key="frame" x="35" y="269" width="251" height="30"/>
+                                <rect key="frame" x="34" y="138" width="251" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Open browser control modally">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -48,7 +48,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CV4-BU-5V7">
-                                <rect key="frame" x="35" y="307" width="250" height="30"/>
+                                <rect key="frame" x="34" y="176" width="250" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Push browser control">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -57,18 +57,31 @@
                                     <action selector="pushWebBrowser:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="WH5-v0-pPX"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mxh-iq-3Xs">
+                                <rect key="frame" x="70" y="214" width="180" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Randomize tint color">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="randomizeTintColor:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="odc-wA-mON"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="ebX-zg-71a" firstAttribute="top" secondItem="7tl-3n-OX3" secondAttribute="bottom" constant="10" id="0On-qz-R2X"/>
-                            <constraint firstItem="ebX-zg-71a" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="35" id="2OP-fQ-LNY"/>
-                            <constraint firstAttribute="trailing" secondItem="7tl-3n-OX3" secondAttribute="trailing" constant="9" id="BL8-an-Svw"/>
-                            <constraint firstItem="7tl-3n-OX3" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="11" id="Ofz-Ie-GsY"/>
-                            <constraint firstItem="CV4-BU-5V7" firstAttribute="centerX" secondItem="ebX-zg-71a" secondAttribute="centerX" id="TS9-yo-UUV"/>
-                            <constraint firstItem="ebX-zg-71a" firstAttribute="centerY" secondItem="kh9-bI-dsS" secondAttribute="centerY" id="aIp-mm-WVg"/>
-                            <constraint firstItem="CV4-BU-5V7" firstAttribute="top" secondItem="ebX-zg-71a" secondAttribute="bottom" constant="8" symbolic="YES" id="mh3-IR-Pwo"/>
-                            <constraint firstItem="CV4-BU-5V7" firstAttribute="leading" secondItem="ebX-zg-71a" secondAttribute="leading" id="rnO-ve-BrA"/>
-                            <constraint firstItem="ebX-zg-71a" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="z1W-xe-Ob5"/>
+                            <constraint firstItem="7tl-3n-OX3" firstAttribute="top" secondItem="Klk-1Q-GzU" secondAttribute="bottom" constant="34" id="12t-IL-nh2"/>
+                            <constraint firstItem="CV4-BU-5V7" firstAttribute="top" secondItem="ebX-zg-71a" secondAttribute="bottom" constant="8" symbolic="YES" id="2pS-Bm-W2c"/>
+                            <constraint firstItem="ebX-zg-71a" firstAttribute="leading" secondItem="CV4-BU-5V7" secondAttribute="leading" id="6O4-MA-dHf"/>
+                            <constraint firstItem="Mxh-iq-3Xs" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="70" id="No3-db-yA8"/>
+                            <constraint firstItem="ebX-zg-71a" firstAttribute="centerX" secondItem="CV4-BU-5V7" secondAttribute="centerX" id="SNM-Cv-s16"/>
+                            <constraint firstItem="Mxh-iq-3Xs" firstAttribute="centerX" secondItem="7tl-3n-OX3" secondAttribute="centerX" id="UVZ-Rm-MAX"/>
+                            <constraint firstItem="ebX-zg-71a" firstAttribute="top" secondItem="7tl-3n-OX3" secondAttribute="bottom" constant="10" id="Yg4-be-WVT"/>
+                            <constraint firstItem="Mxh-iq-3Xs" firstAttribute="top" secondItem="CV4-BU-5V7" secondAttribute="bottom" constant="8" symbolic="YES" id="YrB-7V-HHV"/>
+                            <constraint firstItem="Mxh-iq-3Xs" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="e7k-iS-Ox1"/>
+                            <constraint firstItem="ebX-zg-71a" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="34" id="fjH-Pp-PSN"/>
+                            <constraint firstAttribute="trailing" secondItem="ebX-zg-71a" secondAttribute="trailing" constant="35" id="iO5-nZ-6EP"/>
+                            <constraint firstItem="7tl-3n-OX3" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="10" id="y5A-Ug-fyZ"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="EWz-Fc-G8H"/>

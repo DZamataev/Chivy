@@ -189,13 +189,13 @@
 		9240583A1822886300C4EB84 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				9292F840182912DC007445BF /* Chivy.h */,
 				927DD9B21823E8FA003A078F /* DZScrollingInspector.h */,
 				927DD9B31823E8FA003A078F /* DZScrollingInspector.m */,
 				927DD9AF1823DF5A003A078F /* CHScrollingInspector.h */,
 				927DD9B01823DF5A003A078F /* CHScrollingInspector.m */,
 				9240583B182289EB00C4EB84 /* CHWebBrowserViewController.h */,
 				9240583C182289EB00C4EB84 /* CHWebBrowserViewController.m */,
-				9292F840182912DC007445BF /* Chivy.h */,
 			);
 			path = Source;
 			sourceTree = "<group>";

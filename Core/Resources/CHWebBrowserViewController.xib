@@ -8,12 +8,12 @@
             <connections>
                 <outlet property="actionButton" destination="szP-jm-iiN" id="Gbx-sL-Qjb"/>
                 <outlet property="bottomToolbar" destination="dkI-8x-Vos" id="aQ5-bS-G1Z"/>
-                <outlet property="dismissButton" destination="hKR-WT-p41" id="baD-A3-JjO"/>
+                <outlet property="dismissBarButtonItem" destination="dh7-2S-Lo1" id="o8g-WG-tHO"/>
                 <outlet property="localNavigationBar" destination="Ig9-bL-VHb" id="yUl-ht-zNP"/>
                 <outlet property="localTitleView" destination="AZq-qW-Szc" id="50A-lG-skR"/>
                 <outlet property="navigateBackButton" destination="srx-io-Le6" id="qCk-af-Kwi"/>
                 <outlet property="navigateForwardButton" destination="shM-CK-peR" id="oKU-9A-iLf"/>
-                <outlet property="readerButton" destination="U6f-z1-9aA" id="Cb3-Jc-FEP"/>
+                <outlet property="readBarButtonItem" destination="ir7-VW-CWB" id="x5f-xE-KhK"/>
                 <outlet property="refreshButton" destination="YM5-0e-Eu1" id="vQH-Ez-Keq"/>
                 <outlet property="titleLabel" destination="45c-ZR-gcT" id="A5S-O6-aww"/>
                 <outlet property="view" destination="1" id="3"/>
@@ -72,17 +72,25 @@
                     <items>
                         <navigationItem id="Y3T-eV-Opk">
                             <nil key="title"/>
-                            <barButtonItem key="leftBarButtonItem" image="exit.png" id="hKR-WT-p41">
-                                <connections>
-                                    <action selector="dismissModally:" destination="-1" id="9iJ-Qw-oCo"/>
-                                </connections>
+                            <barButtonItem key="leftBarButtonItem" id="dh7-2S-Lo1">
+                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="I94-II-XWm">
+                                    <rect key="frame" x="16" y="11" width="21" height="21"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                    <state key="normal" image="exit.png">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="dismissModally:" destination="-1" eventType="touchUpInside" id="Xp3-pW-Ra3"/>
+                                    </connections>
+                                </button>
                             </barButtonItem>
                             <view key="titleView" contentMode="scaleToFill" id="AZq-qW-Szc">
-                                <rect key="frame" x="70" y="6" width="180" height="33"/>
+                                <rect key="frame" x="60" y="6" width="200" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="45c-ZR-gcT" customClass="CBAutoScrollLabel">
-                                        <rect key="frame" x="0.0" y="0.0" width="180" height="33"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="200" height="33"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </view>
@@ -95,10 +103,18 @@
                                     <constraint firstItem="45c-ZR-gcT" firstAttribute="top" secondItem="AZq-qW-Szc" secondAttribute="top" id="xpW-TY-Av0"/>
                                 </constraints>
                             </view>
-                            <barButtonItem key="rightBarButtonItem" image="read.png" id="U6f-z1-9aA">
-                                <connections>
-                                    <action selector="readingModeToggle:" destination="-1" id="Eb3-Hm-xRy"/>
-                                </connections>
+                            <barButtonItem key="rightBarButtonItem" id="ir7-VW-CWB">
+                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="CJe-ID-94r">
+                                    <rect key="frame" x="283" y="11" width="21" height="21"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                    <state key="normal" image="read.png">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="readingModeToggle:" destination="-1" eventType="touchUpInside" id="3DK-4V-mpO"/>
+                                    </connections>
+                                </button>
                             </barButtonItem>
                         </navigationItem>
                     </items>
