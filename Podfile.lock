@@ -1,13 +1,18 @@
 PODS:
   - AutoScrollLabel (0.2.1)
-  - iOS-blur (0.0.2)
+  - SuProgress (0.8.1)
 
 DEPENDENCIES:
   - AutoScrollLabel
-  - iOS-blur (= 0.0.2)
+  - SuProgress (from `https://github.com/DZamataev/SuProgress.git`, branch `master`)
+
+EXTERNAL SOURCES:
+  SuProgress:
+    :branch: master
+    :git: https://github.com/DZamataev/SuProgress.git
 
 SPEC CHECKSUMS:
   AutoScrollLabel: 4978b57536512a3ebf4705b1b5618354bcf4ac84
-  iOS-blur: 1f211234742ce078bf2ab78f5237a63b18b5ed0f
+  SuProgress: 0c0052ba21c5cb9917064ed323838e8bf2fb90b5
 
 COCOAPODS: 0.27.1

@@ -66,8 +66,10 @@ enum actionSheetButtonIndex {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    
     self.wasOpenedModally = [self isModal];
     if ([self isModal]) {
+        [self SuProgressForWebView:_webView inView:self.localNavigationBar];
     }
     else {
 
@@ -75,6 +77,7 @@ enum actionSheetButtonIndex {
         self.navigationItem.titleView = self.localTitleView;
         [self.localNavigationBar removeFromSuperview];
         //self.localNavigationBar = nil;
+        [self SuProgressForWebView:_webView];
     }
     
     [self updateInsets];
@@ -106,6 +109,16 @@ enum actionSheetButtonIndex {
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+    [_webView stopLoading];
+    UIAlertView *memoryWarningAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Memory warning",
+                                                                                           @"Alert view title. Memory warning alert in web browser.")
+                                                                 message:NSLocalizedString(@"The page will stop loading.",
+                                                                                           @"Alert view message. Memory warning alert in web browser.")
+                                                                delegate:nil
+                                                       cancelButtonTitle:NSLocalizedString(@"Cancel",
+                                                                                           @"Alert view cancel button title. Memory warning alert in web browser.")
+                                                       otherButtonTitles:nil];
+    [memoryWarningAlert show];
 }
 
 #pragma mark - Scrolling inspectors related methods
