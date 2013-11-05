@@ -1,5 +1,5 @@
 //
-//  Chivy.h
+//  ChivyHeaders.h
 //  Chivy
 //
 //  Created by Denis Zamataev on 11/5/13.

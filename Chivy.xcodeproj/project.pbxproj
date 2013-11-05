@@ -72,7 +72,7 @@
 		9292F8301828EDC9007445BF /* exit@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "exit@2x.png"; sourceTree = "<group>"; };
 		9292F8311828EDC9007445BF /* read.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = read.png; sourceTree = "<group>"; };
 		9292F8321828EDC9007445BF /* read@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "read@2x.png"; sourceTree = "<group>"; };
-		9292F83718290628007445BF /* Chivy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Chivy.h; sourceTree = "<group>"; };
+		9292F83718290628007445BF /* ChivyHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChivyHeaders.h; sourceTree = "<group>"; };
 		9FE6A1C4A8834B11A032B93B /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCD4B13B13F4458CB4785144 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -189,7 +189,7 @@
 		9240583A1822886300C4EB84 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				9292F83718290628007445BF /* Chivy.h */,
+				9292F83718290628007445BF /* ChivyHeaders.h */,
 				927DD9B21823E8FA003A078F /* DZScrollingInspector.h */,
 				927DD9B31823E8FA003A078F /* DZScrollingInspector.m */,
 				927DD9AF1823DF5A003A078F /* CHScrollingInspector.h */,
