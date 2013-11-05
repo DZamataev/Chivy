@@ -9,9 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <CBAutoScrollLabel.h>
 #import <SuProgress.h>
-
-@class DZScrollingInspector;
-@class CHScrollingInspector;
+#import "CHScrollingInspector.h"
 
 @interface CHWebBrowserViewController : UIViewController <UIWebViewDelegate, UIActionSheetDelegate, UIBarPositioningDelegate>
 {

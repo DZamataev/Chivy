@@ -6,6 +6,5 @@
 //  Copyright (c) 2013 Denis Zamataev. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <CHWebBrowserController.h>
-#import <CHScrollingInspector.h>
+#import "CHWebBrowserController.h"
+#import "CHScrollingInspector.h"
