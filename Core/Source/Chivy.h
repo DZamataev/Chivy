@@ -7,11 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "CHScrollingInspector.h"
+#import "CHWebBrowserViewController.h"
 
-#ifndef _CHIVY_
-    #define _CHIVY_
+@interface Chivy : NSObject
 
-    #import "CHWebBrowserController.h"
-    #import "CHScrollingInspector.h"
-
-#endif /* _CHIVY_ */
+@end

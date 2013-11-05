@@ -34,6 +34,7 @@
 		9292F8341828EDC9007445BF /* exit@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9292F8301828EDC9007445BF /* exit@2x.png */; };
 		9292F8351828EDC9007445BF /* read.png in Resources */ = {isa = PBXBuildFile; fileRef = 9292F8311828EDC9007445BF /* read.png */; };
 		9292F8361828EDC9007445BF /* read@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9292F8321828EDC9007445BF /* read@2x.png */; };
+		9292F842182912DC007445BF /* Chivy.m in Sources */ = {isa = PBXBuildFile; fileRef = 9292F841182912DC007445BF /* Chivy.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -72,7 +73,8 @@
 		9292F8301828EDC9007445BF /* exit@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "exit@2x.png"; sourceTree = "<group>"; };
 		9292F8311828EDC9007445BF /* read.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = read.png; sourceTree = "<group>"; };
 		9292F8321828EDC9007445BF /* read@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "read@2x.png"; sourceTree = "<group>"; };
-		9292F83718290628007445BF /* Chivy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Chivy.h; sourceTree = "<group>"; };
+		9292F840182912DC007445BF /* Chivy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Chivy.h; sourceTree = "<group>"; };
+		9292F841182912DC007445BF /* Chivy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Chivy.m; sourceTree = "<group>"; };
 		9FE6A1C4A8834B11A032B93B /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCD4B13B13F4458CB4785144 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -189,13 +191,14 @@
 		9240583A1822886300C4EB84 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				9292F83718290628007445BF /* Chivy.h */,
 				927DD9B21823E8FA003A078F /* DZScrollingInspector.h */,
 				927DD9B31823E8FA003A078F /* DZScrollingInspector.m */,
 				927DD9AF1823DF5A003A078F /* CHScrollingInspector.h */,
 				927DD9B01823DF5A003A078F /* CHScrollingInspector.m */,
 				9240583B182289EB00C4EB84 /* CHWebBrowserViewController.h */,
 				9240583C182289EB00C4EB84 /* CHWebBrowserViewController.m */,
+				9292F840182912DC007445BF /* Chivy.h */,
+				9292F841182912DC007445BF /* Chivy.m */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -324,6 +327,7 @@
 				9240582C1822822200C4EB84 /* DCAppDelegate.m in Sources */,
 				9240582E1822822200C4EB84 /* main.m in Sources */,
 				9240582D1822822200C4EB84 /* DCViewController.m in Sources */,
+				9292F842182912DC007445BF /* Chivy.m in Sources */,
 				9240583E182289EB00C4EB84 /* CHWebBrowserViewController.m in Sources */,
 				927DD9B41823E8FA003A078F /* DZScrollingInspector.m in Sources */,
 			);
