@@ -301,8 +301,11 @@ enum actionSheetButtonIndex {
 }
 
 - (IBAction)readingModeToggle:(id)sender {
-    NSString *s = [_webView stringByEvaluatingJavaScriptFromString:@"javascript:(function()%7B_readableOptions%3D%7B%27text_font%27:%27quote(Palatino%20Linotype),%20Palatino,%20quote(Book%20Antigua),%20Georgia,%20serif%27,%27text_font_monospace%27:%27quote(Courier%20New),%20Courier,%20monospace%27,%27text_font_header%27:%27quote(Times%20New%20Roman),%20Times,%20serif%27,%27text_size%27:%2718px%27,%27text_line_height%27:%271.5%27,%27box_width%27:%2730em%27,%27color_text%27:%27%23282828%27,%27color_background%27:%27%23F5F5F5%27,%27color_links%27:%27%230000FF%27,%27text_align%27:%27normal%27,%27base%27:%27blueprint%27,%27custom_css%27:%27%27%7D%3Bif(document.getElementsByTagName(%27body%27).length%3E0)%3Belse%7Breturn%3B%7Dif(window.%24readable)%7Bif(window.%24readable.bookmarkletTimer)%7Breturn%3B%7D%7Delse%7Bwindow.%24readable%3D%7B%7D%3B%7Dwindow.%24readable.bookmarkletTimer%3Dtrue%3Bwindow.%24readable.options%3D_readableOptions%3Bif(window.%24readable.bookmarkletClicked)%7Bwindow.%24readable.bookmarkletClicked()%3Breturn%3B%7D_readableScript%3Ddocument.createElement(%27script%27)%3B_readableScript.setAttribute(%27src%27,%27http://readable-static.tastefulwords.com/target.js%3Frand%3D%27%2BencodeURIComponent(Math.random()))%3Bdocument.getElementsByTagName(%27body%27)%5B0%5D.appendChild(_readableScript)%3B%7D)()"];
-    NSLog(@"readable mode string: %@", s);
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"MakeReadableJS" ofType:@"txt"];
+    NSString *content = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
+    
+    NSString *s = [_webView stringByEvaluatingJavaScriptFromString:content];
+    NSLog(@"readable script %@\n output: %@", content, s);
 }
 
 #pragma mark - UIWebViewDelegate
