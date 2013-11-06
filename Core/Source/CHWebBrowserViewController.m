@@ -7,8 +7,6 @@
 //
 
 #import "CHWebBrowserViewController.h"
-#import "CHScrollingInspector.h"
-#import "DZScrollingInspector.h"
 
 enum actionSheetButtonIndex {
 	kSafariButtonIndex,
@@ -19,8 +17,20 @@ enum actionSheetButtonIndex {
 #define CHWebBrowserDefaultTintColor [UIApplication sharedApplication].keyWindow.tintColor
 #endif
 
+#ifndef CHWebBrowserNavBarHeight
+#define CHWebBrowserNavBarHeight 44.0f
+#endif
+
+#ifndef CHWebBrowserStatusBarHeight
+#define CHWebBrowserStatusBarHeight 22.0f
+#endif
+
 #ifndef SuProgressBarTag
 #define SuProgressBarTag 51381
+#endif
+
+#ifndef CHWebBrowserAnimationDurationPerOnePixel
+#define CHWebBrowserAnimationDurationPerOnePixel 0.0068181818f
 #endif
 
 @interface CHWebBrowserViewController ()
@@ -74,9 +84,10 @@ enum actionSheetButtonIndex {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    _webView.scrollView.delegate = self;
     
-    self.wasOpenedModally = [self isModal];
-    if ([self isModal]) {
+    _wasOpenedModally = [self isModal];
+    if (_wasOpenedModally) {
         [self SuProgressForWebView:_webView inView:self.localNavigationBar];
         
     }
@@ -90,8 +101,6 @@ enum actionSheetButtonIndex {
     }
     
     [self resetInsets];
-    
-    [self performSelector:@selector(createScrollingInspectors) withObject:Nil afterDelay:0.1f];
     
     [self setCustomButtonsTintColor:CHWebBrowserDefaultTintColor];
     
@@ -142,66 +151,6 @@ enum actionSheetButtonIndex {
     }
     [super viewWillDisappear:animated];
 }
-#pragma mark - Scrolling inspectors related methods
-
-- (void)createScrollingInspectors
-{
-    UINavigationBar *topBar = self.wasOpenedModally ? self.localNavigationBar : self.navigationController.navigationBar;
-    self.navBarYPositionInspector = [[CHScrollingInspector alloc] initWithObservedScrollView:_webView.scrollView
-                                                                   andOffsetKeyPath:@"y"
-                                                                    andInsetKeypath:@"top"
-                                                                          andTarget:topBar
-                                                                              andSetterBlock:^void(NSObject *target, float newValue) {
-                                                                                  NSLog(@"setting frame %f", newValue);
-                                                                        CGRect frame = ((UINavigationBar*)target).frame;
-                                                                        ((UINavigationBar*)target).frame = CGRectMake(frame.origin.x, newValue, frame.size.width, frame.size.height);
-                                                                    } andGetterBlock:^float(NSObject *target) {
-                                                                        return ((UINavigationBar*)target).frame.origin.y;
-                                                                    } andLimits:DZScrollingInspectorTwoOrientationsLimitsMake(topBar.frame.origin.y,
-                                                                                                                              topBar.frame.origin.y-topBar.frame.size.height,
-                                                                                                                              topBar.frame.origin.y,
-                                                                                                                              topBar.frame.origin.y-topBar.frame.size.height)];
-    
-    self.navBarContentAlphaInspector = [[CHScrollingInspector alloc] initWithObservedScrollView:_webView.scrollView
-                                                                            andOffsetKeyPath:@"y"
-                                                                             andInsetKeypath:@"top"
-                                                                                   andTarget:self.localTitleView
-                                                                              andSetterBlock:^void(NSObject *target, float newValue) {
-                                                                                  NSLog(@"setting %f", newValue);
-                                                                                  float newAlpha = newValue / topBar.frame.size.height;
-                                                                                  ((UIView*)target).alpha = newAlpha;
-                                                                                  self.dismissBarButtonItem.customView.alpha = newAlpha;
-                                                                                  self.readBarButtonItem.customView.alpha = newAlpha;
-                                                                                  UIBarButtonItem *backButtonItem = self.navigationController.navigationBar.topItem.backBarButtonItem;
-                                                                                  if (backButtonItem) {
-                                                                                      backButtonItem.tintColor = [backButtonItem.tintColor colorWithAlphaComponent:newAlpha];
-                                                                                  }
-                                                                                  _webView.scrollView.scrollIndicatorInsets = UIEdgeInsetsMake(22+newValue, 0, newValue, 0);
-                                                                                  [self.navBarContentAlphaInspector suspend];
-                                                                                  [self.navBarYPositionInspector suspend];
-                                                                                  [self.toolbarYPositionInspector suspend];
-                                                                                  _webView.scrollView.contentInset = UIEdgeInsetsMake(22+newValue, 0, newValue, 0);
-                                                                                  [self.navBarContentAlphaInspector resume];
-                                                                                  [self.navBarYPositionInspector resume];
-                                                                                  [self.toolbarYPositionInspector resume];
-                                                                              } andGetterBlock:^float(NSObject *target) {
-                                                                                  return ((UIView*)target).alpha * topBar.frame.size.height;
-                                                                              } andLimits:DZScrollingInspectorTwoOrientationsLimitsMake(topBar.frame.size.height,
-                                                                                                                                        0,
-                                                                                                                                        topBar.frame.size.height,
-                                                                                                                                        0)];
-    
-    self.toolbarYPositionInspector = [[CHScrollingInspector alloc] initWithObservedScrollView:_webView.scrollView
-                                                                            andOffsetKeyPath:@"y"
-                                                                             andInsetKeypath:@"top"
-                                                                                   andTarget:self.bottomToolbar
-                                                                              andSetterBlock:^void(NSObject *target, float newValue) {
-                                                                                  CGRect frame = ((UIToolbar*)target).frame;
-                                                                                  ((UIToolbar*)target).frame = CGRectMake(frame.origin.x, newValue, frame.size.width, frame.size.height);
-                                                                              } andGetterBlock:^float(NSObject *target) {
-                                                                                  return ((UIToolbar*)target).frame.origin.y;
-                                                                              } andLimits:DZScrollingInspectorTwoOrientationsLimitsMake(_bottomToolbar.frame.origin.y, _bottomToolbar.frame.origin.y+_bottomToolbar.frame.size.height, _bottomToolbar.frame.origin.y, _bottomToolbar.frame.origin.y+_bottomToolbar.frame.size.height)];
-}
 
 #pragma mark - View state related methods
 
@@ -212,8 +161,17 @@ enum actionSheetButtonIndex {
 
 - (void)resetInsets
 {
-    _webView.scrollView.scrollIndicatorInsets = UIEdgeInsetsMake(66, 0, 44, 0);
-    _webView.scrollView.contentInset = UIEdgeInsetsMake(66, 0, 44, 0);
+    
+    UINavigationBar *topBar = self.wasOpenedModally ? self.localNavigationBar : self.navigationController.navigationBar;
+    NSLog(@"TOP BAR SIZE %f ORIGIN Y %f", topBar.frame.size.height, topBar.frame.origin.y);
+    if (_wasOpenedModally) {
+        _webView.scrollView.scrollIndicatorInsets = UIEdgeInsetsMake(CHWebBrowserNavBarHeight + CHWebBrowserStatusBarHeight, 0, CHWebBrowserNavBarHeight, 0);
+        _webView.scrollView.contentInset = UIEdgeInsetsMake(CHWebBrowserNavBarHeight + CHWebBrowserStatusBarHeight, 0, CHWebBrowserNavBarHeight, 0);
+    }
+    else {
+        _webView.scrollView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, CHWebBrowserNavBarHeight, 0);
+        _webView.scrollView.contentInset = UIEdgeInsetsMake(0, 0, CHWebBrowserNavBarHeight, 0);
+    }
 }
 
 - (void)setTitle:(NSString *)title
@@ -224,6 +182,7 @@ enum actionSheetButtonIndex {
 
 - (void)setCustomButtonsTintColor:(UIColor*)tintColor
 {
+    /* we won't change the following, cuz it can be achieved using .keyWindow.tintColor, no need to repeat */
 //    self.navigateBackButton.tintColor = tintColor;
 //    self.navigateForwardButton.tintColor = tintColor;
 //    self.actionButton.tintColor = tintColor;
@@ -342,7 +301,8 @@ enum actionSheetButtonIndex {
 }
 
 - (IBAction)readingModeToggle:(id)sender {
-    
+    NSString *s = [_webView stringByEvaluatingJavaScriptFromString:@"javascript:(function()%7B_readableOptions%3D%7B%27text_font%27:%27quote(Palatino%20Linotype),%20Palatino,%20quote(Book%20Antigua),%20Georgia,%20serif%27,%27text_font_monospace%27:%27quote(Courier%20New),%20Courier,%20monospace%27,%27text_font_header%27:%27quote(Times%20New%20Roman),%20Times,%20serif%27,%27text_size%27:%2718px%27,%27text_line_height%27:%271.5%27,%27box_width%27:%2730em%27,%27color_text%27:%27%23282828%27,%27color_background%27:%27%23F5F5F5%27,%27color_links%27:%27%230000FF%27,%27text_align%27:%27normal%27,%27base%27:%27blueprint%27,%27custom_css%27:%27%27%7D%3Bif(document.getElementsByTagName(%27body%27).length%3E0)%3Belse%7Breturn%3B%7Dif(window.%24readable)%7Bif(window.%24readable.bookmarkletTimer)%7Breturn%3B%7D%7Delse%7Bwindow.%24readable%3D%7B%7D%3B%7Dwindow.%24readable.bookmarkletTimer%3Dtrue%3Bwindow.%24readable.options%3D_readableOptions%3Bif(window.%24readable.bookmarkletClicked)%7Bwindow.%24readable.bookmarkletClicked()%3Breturn%3B%7D_readableScript%3Ddocument.createElement(%27script%27)%3B_readableScript.setAttribute(%27src%27,%27http://readable-static.tastefulwords.com/target.js%3Frand%3D%27%2BencodeURIComponent(Math.random()))%3Bdocument.getElementsByTagName(%27body%27)%5B0%5D.appendChild(_readableScript)%3B%7D)()"];
+    NSLog(@"readable mode string: %@", s);
 }
 
 #pragma mark - UIWebViewDelegate
@@ -367,14 +327,12 @@ enum actionSheetButtonIndex {
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
     [self toggleBackForwardButtons];
-    [self resetInsets];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     NSString *pageTitle = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
     _titleLabel.text = pageTitle;
     [self toggleBackForwardButtons];
-    [self resetInsets];
     self.webView.hidden = NO;
 }
 
@@ -395,6 +353,153 @@ enum actionSheetButtonIndex {
 	[alert show];
 }
 
+#pragma mark - ScrollView delegate
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    _isScrollViewScrolling = YES;
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if(!decelerate) {
+        _isScrollViewScrolling = NO;
+        [self animateViewsAccordingToScrollingEndedInScrollView:scrollView];
+    }
+}
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    _isScrollViewScrolling = NO;
+    [self animateViewsAccordingToScrollingEndedInScrollView:scrollView];
+}
+
+- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView
+{
+    _isScrollViewScrolling = NO;
+}
+
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
+{
+    _isScrollViewScrolling = NO;
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    NSLog(@"%s \n contentOffset.y %f \n delta %f \n contentInset %@ \n scrollIndicatorsInset %@",__PRETTY_FUNCTION__,scrollView.contentOffset.y, _lastContentOffset.y - scrollView.contentOffset.y, NSStringFromUIEdgeInsets(scrollView.contentInset), NSStringFromUIEdgeInsets(scrollView.scrollIndicatorInsets));
+    
+    CGFloat delta =  scrollView.contentOffset.y - _lastContentOffset.y;
+    BOOL scrollingDown = delta > 0;
+    BOOL scrollingBeyondTopBound = (scrollView.contentOffset.y < - scrollView.contentInset.top);
+    BOOL scrollingBeyondBottomBound = (scrollView.contentOffset.y + scrollView.frame.size.height - scrollView.contentInset.bottom) > scrollView.contentSize.height;
+    BOOL scrollingForbidden = (scrollingBeyondTopBound && scrollingDown) || scrollingBeyondBottomBound;
+    NSLog(@"top %i bot %i", scrollingBeyondTopBound, scrollingBeyondBottomBound);
+    if (!scrollingForbidden) {
+        
+        if (scrollView.isDragging) {
+            [self moveViewsAccordingToDraggingInScrollView:scrollView];
+        }
+
+    }
+    _lastContentOffset = scrollView.contentOffset;
+}
+
+- (void)moveViewsAccordingToDraggingInScrollView:(UIScrollView*)scrollView
+{
+    CGFloat delta =  scrollView.contentOffset.y - _lastContentOffset.y;
+    
+    UINavigationBar *topBar = self.wasOpenedModally ? self.localNavigationBar : self.navigationController.navigationBar;
+    
+    topBar.frame = CGRectMake(topBar.frame.origin.x,
+                              [CHWebBrowserViewController clampFloat:topBar.frame.origin.y - delta withMinimum:-CHWebBrowserStatusBarHeight andMaximum:CHWebBrowserStatusBarHeight],
+                              topBar.frame.size.width,
+                              topBar.frame.size.height);
+   _bottomToolbar.frame = CGRectMake(_bottomToolbar.frame.origin.x,
+                                     [CHWebBrowserViewController clampFloat:_bottomToolbar.frame.origin.y + delta withMinimum:_webView.frame.size.height - CHWebBrowserNavBarHeight andMaximum:_webView.frame.size.height],
+                                     _bottomToolbar.frame.size.width,
+                                     _bottomToolbar.frame.size.height);
+    
+    float topInset = [CHWebBrowserViewController clampFloat:scrollView.contentInset.top - delta
+                                                withMinimum:CHWebBrowserStatusBarHeight
+                                                 andMaximum:CHWebBrowserNavBarHeight + CHWebBrowserStatusBarHeight];
+    float bottomInset = [CHWebBrowserViewController clampFloat:scrollView.contentInset.bottom - delta
+                                                   withMinimum:0
+                                                    andMaximum:CHWebBrowserNavBarHeight];
+    scrollView.contentInset = UIEdgeInsetsMake(topInset, 0, bottomInset, 0);
+    scrollView.scrollIndicatorInsets = UIEdgeInsetsMake(topInset, 0, bottomInset, 0);
+    
+    float alpha = [CHWebBrowserViewController clampFloat:CHWebBrowserNavBarHeight * _titleLabel.alpha - delta
+                                             withMinimum:0
+                                              andMaximum:CHWebBrowserNavBarHeight] / CHWebBrowserNavBarHeight;
+    _titleLabel.alpha = alpha;
+    _dismissBarButtonItem.customView.alpha = alpha;
+    _readBarButtonItem.customView.alpha = alpha;
+    
+}
+
+- (void)animateViewsAccordingToScrollingEndedInScrollView:(UIScrollView*)scrollView
+{
+    UINavigationBar *topBar = self.wasOpenedModally ? self.localNavigationBar : self.navigationController.navigationBar;
+
+    float topBarTargetValue, topBarDistanceLeft;
+    [CHWebBrowserViewController someValue:topBar.frame.origin.y
+                             betweenValue:-CHWebBrowserStatusBarHeight
+                                 andValue:CHWebBrowserStatusBarHeight
+                         traveledDistance:&topBarDistanceLeft
+                          andIsHalfPassed:nil
+                           andTargetLimit:&topBarTargetValue];
+    
+    float bottomToolbarTargetValue;
+    [CHWebBrowserViewController someValue:_bottomToolbar.frame.origin.y
+                             betweenValue:_webView.frame.size.height - CHWebBrowserNavBarHeight
+                                 andValue:_webView.frame.size.height
+                         traveledDistance:nil
+                          andIsHalfPassed:nil
+                           andTargetLimit:&bottomToolbarTargetValue];
+    
+    float topInsetTargetValue;
+    [CHWebBrowserViewController someValue:scrollView.contentInset.top
+                             betweenValue:CHWebBrowserStatusBarHeight
+                                 andValue:CHWebBrowserNavBarHeight + CHWebBrowserStatusBarHeight
+                         traveledDistance:nil
+                          andIsHalfPassed:nil
+                           andTargetLimit:&topInsetTargetValue];
+    
+    float bottomInsetTargetValue;
+    [CHWebBrowserViewController someValue:scrollView.contentInset.bottom
+                             betweenValue:0
+                                 andValue:CHWebBrowserNavBarHeight
+                         traveledDistance:nil
+                          andIsHalfPassed:nil
+                           andTargetLimit:&bottomInsetTargetValue];
+    
+    UIEdgeInsets insetTargetValue = UIEdgeInsetsMake(topInsetTargetValue,0,bottomInsetTargetValue,0);
+    
+    float alphaTargetValue;
+    [CHWebBrowserViewController someValue:_titleLabel.alpha
+                             betweenValue:0
+                                 andValue:1.0f
+                         traveledDistance:nil
+                          andIsHalfPassed:nil
+                           andTargetLimit:&alphaTargetValue];
+    
+    [UIView animateWithDuration:topBarDistanceLeft * CHWebBrowserAnimationDurationPerOnePixel
+                          delay:0.0f
+                        options:UIViewAnimationOptionBeginFromCurrentState
+                     animations:^{
+                         topBar.frame = CGRectMake(topBar.frame.origin.x, topBarTargetValue, topBar.frame.size.width, topBar.frame.size.height);
+                         _bottomToolbar.frame = CGRectMake(_bottomToolbar.frame.origin.x, bottomToolbarTargetValue, _bottomToolbar.frame.size.width, _bottomToolbar.frame.size.height);
+                         scrollView.scrollIndicatorInsets = insetTargetValue;
+                         scrollView.contentInset = insetTargetValue;
+                         _titleLabel.alpha = alphaTargetValue;
+                         _dismissBarButtonItem.customView.alpha = alphaTargetValue;
+                         _readBarButtonItem.customView.alpha = alphaTargetValue;
+                         
+    }
+                     completion:^(BOOL finished) {
+        
+    }];
+}
+
 #pragma mark - UIBarPositioningDelegate
 
 - (UIBarPosition)positionForBar:(id <UIBarPositioning>)bar
@@ -403,6 +508,27 @@ enum actionSheetButtonIndex {
 }
 
 #pragma mark - Helpers
+/*
+clamps the value to lie betweem minimum and maximum;
+if minimum is smaller than maximum - they will be swapped;
+*/
++(float)clampFloat:(float)value withMinimum:(float)min andMaximum:(float)max {
+    CGFloat realMin = min < max ? min : max;
+    CGFloat realMax = max >= min ? max : min;
+    return MAX(realMin, MIN(realMax, value));
+}
+
++(void)someValue:(float)value betweenValue:(float)f1 andValue:(float)f2 traveledDistance:(float *)distance andIsHalfPassed:(BOOL *)halfPassed andTargetLimit:(float *)targetLimit
+{
+    CGFloat lowerLimit = MIN(f1, f2);
+    CGFloat higherLimit = MAX(f1, f2);
+    float distance_ = fabsf(higherLimit - lowerLimit);
+    BOOL halfPassed_ = value > (lowerLimit + distance_/2);
+    float targetLimit_ = halfPassed_ ? higherLimit : lowerLimit;
+    if (distance != nil) *distance = distance_;
+    if (halfPassed != nil) *halfPassed = halfPassed_;
+    if (targetLimit != nil) *targetLimit = targetLimit_;
+}
 
 // baseImage is the grey scale image. color is the desired tint color
 + (UIImage *)tintImage:(UIImage *)baseImage withColor:(UIColor *)color {

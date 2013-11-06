@@ -7,5 +7,4 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "CHScrollingInspector.h"
 #import "CHWebBrowserViewController.h"

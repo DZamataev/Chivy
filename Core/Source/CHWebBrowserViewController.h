@@ -9,11 +9,12 @@
 #import <UIKit/UIKit.h>
 #import <CBAutoScrollLabel.h>
 #import <SuProgress.h>
-#import "CHScrollingInspector.h"
 
-@interface CHWebBrowserViewController : UIViewController <UIWebViewDelegate, UIActionSheetDelegate, UIBarPositioningDelegate>
+@interface CHWebBrowserViewController : UIViewController <UIWebViewDelegate, UIActionSheetDelegate, UIBarPositioningDelegate, UIScrollViewDelegate>
 {
     NSString *_requestUrl;
+    CGPoint _lastContentOffset;
+    BOOL _isScrollViewScrolling;
 }
 @property (nonatomic, strong) IBOutlet UIWebView *webView;
 
@@ -23,14 +24,11 @@
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *actionButton;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *refreshButton;
 
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint *navBarTopOffsetConstraint;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint *webViewVerticalSpaceConstraint;
 
 @property (nonatomic, strong) IBOutlet UINavigationBar *localNavigationBar;
 @property (nonatomic, strong) IBOutlet UIView *localTitleView;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *dismissBarButtonItem;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *readBarButtonItem;
-
 
 @property (nonatomic, strong) IBOutlet CBAutoScrollLabel *titleLabel;
 @property (nonatomic, strong) IBOutlet CBAutoScrollLabel *urlLabel;
@@ -39,9 +37,6 @@
 
 @property (nonatomic, assign) BOOL wasOpenedModally;
 
-@property (nonatomic, strong) CHScrollingInspector *navBarYPositionInspector;
-@property (nonatomic, strong) CHScrollingInspector *navBarContentAlphaInspector;
-@property (nonatomic, strong) CHScrollingInspector *toolbarYPositionInspector;
 
 
 + (id)initWithDefaultNib;
