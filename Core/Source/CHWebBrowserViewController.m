@@ -33,6 +33,18 @@ enum actionSheetButtonIndex {
 #define CHWebBrowserAnimationDurationPerOnePixel 0.0068181818f
 #endif
 
+#ifndef CHWebBrowserTitleScrollingSpeed
+#define CHWebBrowserTitleScrollingSpeed 20
+#endif
+
+#ifndef CHWebBrowserTitleTextAlignment
+#define CHWebBrowserTitleTextAlignment NSTextAlignmentCenter
+#endif
+
+#define CHWebBrowserNavModeNavBarYPositionShownStateCorrection (_wasOpenedModally ? 0 : -2)
+
+
+
 @interface CHWebBrowserViewController ()
 
 @end
@@ -100,6 +112,9 @@ enum actionSheetButtonIndex {
         [self SuProgressForWebView:_webView];
     }
     
+    self.titleLabel.scrollSpeed = CHWebBrowserTitleScrollingSpeed;
+    self.titleLabel.textAlignment = CHWebBrowserTitleTextAlignment;
+    
     [self resetInsets];
     
     [self setCustomButtonsTintColor:CHWebBrowserDefaultTintColor];
@@ -115,6 +130,10 @@ enum actionSheetButtonIndex {
     return self.presentingViewController.presentedViewController == self
     || self.navigationController.presentingViewController.presentedViewController == self.navigationController
     || [self.tabBarController.presentingViewController isKindOfClass:[UITabBarController class]];
+}
+
+- (UINavigationBar*)topBar {
+    return self.wasOpenedModally ? self.localNavigationBar : self.navigationController.navigationBar;
 }
 
 - (void)setRequestUrl:(NSString *)urlToLoad
@@ -148,6 +167,8 @@ enum actionSheetButtonIndex {
         // back button was pressed.  We know this is true because self is no longer
         // in the navigation stack.
         [[self SuProgressBar] setHidden:YES];
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        [self resetAffectedViewsAnimated:YES];
     }
     [super viewWillDisappear:animated];
 }
@@ -161,9 +182,8 @@ enum actionSheetButtonIndex {
 
 - (void)resetInsets
 {
-    
-    UINavigationBar *topBar = self.wasOpenedModally ? self.localNavigationBar : self.navigationController.navigationBar;
-    NSLog(@"TOP BAR SIZE %f ORIGIN Y %f", topBar.frame.size.height, topBar.frame.origin.y);
+    UINavigationBar *topBar = [self topBar];
+    CHWebBrowserLog(@"TOP BAR SIZE %f ORIGIN Y %f VIEW FRAME %@", topBar.frame.size.height, topBar.frame.origin.y, NSStringFromCGRect(self.view.frame));
     if (_wasOpenedModally) {
         _webView.scrollView.scrollIndicatorInsets = UIEdgeInsetsMake(CHWebBrowserNavBarHeight + CHWebBrowserStatusBarHeight, 0, CHWebBrowserNavBarHeight, 0);
         _webView.scrollView.contentInset = UIEdgeInsetsMake(CHWebBrowserNavBarHeight + CHWebBrowserStatusBarHeight, 0, CHWebBrowserNavBarHeight, 0);
@@ -303,9 +323,8 @@ enum actionSheetButtonIndex {
 - (IBAction)readingModeToggle:(id)sender {
     NSString *path = [[NSBundle mainBundle] pathForResource:@"MakeReadableJS" ofType:@"txt"];
     NSString *content = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
-    
     NSString *s = [_webView stringByEvaluatingJavaScriptFromString:content];
-    NSLog(@"readable script %@\n output: %@", content, s);
+    CHWebBrowserLog(@"readable script %@\n outputs: %@", content, s);
 }
 
 #pragma mark - UIWebViewDelegate
@@ -329,6 +348,7 @@ enum actionSheetButtonIndex {
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
+    [self resetAffectedViewsAnimated:YES];
     [self toggleBackForwardButtons];
 }
 
@@ -346,6 +366,8 @@ enum actionSheetButtonIndex {
     if ([error code] == NSURLErrorCancelled) {
         return;
     }
+    
+    [self resetAffectedViewsAnimated:YES];
 	
     // Show error alert
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Could not load page", nil)
@@ -367,13 +389,15 @@ enum actionSheetButtonIndex {
 {
     if(!decelerate) {
         _isScrollViewScrolling = NO;
-        [self animateViewsAccordingToScrollingEndedInScrollView:scrollView];
+        if (!_isMovingViews && !_isAnimatingViews && !_isAnimatingResettingViews)
+            [self animateAffectedViewsAccordingToScrollingEndedInScrollView:scrollView];
     }
 }
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     _isScrollViewScrolling = NO;
-    [self animateViewsAccordingToScrollingEndedInScrollView:scrollView];
+    if (!_isMovingViews && !_isAnimatingViews && !_isAnimatingResettingViews)
+        [self animateAffectedViewsAccordingToScrollingEndedInScrollView:scrollView];
 }
 
 - (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView
@@ -388,42 +412,45 @@ enum actionSheetButtonIndex {
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    NSLog(@"%s \n contentOffset.y %f \n delta %f \n contentInset %@ \n scrollIndicatorsInset %@",__PRETTY_FUNCTION__,scrollView.contentOffset.y, _lastContentOffset.y - scrollView.contentOffset.y, NSStringFromUIEdgeInsets(scrollView.contentInset), NSStringFromUIEdgeInsets(scrollView.scrollIndicatorInsets));
+    CHWebBrowserLog(@"\n contentOffset.y %f \n delta %f \n contentInset %@ \n scrollIndicatorsInset %@ \n topBarPositionY %f",scrollView.contentOffset.y, _lastContentOffset.y - scrollView.contentOffset.y, NSStringFromUIEdgeInsets(scrollView.contentInset), NSStringFromUIEdgeInsets(scrollView.scrollIndicatorInsets), [self topBar].frame.origin.y);
     
-    CGFloat delta =  scrollView.contentOffset.y - _lastContentOffset.y;
-    BOOL scrollingDown = delta > 0;
-    BOOL scrollingBeyondTopBound = (scrollView.contentOffset.y < - scrollView.contentInset.top);
-    BOOL scrollingBeyondBottomBound = (scrollView.contentOffset.y + scrollView.frame.size.height - scrollView.contentInset.bottom) > scrollView.contentSize.height;
-    BOOL scrollingForbidden = (scrollingBeyondTopBound && scrollingDown) || scrollingBeyondBottomBound;
-    NSLog(@"top %i bot %i", scrollingBeyondTopBound, scrollingBeyondBottomBound);
-    if (!scrollingForbidden) {
-        
-        if (scrollView.isDragging) {
-            [self moveViewsAccordingToDraggingInScrollView:scrollView];
+    if (!_isMovingViews && !_isAnimatingViews && !_isAnimatingResettingViews && scrollView.isDragging) {
+        CGFloat delta =  scrollView.contentOffset.y - _lastContentOffset.y;
+        BOOL scrollingDown = delta > 0;
+        BOOL scrollingBeyondTopBound = (scrollView.contentOffset.y < - scrollView.contentInset.top);
+        BOOL scrollingBeyondBottomBound = (scrollView.contentOffset.y + scrollView.frame.size.height - scrollView.contentInset.bottom) > scrollView.contentSize.height;
+        BOOL shouldNotMoveViews = (scrollingBeyondTopBound && scrollingDown) || scrollingBeyondBottomBound;
+        if (!shouldNotMoveViews) {
+            [self moveAffectedViewsAccordingToDraggingInScrollView:scrollView];
         }
-
     }
     _lastContentOffset = scrollView.contentOffset;
 }
 
-- (void)moveViewsAccordingToDraggingInScrollView:(UIScrollView*)scrollView
+- (void)moveAffectedViewsAccordingToDraggingInScrollView:(UIScrollView*)scrollView
 {
+    _isMovingViews = YES;
+    
     CGFloat delta =  scrollView.contentOffset.y - _lastContentOffset.y;
     
-    UINavigationBar *topBar = self.wasOpenedModally ? self.localNavigationBar : self.navigationController.navigationBar;
+    UINavigationBar *topBar = [self topBar];
     
     topBar.frame = CGRectMake(topBar.frame.origin.x,
-                              [CHWebBrowserViewController clampFloat:topBar.frame.origin.y - delta withMinimum:-CHWebBrowserStatusBarHeight andMaximum:CHWebBrowserStatusBarHeight],
+                              [CHWebBrowserViewController clampFloat:topBar.frame.origin.y - delta
+                                                         withMinimum:-CHWebBrowserStatusBarHeight
+                                                          andMaximum:CHWebBrowserStatusBarHeight + CHWebBrowserNavModeNavBarYPositionShownStateCorrection],
                               topBar.frame.size.width,
                               topBar.frame.size.height);
    _bottomToolbar.frame = CGRectMake(_bottomToolbar.frame.origin.x,
-                                     [CHWebBrowserViewController clampFloat:_bottomToolbar.frame.origin.y + delta withMinimum:_webView.frame.size.height - CHWebBrowserNavBarHeight andMaximum:_webView.frame.size.height],
+                                     [CHWebBrowserViewController clampFloat:_bottomToolbar.frame.origin.y + delta
+                                                                withMinimum:_webView.frame.size.height - CHWebBrowserNavBarHeight
+                                                                 andMaximum:_webView.frame.size.height],
                                      _bottomToolbar.frame.size.width,
                                      _bottomToolbar.frame.size.height);
     
     float topInset = [CHWebBrowserViewController clampFloat:scrollView.contentInset.top - delta
                                                 withMinimum:CHWebBrowserStatusBarHeight
-                                                 andMaximum:CHWebBrowserNavBarHeight + CHWebBrowserStatusBarHeight];
+                                                 andMaximum:CHWebBrowserNavBarHeight + CHWebBrowserStatusBarHeight + CHWebBrowserNavModeNavBarYPositionShownStateCorrection];
     float bottomInset = [CHWebBrowserViewController clampFloat:scrollView.contentInset.bottom - delta
                                                    withMinimum:0
                                                     andMaximum:CHWebBrowserNavBarHeight];
@@ -437,16 +464,19 @@ enum actionSheetButtonIndex {
     _dismissBarButtonItem.customView.alpha = alpha;
     _readBarButtonItem.customView.alpha = alpha;
     
+    _isMovingViews = NO;
 }
 
-- (void)animateViewsAccordingToScrollingEndedInScrollView:(UIScrollView*)scrollView
+- (void)animateAffectedViewsAccordingToScrollingEndedInScrollView:(UIScrollView*)scrollView
 {
-    UINavigationBar *topBar = self.wasOpenedModally ? self.localNavigationBar : self.navigationController.navigationBar;
+    _isAnimatingViews = YES;
+    
+    UINavigationBar *topBar = [self topBar];
 
     float topBarTargetValue, topBarDistanceLeft;
     [CHWebBrowserViewController someValue:topBar.frame.origin.y
                              betweenValue:-CHWebBrowserStatusBarHeight
-                                 andValue:CHWebBrowserStatusBarHeight
+                                 andValue:CHWebBrowserStatusBarHeight + CHWebBrowserNavModeNavBarYPositionShownStateCorrection
                          traveledDistance:&topBarDistanceLeft
                           andIsHalfPassed:nil
                            andTargetLimit:&topBarTargetValue];
@@ -462,7 +492,7 @@ enum actionSheetButtonIndex {
     float topInsetTargetValue;
     [CHWebBrowserViewController someValue:scrollView.contentInset.top
                              betweenValue:CHWebBrowserStatusBarHeight
-                                 andValue:CHWebBrowserNavBarHeight + CHWebBrowserStatusBarHeight
+                                 andValue:CHWebBrowserNavBarHeight + CHWebBrowserStatusBarHeight + CHWebBrowserNavModeNavBarYPositionShownStateCorrection
                          traveledDistance:nil
                           andIsHalfPassed:nil
                            andTargetLimit:&topInsetTargetValue];
@@ -489,18 +519,90 @@ enum actionSheetButtonIndex {
                           delay:0.0f
                         options:UIViewAnimationOptionBeginFromCurrentState
                      animations:^{
-                         topBar.frame = CGRectMake(topBar.frame.origin.x, topBarTargetValue, topBar.frame.size.width, topBar.frame.size.height);
-                         _bottomToolbar.frame = CGRectMake(_bottomToolbar.frame.origin.x, bottomToolbarTargetValue, _bottomToolbar.frame.size.width, _bottomToolbar.frame.size.height);
+                         topBar.frame = CGRectMake(topBar.frame.origin.x,
+                                                   topBarTargetValue,
+                                                   topBar.frame.size.width,
+                                                   topBar.frame.size.height);
+                         _bottomToolbar.frame = CGRectMake(_bottomToolbar.frame.origin.x,
+                                                           bottomToolbarTargetValue,
+                                                           _bottomToolbar.frame.size.width,
+                                                           _bottomToolbar.frame.size.height);
+                         
                          scrollView.scrollIndicatorInsets = insetTargetValue;
                          scrollView.contentInset = insetTargetValue;
+                         
                          _titleLabel.alpha = alphaTargetValue;
                          _dismissBarButtonItem.customView.alpha = alphaTargetValue;
                          _readBarButtonItem.customView.alpha = alphaTargetValue;
                          
     }
                      completion:^(BOOL finished) {
-        
+                         _isAnimatingViews = NO;
     }];
+}
+
+
+- (void)resetAffectedViewsAnimated:(BOOL)animated
+{
+    UINavigationBar *topBar = [self topBar];
+    
+    float topBarTargetValue = CHWebBrowserStatusBarHeight + CHWebBrowserNavModeNavBarYPositionShownStateCorrection;
+    CGFloat topBarLowerLimit = -CHWebBrowserStatusBarHeight;
+    CGFloat topBarHigherLimit = CHWebBrowserStatusBarHeight + CHWebBrowserNavModeNavBarYPositionShownStateCorrection;
+    float topBarDistanceLeft = fabsf(topBarHigherLimit - topBarLowerLimit);
+    float bottomToolbarTargetValue = _webView.frame.size.height - CHWebBrowserNavBarHeight;
+    float topInsetTargetValue = CHWebBrowserNavBarHeight + CHWebBrowserStatusBarHeight + CHWebBrowserNavModeNavBarYPositionShownStateCorrection;
+    float bottomInsetTargetValue = CHWebBrowserNavBarHeight;
+    UIEdgeInsets insetTargetValue = UIEdgeInsetsMake(topInsetTargetValue,0,bottomInsetTargetValue,0);
+    float alphaTargetValue = 1.0f;
+    if (animated) {
+        _isAnimatingResettingViews = YES;
+        [UIView animateWithDuration:topBarDistanceLeft * CHWebBrowserAnimationDurationPerOnePixel
+                              delay:0.0f
+                            options:UIViewAnimationOptionBeginFromCurrentState
+                         animations:^{
+                             topBar.frame = CGRectMake(topBar.frame.origin.x,
+                                                       topBarTargetValue,
+                                                       topBar.frame.size.width,
+                                                       topBar.frame.size.height);
+                             _bottomToolbar.frame = CGRectMake(_bottomToolbar.frame.origin.x,
+                                                               bottomToolbarTargetValue,
+                                                               _bottomToolbar.frame.size.width,
+                                                               _bottomToolbar.frame.size.height);
+                             
+                             _webView.scrollView.scrollIndicatorInsets = insetTargetValue;
+                             _webView.scrollView.contentInset = insetTargetValue;
+                             
+                             _titleLabel.alpha = alphaTargetValue;
+                             _dismissBarButtonItem.customView.alpha = alphaTargetValue;
+                             _readBarButtonItem.customView.alpha = alphaTargetValue;
+                             
+                         }
+                         completion:^(BOOL finished) {
+                             _isAnimatingResettingViews = NO;
+                         }];
+    }
+    else {
+        _isMovingViews = YES;
+        
+        topBar.frame = CGRectMake(topBar.frame.origin.x,
+                                  topBarTargetValue,
+                                  topBar.frame.size.width,
+                                  topBar.frame.size.height);
+        _bottomToolbar.frame = CGRectMake(_bottomToolbar.frame.origin.x,
+                                          bottomToolbarTargetValue,
+                                          _bottomToolbar.frame.size.width,
+                                          _bottomToolbar.frame.size.height);
+        
+        _webView.scrollView.scrollIndicatorInsets = insetTargetValue;
+        _webView.scrollView.contentInset = insetTargetValue;
+        
+        _titleLabel.alpha = alphaTargetValue;
+        _dismissBarButtonItem.customView.alpha = alphaTargetValue;
+        _readBarButtonItem.customView.alpha = alphaTargetValue;
+        
+        _isMovingViews = NO;
+    }
 }
 
 #pragma mark - UIBarPositioningDelegate

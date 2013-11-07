@@ -10,11 +10,23 @@
 #import <CBAutoScrollLabel.h>
 #import <SuProgress.h>
 
+#define CHWebBrowser_DEBUG_LOGGING
+
+#ifdef CHWebBrowser_DEBUG_LOGGING
+#	define CHWebBrowserLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
+#else
+#	define CHWebBrowserLog(...)
+#endif
+
+
 @interface CHWebBrowserViewController : UIViewController <UIWebViewDelegate, UIActionSheetDelegate, UIBarPositioningDelegate, UIScrollViewDelegate>
 {
     NSString *_requestUrl;
     CGPoint _lastContentOffset;
     BOOL _isScrollViewScrolling;
+    BOOL _isMovingViews;
+    BOOL _isAnimatingViews;
+    BOOL _isAnimatingResettingViews;
 }
 @property (nonatomic, strong) IBOutlet UIWebView *webView;
 
@@ -23,7 +35,6 @@
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *navigateForwardButton;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *actionButton;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *refreshButton;
-
 
 @property (nonatomic, strong) IBOutlet UINavigationBar *localNavigationBar;
 @property (nonatomic, strong) IBOutlet UIView *localTitleView;
@@ -42,4 +53,6 @@
 + (id)initWithDefaultNib;
 + (id)initWithDefaultNibAndRequestUrl:(NSString*)requestUrl;
 + (void)openWebBrowserControllerModallyWithUrl:(NSString*)urlString animated:(BOOL)animated completion:(void (^)(void))completion;
+
+- (void)resetAffectedViewsAnimated:(BOOL)animated;
 @end
