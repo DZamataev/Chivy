@@ -117,8 +117,6 @@ enum actionSheetButtonIndex {
     
     [self resetInsets];
     
-    [self setCustomButtonsTintColor:CHWebBrowserDefaultTintColor];
-    
     [[self SuProgressBar] setHidden:NO];
     
     if (_requestUrl) {
@@ -200,26 +198,6 @@ enum actionSheetButtonIndex {
     self.titleLabel.text = title;
 }
 
-- (void)setCustomButtonsTintColor:(UIColor*)tintColor
-{
-    /* we won't change the following, cuz it can be achieved using .keyWindow.tintColor, no need to repeat */
-//    self.navigateBackButton.tintColor = tintColor;
-//    self.navigateForwardButton.tintColor = tintColor;
-//    self.actionButton.tintColor = tintColor;
-//    self.refreshButton.tintColor = tintColor;
-//    self.navigationItem.backBarButtonItem.tintColor = tintColor;
-    UIButton* backButton = (UIButton*)self.dismissBarButtonItem.customView;
-    UIButton* readButton = (UIButton*)self.readBarButtonItem.customView;
-    if ([backButton isKindOfClass:[UIButton class]]) {
-        [backButton setImage:[CHWebBrowserViewController tintImage:[backButton imageForState:UIControlStateNormal] withColor:tintColor] forState:UIControlStateNormal];
-    }
-    if ([readButton isKindOfClass:[UIButton class]]) {
-        [readButton setImage:[CHWebBrowserViewController tintImage:[readButton imageForState:UIControlStateNormal] withColor:tintColor] forState:UIControlStateNormal];
-    }
-    
-    [[self SuProgressBar] setTintColor:tintColor];
-}
-
 - (UIView*)SuProgressBar
 {
     UIView *result = nil;
@@ -230,7 +208,26 @@ enum actionSheetButtonIndex {
     return result;
 }
 
-#pragma mark
+- (void)showCredentialsEntryViewAnimated
+{
+    _credentialsEntryView.hidden = NO;
+    [UIView animateWithDuration:0.5f delay:0.0f options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+        _credentialsEntryView.alpha = 1.0f;
+    } completion:^(BOOL finished) {
+        [_loginTextField becomeFirstResponder];
+    }];
+}
+
+- (void)hideCredentialsEntryViewAnimated
+{
+    [_loginTextField resignFirstResponder];
+    [_passwordTextField resignFirstResponder];
+    [UIView animateWithDuration:0.5f delay:0.0f options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+        _credentialsEntryView.alpha = 0.0f;
+    } completion:^(BOOL finished) {
+        _credentialsEntryView.hidden = YES;
+    }];
+}
 
 
 #pragma mark - Action Sheet
@@ -327,9 +324,30 @@ enum actionSheetButtonIndex {
     CHWebBrowserLog(@"readable script %@\n outputs: %@", content, s);
 }
 
+- (IBAction)submitCredentialsEntered:(id)sender
+{
+    CHWebBrowserLog(@"challenge %@ sender %@ login %@ password %@", _currentAuthChallenge, [_currentAuthChallenge sender], _loginTextField.text, _passwordTextField.text);
+    _authed = YES;
+    [[_currentAuthChallenge sender] useCredential:[NSURLCredential credentialWithUser:self.loginTextField.text
+                                                                             password:self.passwordTextField.text
+                                                                          persistence:NSURLCredentialPersistenceForSession] forAuthenticationChallenge:_currentAuthChallenge];
+}
+
+- (IBAction)cancelCredentialsEnter:(id)sender
+{
+    CHWebBrowserLog();
+    _authed = YES;
+    [[_currentAuthChallenge sender] useCredential:[NSURLCredential credentialWithUser:@""
+                                                                             password:@""
+                                                                          persistence:NSURLCredentialPersistencePermanent] forAuthenticationChallenge:_currentAuthChallenge];
+    [self hideCredentialsEntryViewAnimated];
+}
+
 #pragma mark - UIWebViewDelegate
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    _requestUrl = [request.URL absoluteString];
+    
     if ([[request.URL absoluteString] hasPrefix:@"sms:"]) {
         [[UIApplication sharedApplication] openURL:request.URL];
         return NO;
@@ -344,6 +362,16 @@ enum actionSheetButtonIndex {
 			return NO;
 		}
     }
+    
+    CHWebBrowserLog(@"Should start loading: %@\nauthed:%d", [[request URL] absoluteString], _authed);
+    
+    if (!_authed) {
+        _authed = NO;
+        NSURLConnection *con = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+        [con start];
+        return NO;
+    }
+    
     return YES;
 }
 
@@ -376,6 +404,32 @@ enum actionSheetButtonIndex {
                                           cancelButtonTitle:nil
                                           otherButtonTitles:NSLocalizedString(@"OK", nil), nil];
 	[alert show];
+}
+
+#pragma mark NSURLConnection delegate
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response;
+{
+    NSURL *url = [NSURL URLWithString:_requestUrl];
+    NSMutableURLRequest *request;
+    request = [NSMutableURLRequest requestWithURL:url];
+    
+    [_webView loadRequest:request];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge{
+    CHWebBrowserLog(@"got auth challange");
+    if ([challenge previousFailureCount] == 0) {
+        _currentAuthChallenge = challenge;
+        [self showCredentialsEntryViewAnimated];
+    }
+    else {
+        [[challenge sender] cancelAuthenticationChallenge:challenge];
+    }
+}
+
+- (BOOL)connectionShouldUseCredentialStorage:(NSURLConnection *)connection;
+{
+    return YES;
 }
 
 #pragma mark - ScrollView delegate
@@ -635,45 +689,6 @@ if minimum is smaller than maximum - they will be swapped;
     if (targetLimit != nil) *targetLimit = targetLimit_;
 }
 
-// baseImage is the grey scale image. color is the desired tint color
-+ (UIImage *)tintImage:(UIImage *)baseImage withColor:(UIColor *)color {
-    /* iOS 6 way */
-//    UIGraphicsBeginImageContextWithOptions(baseImage.size, NO, baseImage.scale);
-//    
-//    CGContextRef ctx = UIGraphicsGetCurrentContext();
-//    CGRect area = CGRectMake(0, 0, baseImage.size.width, baseImage.size.height);
-//    
-//    CGContextScaleCTM(ctx, 1, -1);
-//    CGContextTranslateCTM(ctx, 0, -area.size.height);
-//    
-//    CGContextSaveGState(ctx);
-//    CGContextClipToMask(ctx, area, baseImage.CGImage);
-//    
-//    [color set];
-//    CGContextFillRect(ctx, area);
-//    CGContextRestoreGState(ctx);
-//    
-//    CGContextSetBlendMode(ctx, kCGBlendModeOverlay);
-//    
-//    CGContextDrawImage(ctx, area, baseImage.CGImage);
-//    
-//    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-//    
-//    UIGraphicsEndImageContext();
-//    
-//    // If the original image was stretchable, make the new image stretchable
-//    if (baseImage.leftCapWidth || baseImage.topCapHeight) {
-//        newImage = [newImage stretchableImageWithLeftCapWidth:baseImage.leftCapWidth topCapHeight:baseImage.topCapHeight];
-//    }
-//    
-//    return newImage;
-    
-    /* iOS 7 way which somehow ignored imageView.tintColor and uses keyWindow.tintColor */
-    UIImage* imageForRendering = [baseImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    UIImageView* imageView = [[UIImageView alloc] initWithImage:imageForRendering];
-    imageView.tintColor = color;
-    imageView = Nil;
-    return imageForRendering;
-}
+
 
 @end

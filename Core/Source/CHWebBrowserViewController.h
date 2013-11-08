@@ -19,10 +19,12 @@
 #endif
 
 
-@interface CHWebBrowserViewController : UIViewController <UIWebViewDelegate, UIActionSheetDelegate, UIBarPositioningDelegate, UIScrollViewDelegate>
+@interface CHWebBrowserViewController : UIViewController <UIWebViewDelegate, NSURLConnectionDelegate, UIAlertViewDelegate, UIActionSheetDelegate, UIBarPositioningDelegate, UIScrollViewDelegate>
 {
     NSString *_requestUrl;
     CGPoint _lastContentOffset;
+    NSURLAuthenticationChallenge *_currentAuthChallenge;
+    BOOL _authed;
     BOOL _isScrollViewScrolling;
     BOOL _isMovingViews;
     BOOL _isAnimatingViews;
@@ -43,6 +45,11 @@
 
 @property (nonatomic, strong) IBOutlet CBAutoScrollLabel *titleLabel;
 @property (nonatomic, strong) IBOutlet CBAutoScrollLabel *urlLabel;
+
+// Credentials entry view
+@property (nonatomic, strong) IBOutlet UIView *credentialsEntryView;
+@property (nonatomic, strong) IBOutlet UITextField *loginTextField;
+@property (nonatomic, strong) IBOutlet UITextField *passwordTextField;
 
 @property (nonatomic, strong) NSString *requestUrl;
 
