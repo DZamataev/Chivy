@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <CBAutoScrollLabel.h>
 #import <SuProgress.h>
+#import "TKAURLProtocol.h"
 
 #define CHWebBrowser_DEBUG_LOGGING
 
@@ -19,12 +20,11 @@
 #endif
 
 
-@interface CHWebBrowserViewController : UIViewController <UIWebViewDelegate, NSURLConnectionDelegate, UIAlertViewDelegate, UIActionSheetDelegate, UIBarPositioningDelegate, UIScrollViewDelegate>
+@interface CHWebBrowserViewController : UIViewController <UIWebViewDelegate, NSURLConnectionDelegate, UIAlertViewDelegate, UIActionSheetDelegate, UIBarPositioningDelegate, UIScrollViewDelegate, TKAURLProtocolDelegate>
 {
     NSString *_requestUrl;
+    
     CGPoint _lastContentOffset;
-    NSURLAuthenticationChallenge *_currentAuthChallenge;
-    BOOL _authed;
     BOOL _isScrollViewScrolling;
     BOOL _isMovingViews;
     BOOL _isAnimatingViews;
@@ -52,6 +52,8 @@
 @property (nonatomic, strong) IBOutlet UITextField *passwordTextField;
 
 @property (nonatomic, strong) NSString *requestUrl;
+@property (nonatomic, strong) NSURL *navigationURL;
+@property (nonatomic, strong) NSURLRequest *mainRequest;
 
 @property (nonatomic, assign) BOOL wasOpenedModally;
 

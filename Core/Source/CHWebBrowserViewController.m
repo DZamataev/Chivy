@@ -93,14 +93,20 @@ enum actionSheetButtonIndex {
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    _navigationURL = [[NSURL alloc] init];
+	// Two variants for https connection
+	// 1. Call setTrustSelfSignedCertificates:YES to allow access to hosts with untrusted certificates
+	[TKAURLProtocol setTrustSelfSignedCertificates:YES];
+	// 2. Call TKAURLProtocol addTrustedHost: with name of host to be trusted.
+	//[TKAURLProtocol addTrustedHost:@"google.com"];
+    
+    
     
     _webView.scrollView.delegate = self;
     
     _wasOpenedModally = [self isModal];
     if (_wasOpenedModally) {
-        [self SuProgressForWebView:_webView inView:self.localNavigationBar];
+        //[self SuProgressForWebView:_webView inView:self.localNavigationBar];
         
     }
     else {
@@ -109,7 +115,7 @@ enum actionSheetButtonIndex {
         self.navigationItem.rightBarButtonItem = self.readBarButtonItem;
         [self.localNavigationBar removeFromSuperview];
         //self.localNavigationBar = nil;
-        [self SuProgressForWebView:_webView];
+        //[self SuProgressForWebView:_webView];
     }
     
     self.titleLabel.scrollSpeed = CHWebBrowserTitleScrollingSpeed;
@@ -120,8 +126,11 @@ enum actionSheetButtonIndex {
     [[self SuProgressBar] setHidden:NO];
     
     if (_requestUrl) {
-        [_webView loadRequest: [NSURLRequest requestWithURL:[NSURL URLWithString:_requestUrl]]];
+        _navigationURL = [NSURL URLWithString:_requestUrl];
+        [self LoadURL];
     }
+    
+    [super viewDidLoad];
 }
 
 - (BOOL)isModal {
@@ -160,7 +169,22 @@ enum actionSheetButtonIndex {
     [memoryWarningAlert show];
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [TKAURLProtocol registerProtocol];
+}
+
 -(void) viewWillDisappear:(BOOL)animated {
+    if (_mainRequest)
+	{
+		[TKAURLProtocol removeDownloadDelegateForRequest:_mainRequest];
+		[TKAURLProtocol removeObserverDelegateForRequest:_mainRequest];
+		[TKAURLProtocol removeLoginDelegateForRequest:_mainRequest];
+		[TKAURLProtocol removeSenderObjectForRequest:_mainRequest];
+	}
+	[TKAURLProtocol setTrustSelfSignedCertificates:NO];
+    [TKAURLProtocol unregisterProtocol];
+    
     if ([self.navigationController.viewControllers indexOfObject:self]==NSNotFound) {
         // back button was pressed.  We know this is true because self is no longer
         // in the navigation stack.
@@ -208,26 +232,7 @@ enum actionSheetButtonIndex {
     return result;
 }
 
-- (void)showCredentialsEntryViewAnimated
-{
-    _credentialsEntryView.hidden = NO;
-    [UIView animateWithDuration:0.5f delay:0.0f options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-        _credentialsEntryView.alpha = 1.0f;
-    } completion:^(BOOL finished) {
-        [_loginTextField becomeFirstResponder];
-    }];
-}
 
-- (void)hideCredentialsEntryViewAnimated
-{
-    [_loginTextField resignFirstResponder];
-    [_passwordTextField resignFirstResponder];
-    [UIView animateWithDuration:0.5f delay:0.0f options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-        _credentialsEntryView.alpha = 0.0f;
-    } completion:^(BOOL finished) {
-        _credentialsEntryView.hidden = YES;
-    }];
-}
 
 
 #pragma mark - Action Sheet
@@ -324,23 +329,64 @@ enum actionSheetButtonIndex {
     CHWebBrowserLog(@"readable script %@\n outputs: %@", content, s);
 }
 
-- (IBAction)submitCredentialsEntered:(id)sender
+-(IBAction) LoadURL;
 {
-    CHWebBrowserLog(@"challenge %@ sender %@ login %@ password %@", _currentAuthChallenge, [_currentAuthChallenge sender], _loginTextField.text, _passwordTextField.text);
-    _authed = YES;
-    [[_currentAuthChallenge sender] useCredential:[NSURLCredential credentialWithUser:self.loginTextField.text
-                                                                             password:self.passwordTextField.text
-                                                                          persistence:NSURLCredentialPersistenceForSession] forAuthenticationChallenge:_currentAuthChallenge];
+    if (_navigationURL)
+	{
+		NSMutableURLRequest *Request = [[NSURLRequest requestWithURL:_navigationURL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0] mutableCopy];
+		[_webView loadRequest:Request];
+	}
 }
 
-- (IBAction)cancelCredentialsEnter:(id)sender
-{
+#pragma mark - TKAURLProtocol
+//*******************************************************************
+//
+// This delegate method is called when TKAURLProtocol connection
+// receives didReceiveAuthenticationChallenge event
+// Return Yes to popup the internal login dialog
+// If returnned result is NO there are 3 possible variants:
+//
+// 1. If TKAURLProtocol.Username and TKAURLProtocol.Password are not empty
+//       TKAURLProtocol will use them to authenticate
+// 2. If TKAURLProtocol.Username and TKAURLProtocol.Password are empty
+//       connection will try to authenticate using default credentials
+// 3. If cancel is set to YES the authentication will be cancelled
+//    and calling application will receive an error
+//
+//*******************************************************************
+- (BOOL) ShouldPresentLoginDialog: (TKAURLProtocol*) urlProtocol CancelAuthentication: (BOOL*) cancel{
     CHWebBrowserLog();
-    _authed = YES;
-    [[_currentAuthChallenge sender] useCredential:[NSURLCredential credentialWithUser:@""
-                                                                             password:@""
-                                                                          persistence:NSURLCredentialPersistencePermanent] forAuthenticationChallenge:_currentAuthChallenge];
-    [self hideCredentialsEntryViewAnimated];
+	//*************************************** Present LoginDialog example
+	*cancel = NO;
+	return YES;
+	//*************************************** Login without showing LoginDialog example
+	//*cancel = NO;
+	//urlProtocol.Username = @"some username";
+	//urlProtocol.Password = @"some password";
+	//return NO;
+	//*************************************** Continue without authentication example
+	//*cancel = NO;
+	//urlProtocol.Username = @"";
+	//urlProtocol.Password = @"";
+	//return NO;
+	//*************************************** Cancel Authentication example
+	// *cancel = YES;
+	// return NO;
+	
+}
+
+//*******************************************************************
+//
+// This delegate method is called when TKAURLProtocol connection
+// receives didReceiveAuthenticationChallenge event
+// and a client certificate is required to access the protected space.
+// Delegate shound return nil if there is no available certificate
+// or NSURLCredential created from the available certificate
+//
+//*******************************************************************
+- (NSURLCredential*) getCertificateCredential: (TKAURLProtocol*) urlProtocol ForChallenge: (NSURLAuthenticationChallenge *)challenge {
+    CHWebBrowserLog();
+	return nil;
 }
 
 #pragma mark - UIWebViewDelegate
@@ -363,14 +409,31 @@ enum actionSheetButtonIndex {
 		}
     }
     
-    CHWebBrowserLog(@"Should start loading: %@\nauthed:%d", [[request URL] absoluteString], _authed);
+	//**********************************************************************
+	// Configure TKAURLProtocol - authentication engine for UIWebView
+	if ([request.mainDocumentURL isEqual:request.URL])
+	{
+//        RequestCount = 0;
+        if (_mainRequest)
+        {
+            [TKAURLProtocol removeDownloadDelegateForRequest:_mainRequest];
+            [TKAURLProtocol removeObserverDelegateForRequest:_mainRequest];
+            [TKAURLProtocol removeLoginDelegateForRequest:_mainRequest];
+            [TKAURLProtocol removeSenderObjectForRequest:_mainRequest];
+            self.mainRequest = nil;
+        }
+        self.mainRequest = request;
+        [TKAURLProtocol addDownloadDelegate:self ForRequest:request];
+        [TKAURLProtocol addObserverDelegate:self ForRequest:request];
+        [TKAURLProtocol addLoginDelegate:self ForRequest:request];
+        [TKAURLProtocol addSenderObject:webView ForRequest:request];
+	}
+	else
+	{
+        
+	}
     
-    if (!_authed) {
-        _authed = NO;
-        NSURLConnection *con = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-        [con start];
-        return NO;
-    }
+	//**********************************************************************
     
     return YES;
 }
@@ -406,31 +469,6 @@ enum actionSheetButtonIndex {
 	[alert show];
 }
 
-#pragma mark NSURLConnection delegate
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response;
-{
-    NSURL *url = [NSURL URLWithString:_requestUrl];
-    NSMutableURLRequest *request;
-    request = [NSMutableURLRequest requestWithURL:url];
-    
-    [_webView loadRequest:request];
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge{
-    CHWebBrowserLog(@"got auth challange");
-    if ([challenge previousFailureCount] == 0) {
-        _currentAuthChallenge = challenge;
-        [self showCredentialsEntryViewAnimated];
-    }
-    else {
-        [[challenge sender] cancelAuthenticationChallenge:challenge];
-    }
-}
-
-- (BOOL)connectionShouldUseCredentialStorage:(NSURLConnection *)connection;
-{
-    return YES;
-}
 
 #pragma mark - ScrollView delegate
 
@@ -687,6 +725,29 @@ if minimum is smaller than maximum - they will be swapped;
     if (distance != nil) *distance = distance_;
     if (halfPassed != nil) *halfPassed = halfPassed_;
     if (targetLimit != nil) *targetLimit = targetLimit_;
+}
+
+-(void) MessageBox: (NSString*) Title Description:(NSString *) Text{
+	
+	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:Title
+													message:Text
+												   delegate:self
+										  cancelButtonTitle:@"OK"
+										  otherButtonTitles:nil];
+	[alert show];
+}
+
+
+-(NSString *) GetDocumentsFolder {
+	NSArray  *Paths        = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *DocumentsDir = [Paths objectAtIndex:0];
+	return   DocumentsDir;
+}
+
+-(NSString *) GetLibraryFolder {
+	NSArray *Paths         = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
+	NSString *DocumentsDir = [Paths objectAtIndex:0];
+	return   DocumentsDir;
 }
 
 

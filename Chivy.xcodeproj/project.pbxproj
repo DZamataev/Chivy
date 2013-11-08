@@ -20,6 +20,7 @@
 		9240582E1822822200C4EB84 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9240582A1822822200C4EB84 /* main.m */; };
 		9240583E182289EB00C4EB84 /* CHWebBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9240583C182289EB00C4EB84 /* CHWebBrowserViewController.m */; };
 		9240584118228A0800C4EB84 /* CHWebBrowserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9240584018228A0800C4EB84 /* CHWebBrowserViewController.xib */; };
+		92742211182D23B3006EFF2E /* TKAURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 92742210182D23B3006EFF2E /* TKAURLProtocol.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		927DD99F1823914F003A078F /* arrow_back_disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 927DD99A1823914F003A078F /* arrow_back_disabled.png */; };
 		927DD9A01823914F003A078F /* arrow_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 927DD99B1823914F003A078F /* arrow_back.png */; };
 		927DD9A11823914F003A078F /* arrow_forward_disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 927DD99C1823914F003A078F /* arrow_forward_disabled.png */; };
@@ -55,6 +56,8 @@
 		9240583B182289EB00C4EB84 /* CHWebBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHWebBrowserViewController.h; sourceTree = "<group>"; };
 		9240583C182289EB00C4EB84 /* CHWebBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHWebBrowserViewController.m; sourceTree = "<group>"; };
 		9240584018228A0800C4EB84 /* CHWebBrowserViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CHWebBrowserViewController.xib; sourceTree = "<group>"; };
+		9274220F182D23B3006EFF2E /* TKAURLProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKAURLProtocol.h; sourceTree = "<group>"; };
+		92742210182D23B3006EFF2E /* TKAURLProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKAURLProtocol.m; sourceTree = "<group>"; };
 		927DD99A1823914F003A078F /* arrow_back_disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_back_disabled.png; sourceTree = "<group>"; };
 		927DD99B1823914F003A078F /* arrow_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_back.png; sourceTree = "<group>"; };
 		927DD99C1823914F003A078F /* arrow_forward_disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_forward_disabled.png; sourceTree = "<group>"; };
@@ -186,6 +189,8 @@
 		9240583A1822886300C4EB84 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				9274220F182D23B3006EFF2E /* TKAURLProtocol.h */,
+				92742210182D23B3006EFF2E /* TKAURLProtocol.m */,
 				9292F840182912DC007445BF /* Chivy.h */,
 				9240583B182289EB00C4EB84 /* CHWebBrowserViewController.h */,
 				9240583C182289EB00C4EB84 /* CHWebBrowserViewController.m */,
@@ -318,6 +323,7 @@
 				9240582E1822822200C4EB84 /* main.m in Sources */,
 				9240582D1822822200C4EB84 /* DCViewController.m in Sources */,
 				9240583E182289EB00C4EB84 /* CHWebBrowserViewController.m in Sources */,
+				92742211182D23B3006EFF2E /* TKAURLProtocol.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
