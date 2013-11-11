@@ -19,6 +19,15 @@
 #	define CHWebBrowserLog(...)
 #endif
 
+typedef void (^ValuesInAffectedViewsSetterBlock)(UIView *topBar,
+                                                 float topBarYPosition,
+                                                 UIView *bottomBar,
+                                                 float bottomBarYPosition,
+                                                 UIScrollView *scrollView,
+                                                 UIEdgeInsets contentInset,
+                                                 UIEdgeInsets scrollingIndicatorInsets,
+                                                 NSArray *viewsAffectedByAlphaChanging,
+                                                 float alpha);
 
 @interface CHWebBrowserViewController : UIViewController <UIWebViewDelegate, NSURLConnectionDelegate, UIAlertViewDelegate, UIActionSheetDelegate, UIBarPositioningDelegate, UIScrollViewDelegate, TKAURLProtocolDelegate>
 {
@@ -27,6 +36,8 @@
     BOOL _isMovingViews;
     BOOL _isAnimatingViews;
     BOOL _isAnimatingResettingViews;
+    
+    ValuesInAffectedViewsSetterBlock _valuesInAffectedViewsSetterBlock;
 }
 @property (nonatomic, strong) IBOutlet UIWebView *webView;
 
@@ -44,23 +55,37 @@
 @property (nonatomic, strong) IBOutlet CBAutoScrollLabel *titleLabel;
 @property (nonatomic, strong) IBOutlet CBAutoScrollLabel *urlLabel;
 
-// Credentials entry view
-@property (nonatomic, strong) IBOutlet UIView *credentialsEntryView;
-@property (nonatomic, strong) IBOutlet UITextField *loginTextField;
-@property (nonatomic, strong) IBOutlet UITextField *passwordTextField;
 
-@property (nonatomic, strong) NSString *requestUrl;
-@property (nonatomic, strong) NSURL *navigationURL;
+/* This URL should be set after creating the controller but before viewWillAppear
+ On viewWillAppear it would be used to navigate the webView
+ */
+@property (nonatomic, strong) NSURL *homeUrl;
 @property (nonatomic, strong) NSURLRequest *mainRequest;
 
 @property (nonatomic, assign) BOOL wasOpenedModally;
 
-
+/* This block is used to set **values** in **views** which both come from arguments in the following situations:
+ - scroll view did scroll and user was dragging (not animated call)
+ - scroll view ended scrolling and will not decelerate (animated call)
+ - scroll view ended decelerating (animated call)
+ - reset all views action (can be animated or not)
+ 
+ The ivar is created on first getter occurs
+ */
+@property (nonatomic, copy) ValuesInAffectedViewsSetterBlock valuesInAffectedViewsSetterBlock;
 
 + (id)initWithDefaultNib;
-+ (id)initWithDefaultNibAndRequestUrl:(NSString*)requestUrl;
-+ (void)openWebBrowserControllerModallyWithUrl:(NSString*)urlString animated:(BOOL)animated completion:(void (^)(void))completion;
++ (id)initWithDefaultNibAndHomeUrl:(NSURL*)url;
++ (void)openWebBrowserControllerModallyWithHomeUrl:(NSURL*)url animated:(BOOL)animated;
++ (void)openWebBrowserControllerModallyWithHomeUrl:(NSURL*)url animated:(BOOL)animated completion:(void (^)(void))completion;
+
 + (void)clearCredentialsAndCookiesAndCache;
++ (void)clearCredentials;
++ (void)clearCookies;
++ (void)clearCache;
+
+- (void)loadUrlString:(NSString*)urlString;
+- (void)loadUrl:(NSURL*)url;
 
 - (void)resetAffectedViewsAnimated:(BOOL)animated;
 @end
