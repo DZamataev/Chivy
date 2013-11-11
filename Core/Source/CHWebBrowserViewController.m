@@ -440,7 +440,7 @@ enum actionSheetButtonIndex {
     NSString *pageTitle = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
     _titleLabel.text = pageTitle;
     [self toggleBackForwardButtons];
-    self.webView.hidden = NO;
+    _webView.hidden = NO;
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {

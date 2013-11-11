@@ -58,7 +58,6 @@
 		UIAlertView*				LoginView;
 		UITextField*				UsernameField;
 		UITextField*				PasswordField;
-		UISegmentedControl*			RememberCredentials;
 		NSLock*						LoginDialogLock;
 		NSInteger					DialogResult;
 		BOOL						AuthenticationOccured;    

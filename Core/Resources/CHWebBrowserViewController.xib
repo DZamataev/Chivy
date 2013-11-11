@@ -121,13 +121,13 @@
                 <constraint firstItem="T7w-qf-GG4" firstAttribute="leading" secondItem="dkI-8x-Vos" secondAttribute="leading" id="26M-0x-37q"/>
                 <constraint firstItem="T7w-qf-GG4" firstAttribute="bottom" secondItem="dkI-8x-Vos" secondAttribute="bottom" id="4SZ-sd-cz9"/>
                 <constraint firstItem="Ig9-bL-VHb" firstAttribute="top" secondItem="1" secondAttribute="top" constant="22" id="Af0-ZQ-bfX"/>
-                <constraint firstItem="T7w-qf-GG4" firstAttribute="trailing" secondItem="Ig9-bL-VHb" secondAttribute="trailing" id="DpE-0f-Ica"/>
                 <constraint firstItem="Ig9-bL-VHb" firstAttribute="leading" secondItem="dkI-8x-Vos" secondAttribute="leading" id="GT2-KG-8zH"/>
                 <constraint firstItem="T7w-qf-GG4" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="IEr-zs-fWc"/>
                 <constraint firstAttribute="bottom" secondItem="dkI-8x-Vos" secondAttribute="bottom" id="Mmc-X8-QqE"/>
                 <constraint firstAttribute="trailing" secondItem="dkI-8x-Vos" secondAttribute="trailing" id="Nj3-pM-a6D"/>
                 <constraint firstItem="T7w-qf-GG4" firstAttribute="top" secondItem="1" secondAttribute="top" id="PQV-kP-njz"/>
                 <constraint firstItem="dkI-8x-Vos" firstAttribute="trailing" secondItem="Ig9-bL-VHb" secondAttribute="trailing" id="oTB-ey-mFF"/>
+                <constraint firstAttribute="trailing" secondItem="T7w-qf-GG4" secondAttribute="trailing" id="rBJ-IG-rgW"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>

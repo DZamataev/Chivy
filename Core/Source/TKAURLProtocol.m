@@ -104,20 +104,20 @@ static NSLock*                      VariableLock                 = nil;
 	{
 		self.Username = UsernameField.text;
 		self.Password = PasswordField.text;
-		switch (RememberCredentials.selectedSegmentIndex) {
-			case 0:
-				self.CredentialsPresistance = NSURLCredentialPersistenceNone;
-				break;
-			case 1:
-				self.CredentialsPresistance = NSURLCredentialPersistenceForSession;
-				break;
-			case 2:
-				self.CredentialsPresistance = NSURLCredentialPersistencePermanent;
-				break;
-			default:
-				self.CredentialsPresistance = NSURLCredentialPersistenceForSession;
-				break;
-		}
+//		switch (RememberCredentials.selectedSegmentIndex) {
+//			case 0:
+//				self.CredentialsPresistance = NSURLCredentialPersistenceNone;
+//				break;
+//			case 1:
+//				self.CredentialsPresistance = NSURLCredentialPersistenceForSession;
+//				break;
+//			case 2:
+//				self.CredentialsPresistance = NSURLCredentialPersistencePermanent;
+//				break;
+//			default:
+//				self.CredentialsPresistance = NSURLCredentialPersistenceForSession;
+//				break;
+//		}
 		[VariableLock lock];
 		DefaultCredentialPersistence = CredentialsPresistance;
 		[VariableLock unlock];
@@ -165,26 +165,27 @@ static NSLock*                      VariableLock                 = nil;
  	PasswordField.delegate           = self;
 //	[PasswordField release];
 	
-	RememberCredentials                       = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"Don't save",@"Temporary",@"Permanent", nil]]; 
-	RememberCredentials.tintColor             = [UIColor colorWithRed:78.0/255.0 green:87.0/255.0 blue:121.0/255.0 alpha:0.0];
-	RememberCredentials.frame                 = CGRectMake(12.0, 120.0, 260.0, 35.0);
-	switch (CredentialsPresistance) {
-		case NSURLCredentialPersistenceNone:
-			RememberCredentials.selectedSegmentIndex  = 0;
-			break;
-		case NSURLCredentialPersistenceForSession:
-			RememberCredentials.selectedSegmentIndex  = 1;
-			break;
-		case NSURLCredentialPersistencePermanent:
-			RememberCredentials.selectedSegmentIndex  = 2;
-			break;	
-		default:
-			RememberCredentials.selectedSegmentIndex  = 1;
-			break;
-	}
-	RememberCredentials.segmentedControlStyle = UISegmentedControlStyleBar;
-	[LoginView addSubview: RememberCredentials];
-	[RememberCredentials release];
+    // Credenti
+//	RememberCredentials                       = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"Don't save",@"Temporary",@"Permanent", nil]]; 
+//	RememberCredentials.tintColor             = [UIColor colorWithRed:78.0/255.0 green:87.0/255.0 blue:121.0/255.0 alpha:0.0];
+//	RememberCredentials.frame                 = CGRectMake(12.0, 120.0, 260.0, 35.0);
+//	switch (CredentialsPresistance) {
+//		case NSURLCredentialPersistenceNone:
+//			RememberCredentials.selectedSegmentIndex  = 0;
+//			break;
+//		case NSURLCredentialPersistenceForSession:
+//			RememberCredentials.selectedSegmentIndex  = 1;
+//			break;
+//		case NSURLCredentialPersistencePermanent:
+//			RememberCredentials.selectedSegmentIndex  = 2;
+//			break;	
+//		default:
+//			RememberCredentials.selectedSegmentIndex  = 1;
+//			break;
+//	}
+//	RememberCredentials.segmentedControlStyle = UISegmentedControlStyleBar;
+//	[LoginView addSubview: RememberCredentials];
+//	[RememberCredentials release];
 	
 	// Enable for IPhone
 	// CGAffineTransform transform = CGAffineTransformMakeTranslation(0.0, 80.0);
