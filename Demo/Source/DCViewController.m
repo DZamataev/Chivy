@@ -7,7 +7,6 @@
 //
 
 #import "DCViewController.h"
-#import "CHWebBrowserViewController.h"
 
 @interface DCViewController ()
 
@@ -31,6 +30,17 @@
 - (IBAction)pushWebBrowser:(id)sender
 {
     [self.navigationController pushViewController:[CHWebBrowserViewController initWithDefaultNibAndHomeUrl:[NSURL URLWithString:_urlTextField.text]] animated:YES];
+}
+
+- (IBAction)openCustomizedWebBrowserModally:(id)sender
+{
+    CHWebBrowserViewController *webBrowserVC = [CHWebBrowserViewController initWithDefaultNibAndHomeUrl:[NSURL URLWithString:_urlTextField.text]];
+    webBrowserVC.cAttributes.titleScrollingSpeed = 30;
+    webBrowserVC.cAttributes.titleTextAlignment = NSTextAlignmentLeft;
+    webBrowserVC.cAttributes.progressBarEnabled = YES;
+    [CHWebBrowserViewController openWebBrowserController:webBrowserVC modallyWithUrl:[NSURL URLWithString:_urlTextField.text] animated:YES completion:^{
+        NSLog(@"Modal animation completed");
+    }];
 }
 
 - (IBAction)randomizeTintColor:(id)sender

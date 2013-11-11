@@ -11,14 +11,6 @@
 #import <SuProgress.h>
 #import "TKAURLProtocol.h"
 
-#define CHWebBrowser_DEBUG_LOGGING
-
-#ifdef CHWebBrowser_DEBUG_LOGGING
-#	define CHWebBrowserLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
-#else
-#	define CHWebBrowserLog(...)
-#endif
-
 typedef void (^ValuesInAffectedViewsSetterBlock)(UIView *topBar,
                                                  float topBarYPosition,
                                                  UIView *bottomBar,
@@ -29,8 +21,22 @@ typedef void (^ValuesInAffectedViewsSetterBlock)(UIView *topBar,
                                                  NSArray *viewsAffectedByAlphaChanging,
                                                  float alpha);
 
+
+@interface CHWebBrowserViewControllerAttributes : NSObject
+@property (nonatomic, strong) UIColor *tintColor;
+@property (nonatomic, assign) float titleScrollingSpeed;
+@property (nonatomic, assign) float navBarHeight;
+@property (nonatomic, assign) float statusBarHeight;
+@property (nonatomic, assign) int suProgressBarTag;
+@property (nonatomic, assign) float animationDurationPerOnePixel;
+@property (nonatomic, assign) NSTextAlignment titleTextAlignment;
+@property (nonatomic, assign) BOOL progressBarEnabled;
++ (CHWebBrowserViewControllerAttributes*)defaultAttributes;
+@end
+
 @interface CHWebBrowserViewController : UIViewController <UIWebViewDelegate, NSURLConnectionDelegate, UIAlertViewDelegate, UIActionSheetDelegate, UIBarPositioningDelegate, UIScrollViewDelegate, TKAURLProtocolDelegate>
 {
+    CHWebBrowserViewControllerAttributes *_cAttributes;
     CGPoint _lastContentOffset;
     BOOL _isScrollViewScrolling;
     BOOL _isMovingViews;
@@ -39,6 +45,8 @@ typedef void (^ValuesInAffectedViewsSetterBlock)(UIView *topBar,
     
     ValuesInAffectedViewsSetterBlock _valuesInAffectedViewsSetterBlock;
 }
+@property (nonatomic, strong) CHWebBrowserViewControllerAttributes *cAttributes;
+
 @property (nonatomic, strong) IBOutlet UIWebView *webView;
 
 @property (nonatomic, strong) IBOutlet UIToolbar *bottomToolbar;
@@ -76,6 +84,9 @@ typedef void (^ValuesInAffectedViewsSetterBlock)(UIView *topBar,
 
 + (id)initWithDefaultNib;
 + (id)initWithDefaultNibAndHomeUrl:(NSURL*)url;
+
++ (void)openWebBrowserController:(CHWebBrowserViewController*)vc modallyWithUrl:(NSURL*)url animated:(BOOL)animated completion:(void (^)(void))completion;
++ (void)openWebBrowserController:(CHWebBrowserViewController*)vc modallyWithUrl:(NSURL*)url animated:(BOOL)animated;
 + (void)openWebBrowserControllerModallyWithHomeUrl:(NSURL*)url animated:(BOOL)animated;
 + (void)openWebBrowserControllerModallyWithHomeUrl:(NSURL*)url animated:(BOOL)animated completion:(void (^)(void))completion;
 

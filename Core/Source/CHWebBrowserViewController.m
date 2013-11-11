@@ -14,45 +14,44 @@ enum actionSheetButtonIndex {
     kShareButtonIndex
 };
 
-#ifndef CHWebBrowserDefaultTintColor
-#define CHWebBrowserDefaultTintColor [UIApplication sharedApplication].keyWindow.tintColor
-#endif
-
 #ifndef CHWebBrowserNavBarHeight
-#define CHWebBrowserNavBarHeight 44.0f
+#define CHWebBrowserNavBarHeight (self.cAttributes.navBarHeight)
 #endif
 
 #ifndef CHWebBrowserStatusBarHeight
-#define CHWebBrowserStatusBarHeight 22.0f
-#endif
-
-#ifndef SuProgressBarTag
-#define SuProgressBarTag 51381
-#endif
-
-#ifndef CHWebBrowserAnimationDurationPerOnePixel
-#define CHWebBrowserAnimationDurationPerOnePixel 0.0068181818f
-#endif
-
-#ifndef CHWebBrowserTitleScrollingSpeed
-#define CHWebBrowserTitleScrollingSpeed 20
-#endif
-
-#ifndef CHWebBrowserTitleTextAlignment
-#define CHWebBrowserTitleTextAlignment NSTextAlignmentCenter
+#define CHWebBrowserStatusBarHeight (self.cAttributes.statusBarHeight)
 #endif
 
 #ifndef CHWebBrowserViewsAffectedByAlphaChanging
 #define CHWebBrowserViewsAffectedByAlphaChanging (@[_titleLabel, _dismissBarButtonItem.customView, _readBarButtonItem.customView])
 #endif
 
-#ifndef CHWebBrowserEnableProgressBar
-#define CHWebBrowserEnableProgressBar FALSE
+#define CHWebBrowser_DEBUG_LOGGING /* used to enable or disable logging */
+
+#ifdef CHWebBrowser_DEBUG_LOGGING
+#	define CHWebBrowserLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
+#else
+#	define CHWebBrowserLog(...)
 #endif
 
 #define CHWebBrowserNavModeNavBarYPositionShownStateCorrection (_wasOpenedModally ? 0 : -2)
 
+@implementation CHWebBrowserViewControllerAttributes
 
++ (CHWebBrowserViewControllerAttributes*)defaultAttributes {
+    CHWebBrowserViewControllerAttributes *a = [[CHWebBrowserViewControllerAttributes alloc] init];
+    a.tintColor = [UIApplication sharedApplication].keyWindow.tintColor;
+    a.titleScrollingSpeed = 20.0f;
+    a.navBarHeight = 44.0f;
+    a.statusBarHeight = 22.0f;
+    a.suProgressBarTag = 51381;
+    a.animationDurationPerOnePixel = 0.0068181818f;
+    a.titleTextAlignment = NSTextAlignmentCenter;
+    a.progressBarEnabled = NO;
+    return a;
+}
+
+@end
 
 @interface CHWebBrowserViewController ()
 
@@ -62,13 +61,23 @@ enum actionSheetButtonIndex {
 
 #pragma mark - Initialization
 
+
+
++ (void)openWebBrowserController:(CHWebBrowserViewController*)vc modallyWithUrl:(NSURL*)url animated:(BOOL)animated completion:(void (^)(void))completion {
+    vc.homeUrl = url;
+    UIWindow *window = [UIApplication sharedApplication].keyWindow;
+    UIViewController *rootViewController = window.rootViewController;
+    [rootViewController presentViewController:vc animated:animated completion:completion];
+}
+
++ (void)openWebBrowserController:(CHWebBrowserViewController*)vc modallyWithUrl:(NSURL*)url animated:(BOOL)animated {
+    [CHWebBrowserViewController openWebBrowserController:vc modallyWithUrl:url animated:animated completion:nil];
+}
+
 + (void)openWebBrowserControllerModallyWithHomeUrl:(NSURL*)url animated:(BOOL)animated completion:(void (^)(void))completion {
     CHWebBrowserViewController *webBrowserController = [[CHWebBrowserViewController alloc] initWithNibName:[CHWebBrowserViewController defaultNibFileName]
                                                                                                     bundle:nil];
-    webBrowserController.homeUrl = url;
-    UIWindow *window = [UIApplication sharedApplication].keyWindow;
-    UIViewController *rootViewController = window.rootViewController;
-    [rootViewController presentViewController:webBrowserController animated:animated completion:completion];
+    [CHWebBrowserViewController openWebBrowserController:webBrowserController modallyWithUrl:url animated:animated completion:completion];
 }
 
 + (void)openWebBrowserControllerModallyWithHomeUrl:(NSURL*)url animated:(BOOL)animated {
@@ -89,7 +98,12 @@ enum actionSheetButtonIndex {
 }
 
 + (NSString*)defaultNibFileName {
-    return @"CHWebBrowserViewController";
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        return @"CHWebBrowserViewController_iPad";
+    }
+    else {
+        return @"CHWebBrowserViewController_iPhone";
+    }
 }
 
 - (id)init {
@@ -105,12 +119,72 @@ enum actionSheetButtonIndex {
     return self;
 }
 
+#pragma mark - Properties
+
+- (void)setValuesInAffectedViewsSetterBlock:(ValuesInAffectedViewsSetterBlock)valuesInAffectedViewsSetterBlock
+{
+    _valuesInAffectedViewsSetterBlock = valuesInAffectedViewsSetterBlock;
+}
+
+- (ValuesInAffectedViewsSetterBlock)valuesInAffectedViewsSetterBlock {
+    if (!_valuesInAffectedViewsSetterBlock) {
+        _valuesInAffectedViewsSetterBlock = ^(UIView *topBar,
+                                              float topBarYPosition,
+                                              UIView *bottomBar,
+                                              float bottomBarYPosition,
+                                              UIScrollView *scrollView,
+                                              UIEdgeInsets contentInset,
+                                              UIEdgeInsets scrollingIndicatorInsets,
+                                              NSArray *viewsAffectedByAlphaChanging,
+                                              float alpha) {
+            
+            topBar.frame = CGRectMake(topBar.frame.origin.x,
+                                      topBarYPosition,
+                                      topBar.frame.size.width,
+                                      topBar.frame.size.height);
+            bottomBar.frame = CGRectMake(bottomBar.frame.origin.x,
+                                         bottomBarYPosition,
+                                         bottomBar.frame.size.width,
+                                         bottomBar.frame.size.height);
+            
+            scrollView.scrollIndicatorInsets = scrollingIndicatorInsets;
+            scrollView.contentInset = contentInset;
+            
+            for (id view in viewsAffectedByAlphaChanging) {
+                [view setAlpha:alpha];
+            }
+        };
+        
+    }
+    return _valuesInAffectedViewsSetterBlock;
+}
+
+- (void)setTitle:(NSString *)title
+{
+    self.titleLabel.text = title;
+}
+
+- (NSString*)title {
+    return self.titleLabel.text;
+}
+
+- (void)setCAttributes:(CHWebBrowserViewControllerAttributes *)attributes {
+    _cAttributes = attributes;
+}
+
+- (CHWebBrowserViewControllerAttributes*)cAttributes {
+    if (!_cAttributes) {
+        _cAttributes = [CHWebBrowserViewControllerAttributes defaultAttributes];
+    }
+    return _cAttributes;
+}
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
 {
-    self.titleLabel.scrollSpeed = CHWebBrowserTitleScrollingSpeed;
-    self.titleLabel.textAlignment = CHWebBrowserTitleTextAlignment;
+    self.titleLabel.scrollSpeed = self.cAttributes.titleScrollingSpeed;
+    self.titleLabel.textAlignment = self.cAttributes.titleTextAlignment;
     
     [self heartbeat];
     
@@ -140,7 +214,7 @@ enum actionSheetButtonIndex {
     _webView.scrollView.delegate = self;
     
     if (_wasOpenedModally) {
-        if (CHWebBrowserEnableProgressBar && ![self SuProgressBar])
+        if (self.cAttributes.progressBarEnabled && ![self SuProgressBar])
             [self SuProgressForWebView:_webView inView:self.localNavigationBar];
         
     }
@@ -150,7 +224,7 @@ enum actionSheetButtonIndex {
         self.navigationItem.rightBarButtonItem = self.readBarButtonItem;
         [self.localNavigationBar removeFromSuperview];
         //self.localNavigationBar = nil;
-        if (CHWebBrowserEnableProgressBar && ![self SuProgressBar])
+        if (self.cAttributes.progressBarEnabled && ![self SuProgressBar])
             [self SuProgressForWebView:_webView inView:self.localNavigationBar];
     }
     
@@ -222,60 +296,11 @@ enum actionSheetButtonIndex {
 - (UIView*)SuProgressBar
 {
     UIView *result = nil;
-    result = [self.localNavigationBar viewWithTag:SuProgressBarTag];
+    result = [self.localNavigationBar viewWithTag:self.cAttributes.suProgressBarTag];
     if (!result) {
-        result = [self.navigationController.navigationBar viewWithTag:SuProgressBarTag];
+        result = [self.navigationController.navigationBar viewWithTag:self.cAttributes.suProgressBarTag];
     }
     return result;
-}
-
-#pragma mark - Properties
-
-- (void)setValuesInAffectedViewsSetterBlock:(ValuesInAffectedViewsSetterBlock)valuesInAffectedViewsSetterBlock
-{
-    _valuesInAffectedViewsSetterBlock = valuesInAffectedViewsSetterBlock;
-}
-
-- (ValuesInAffectedViewsSetterBlock)valuesInAffectedViewsSetterBlock {
-    if (!_valuesInAffectedViewsSetterBlock) {
-        _valuesInAffectedViewsSetterBlock = ^(UIView *topBar,
-                                              float topBarYPosition,
-                                              UIView *bottomBar,
-                                              float bottomBarYPosition,
-                                              UIScrollView *scrollView,
-                                              UIEdgeInsets contentInset,
-                                              UIEdgeInsets scrollingIndicatorInsets,
-                                              NSArray *viewsAffectedByAlphaChanging,
-                                              float alpha) {
-            
-            topBar.frame = CGRectMake(topBar.frame.origin.x,
-                                      topBarYPosition,
-                                      topBar.frame.size.width,
-                                      topBar.frame.size.height);
-            bottomBar.frame = CGRectMake(bottomBar.frame.origin.x,
-                                         bottomBarYPosition,
-                                         bottomBar.frame.size.width,
-                                         bottomBar.frame.size.height);
-            
-            scrollView.scrollIndicatorInsets = scrollingIndicatorInsets;
-            scrollView.contentInset = contentInset;
-            
-            for (id view in viewsAffectedByAlphaChanging) {
-                [view setAlpha:alpha];
-            }
-        };
-        
-    }
-    return _valuesInAffectedViewsSetterBlock;
-}
-
-- (void)setTitle:(NSString *)title
-{
-    self.titleLabel.text = title;
-}
-
-- (NSString*)title {
-    return self.titleLabel.text;
 }
 
 #pragma mark - View State Interactions
@@ -344,11 +369,11 @@ enum actionSheetButtonIndex {
     UIActionSheet *actionSheet = [[UIActionSheet alloc] init];
     actionSheet.title = urlString;
     actionSheet.delegate = self;
-    [actionSheet addButtonWithTitle:NSLocalizedString(@"Open in Safari", nil)];
+    [actionSheet addButtonWithTitle:NSLocalizedString(@"Open in Safari", @"CHWebBrowserController action sheet button title which leads to opening current url in Safari web browser application")];
     
     if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"googlechrome://"]]) {
         // Chrome is installed, add the option to open in chrome.
-        [actionSheet addButtonWithTitle:NSLocalizedString(@"Open in Chrome", nil)];
+        [actionSheet addButtonWithTitle:NSLocalizedString(@"Open in Chrome", @"CHWebBrowserController action sheet button title which leads to opening current url in google chrome web browser application")];
     }
     
     [actionSheet addButtonWithTitle:NSLocalizedString(@"Share", @"CHWebBrowserController action sheet button title which leads to standart sharing")];
@@ -676,7 +701,7 @@ enum actionSheetButtonIndex {
     
     NSArray *viewsAffectedByAlphaChanging = CHWebBrowserViewsAffectedByAlphaChanging;
     
-    [UIView animateWithDuration:topBarDistanceLeft * CHWebBrowserAnimationDurationPerOnePixel
+    [UIView animateWithDuration:topBarDistanceLeft * self.cAttributes.animationDurationPerOnePixel
                           delay:0.0f
                         options:UIViewAnimationOptionBeginFromCurrentState
                      animations:^{
@@ -727,7 +752,7 @@ enum actionSheetButtonIndex {
     
     if (animated) {
         _isAnimatingResettingViews = YES;
-        [UIView animateWithDuration:topBarDistanceLeft * CHWebBrowserAnimationDurationPerOnePixel
+        [UIView animateWithDuration:topBarDistanceLeft * self.cAttributes.animationDurationPerOnePixel
                               delay:0.0f
                             options:UIViewAnimationOptionBeginFromCurrentState
                          animations:^{

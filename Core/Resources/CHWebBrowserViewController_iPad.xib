@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="4510" systemVersion="13A603" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CHWebBrowserViewController">
+            <connections>
+                <outlet property="actionButton" destination="juv-dy-Zp5" id="MHt-oh-xMz"/>
+                <outlet property="bottomToolbar" destination="Tif-Dv-2sM" id="NFy-R2-EmZ"/>
+                <outlet property="dismissBarButtonItem" destination="W9d-J7-eyH" id="HaG-ts-vDb"/>
+                <outlet property="localNavigationBar" destination="lKU-QX-JhT" id="thR-wI-Z8x"/>
+                <outlet property="localTitleView" destination="8Vo-Nv-OJX" id="Oji-Ea-G9f"/>
+                <outlet property="navigateBackButton" destination="XHY-Te-AlC" id="zJ6-BY-5wL"/>
+                <outlet property="navigateForwardButton" destination="IST-hO-AKK" id="xkR-45-8bS"/>
+                <outlet property="readBarButtonItem" destination="dV3-KI-Bm2" id="RPy-By-RuI"/>
+                <outlet property="refreshButton" destination="caa-eA-YZH" id="J3Z-hO-rgI"/>
+                <outlet property="titleLabel" destination="yWK-n6-HKO" id="YSG-2i-Ch6"/>
+                <outlet property="view" destination="uQK-m9-hG7" id="uLK-af-ug5"/>
+                <outlet property="webView" destination="tDW-i3-zdB" id="KoS-Ao-QaS"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="uQK-m9-hG7">
+            <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <webView hidden="YES" contentMode="scaleToFill" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tDW-i3-zdB">
+                    <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <color key="backgroundColor" red="0.72549019609999998" green="0.72549019609999998" blue="0.76078431369999999" alpha="1" colorSpace="calibratedRGB"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="M3M-rF-aft"/>
+                    </connections>
+                </webView>
+                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tif-Dv-2sM">
+                    <rect key="frame" x="0.0" y="980" width="768" height="44"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <items>
+                        <barButtonItem image="arrow_back.png" style="plain" id="XHY-Te-AlC">
+                            <connections>
+                                <action selector="goBack" destination="tDW-i3-zdB" id="0sV-q0-eHd"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="kXC-2P-oFL"/>
+                        <barButtonItem image="arrow_forward.png" style="plain" id="IST-hO-AKK">
+                            <connections>
+                                <action selector="goForward" destination="tDW-i3-zdB" id="Knd-as-Xl8"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem width="380" style="plain" systemItem="fixedSpace" id="Ppt-Q2-dFu"/>
+                        <barButtonItem systemItem="action" id="juv-dy-Zp5">
+                            <connections>
+                                <action selector="buttonActionTouchUp:" destination="-1" id="4Zr-9d-laH"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="ZVT-mZ-0r7"/>
+                        <barButtonItem systemItem="refresh" id="caa-eA-YZH">
+                            <connections>
+                                <action selector="reload" destination="tDW-i3-zdB" id="eME-NE-3co"/>
+                            </connections>
+                        </barButtonItem>
+                    </items>
+                </toolbar>
+                <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lKU-QX-JhT">
+                    <rect key="frame" x="0.0" y="22" width="768" height="44"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                    <textAttributes key="titleTextAttributes">
+                        <offsetWrapper key="textShadowOffset" horizontal="50" vertical="0.0"/>
+                    </textAttributes>
+                    <items>
+                        <navigationItem id="NpQ-Pc-jqx">
+                            <nil key="title"/>
+                            <barButtonItem key="leftBarButtonItem" id="W9d-J7-eyH">
+                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="mod-QI-cfY">
+                                    <rect key="frame" x="16" y="11" width="21" height="21"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <state key="normal" image="exit.png"/>
+                                    <connections>
+                                        <action selector="dismissModally:" destination="-1" eventType="touchUpInside" id="m47-5p-0Qs"/>
+                                    </connections>
+                                </button>
+                            </barButtonItem>
+                            <view key="titleView" contentMode="scaleToFill" id="8Vo-Nv-OJX">
+                                <rect key="frame" x="109" y="6" width="550" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yWK-n6-HKO" customClass="CBAutoScrollLabel">
+                                        <rect key="frame" x="0.0" y="0.0" width="550" height="33"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="yWK-n6-HKO" secondAttribute="trailing" id="CXM-HE-mhB"/>
+                                    <constraint firstItem="yWK-n6-HKO" firstAttribute="top" secondItem="8Vo-Nv-OJX" secondAttribute="top" id="dTe-jy-nqM"/>
+                                    <constraint firstAttribute="bottom" secondItem="yWK-n6-HKO" secondAttribute="bottom" id="qoj-BN-vMP"/>
+                                    <constraint firstItem="yWK-n6-HKO" firstAttribute="leading" secondItem="8Vo-Nv-OJX" secondAttribute="leading" id="ynW-6O-LaW"/>
+                                </constraints>
+                            </view>
+                            <barButtonItem key="rightBarButtonItem" id="dV3-KI-Bm2">
+                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Ifx-9b-QER">
+                                    <rect key="frame" x="731" y="11" width="21" height="21"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <state key="normal" image="read.png"/>
+                                    <connections>
+                                        <action selector="readingModeToggle:" destination="-1" eventType="touchUpInside" id="eDK-oU-jLW"/>
+                                    </connections>
+                                </button>
+                            </barButtonItem>
+                        </navigationItem>
+                    </items>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="c7o-4w-UoG"/>
+                    </connections>
+                </navigationBar>
+            </subviews>
+            <color key="backgroundColor" red="0.74117647060000003" green="0.74117647060000003" blue="0.76078431369999999" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="tDW-i3-zdB" firstAttribute="leading" secondItem="Tif-Dv-2sM" secondAttribute="leading" id="BNR-vV-SsW"/>
+                <constraint firstItem="lKU-QX-JhT" firstAttribute="leading" secondItem="Tif-Dv-2sM" secondAttribute="leading" id="Cer-lW-sOO"/>
+                <constraint firstAttribute="trailing" secondItem="tDW-i3-zdB" secondAttribute="trailing" id="JW6-wX-DiX"/>
+                <constraint firstAttribute="trailing" secondItem="Tif-Dv-2sM" secondAttribute="trailing" id="Py0-hq-xMY"/>
+                <constraint firstItem="Tif-Dv-2sM" firstAttribute="trailing" secondItem="lKU-QX-JhT" secondAttribute="trailing" id="haj-C5-l8y"/>
+                <constraint firstAttribute="bottom" secondItem="Tif-Dv-2sM" secondAttribute="bottom" id="ljB-r7-z7a"/>
+                <constraint firstItem="tDW-i3-zdB" firstAttribute="top" secondItem="uQK-m9-hG7" secondAttribute="top" id="mEh-b5-Iuq"/>
+                <constraint firstItem="tDW-i3-zdB" firstAttribute="bottom" secondItem="Tif-Dv-2sM" secondAttribute="bottom" id="o9K-d6-Lvg"/>
+                <constraint firstItem="tDW-i3-zdB" firstAttribute="leading" secondItem="uQK-m9-hG7" secondAttribute="leading" id="xFj-TW-Tun"/>
+                <constraint firstItem="lKU-QX-JhT" firstAttribute="top" secondItem="uQK-m9-hG7" secondAttribute="top" constant="22" id="yxZ-qj-tbC"/>
+            </constraints>
+            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="arrow_back.png" width="11" height="20"/>
+        <image name="arrow_forward.png" width="11" height="20"/>
+        <image name="exit.png" width="21" height="21"/>
+        <image name="read.png" width="21" height="21"/>
+    </resources>
+</document>

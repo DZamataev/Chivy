@@ -8,18 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		416C97A9EAE84C2B80379410 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FE6A1C4A8834B11A032B93B /* libPods.a */; };
+		923D239118311BDC00AD3C9F /* CHWebBrowserViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 923D239018311BDC00AD3C9F /* CHWebBrowserViewController_iPad.xib */; };
 		924057C818227CDF00C4EB84 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 924057C718227CDF00C4EB84 /* Foundation.framework */; };
 		924057CA18227CDF00C4EB84 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 924057C918227CDF00C4EB84 /* CoreGraphics.framework */; };
 		924057CC18227CDF00C4EB84 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 924057CB18227CDF00C4EB84 /* UIKit.framework */; };
-		9240581F1822821700C4EB84 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 924058181822821700C4EB84 /* Main_iPad.storyboard */; };
-		924058201822821700C4EB84 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9240581A1822821700C4EB84 /* Main_iPhone.storyboard */; };
+		924058201822821700C4EB84 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9240581A1822821700C4EB84 /* Main.storyboard */; };
 		924058211822821700C4EB84 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9240581C1822821700C4EB84 /* InfoPlist.strings */; };
 		924058221822821700C4EB84 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9240581E1822821700C4EB84 /* Images.xcassets */; };
 		9240582C1822822200C4EB84 /* DCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 924058271822822200C4EB84 /* DCAppDelegate.m */; };
 		9240582D1822822200C4EB84 /* DCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 924058291822822200C4EB84 /* DCViewController.m */; };
 		9240582E1822822200C4EB84 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9240582A1822822200C4EB84 /* main.m */; };
 		9240583E182289EB00C4EB84 /* CHWebBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9240583C182289EB00C4EB84 /* CHWebBrowserViewController.m */; };
-		9240584118228A0800C4EB84 /* CHWebBrowserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9240584018228A0800C4EB84 /* CHWebBrowserViewController.xib */; };
+		9240584118228A0800C4EB84 /* CHWebBrowserViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9240584018228A0800C4EB84 /* CHWebBrowserViewController_iPhone.xib */; };
 		92742211182D23B3006EFF2E /* TKAURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 92742210182D23B3006EFF2E /* TKAURLProtocol.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		927DD9A01823914F003A078F /* arrow_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 927DD99B1823914F003A078F /* arrow_back.png */; };
 		927DD9A21823914F003A078F /* arrow_forward.png in Resources */ = {isa = PBXBuildFile; fileRef = 927DD99D1823914F003A078F /* arrow_forward.png */; };
@@ -33,13 +33,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		923D239018311BDC00AD3C9F /* CHWebBrowserViewController_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CHWebBrowserViewController_iPad.xib; sourceTree = "<group>"; };
 		924057C418227CDF00C4EB84 /* Chivy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chivy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		924057C718227CDF00C4EB84 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		924057C918227CDF00C4EB84 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		924057CB18227CDF00C4EB84 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		924057E918227CDF00C4EB84 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		924058191822821700C4EB84 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
-		9240581B1822821700C4EB84 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
+		9240581B1822821700C4EB84 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9240581D1822821700C4EB84 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		9240581E1822821700C4EB84 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		924058241822822200C4EB84 /* Chivy-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Chivy-Info.plist"; sourceTree = "<group>"; };
@@ -51,7 +51,7 @@
 		9240582A1822822200C4EB84 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		9240583B182289EB00C4EB84 /* CHWebBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHWebBrowserViewController.h; sourceTree = "<group>"; };
 		9240583C182289EB00C4EB84 /* CHWebBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHWebBrowserViewController.m; sourceTree = "<group>"; };
-		9240584018228A0800C4EB84 /* CHWebBrowserViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CHWebBrowserViewController.xib; sourceTree = "<group>"; };
+		9240584018228A0800C4EB84 /* CHWebBrowserViewController_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CHWebBrowserViewController_iPhone.xib; sourceTree = "<group>"; };
 		9274220F182D23B3006EFF2E /* TKAURLProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKAURLProtocol.h; sourceTree = "<group>"; };
 		92742210182D23B3006EFF2E /* TKAURLProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKAURLProtocol.m; sourceTree = "<group>"; };
 		927DD99B1823914F003A078F /* arrow_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_back.png; sourceTree = "<group>"; };
@@ -135,8 +135,7 @@
 		924058171822821700C4EB84 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				924058181822821700C4EB84 /* Main_iPad.storyboard */,
-				9240581A1822821700C4EB84 /* Main_iPhone.storyboard */,
+				9240581A1822821700C4EB84 /* Main.storyboard */,
 				9240581C1822821700C4EB84 /* InfoPlist.strings */,
 				9240581E1822821700C4EB84 /* Images.xcassets */,
 			);
@@ -169,7 +168,8 @@
 				927DD9A618239270003A078F /* arrow_forward@2x.png */,
 				927DD99B1823914F003A078F /* arrow_back.png */,
 				927DD99D1823914F003A078F /* arrow_forward.png */,
-				9240584018228A0800C4EB84 /* CHWebBrowserViewController.xib */,
+				9240584018228A0800C4EB84 /* CHWebBrowserViewController_iPhone.xib */,
+				923D239018311BDC00AD3C9F /* CHWebBrowserViewController_iPad.xib */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -246,9 +246,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				924058201822821700C4EB84 /* Main_iPhone.storyboard in Resources */,
+				924058201822821700C4EB84 /* Main.storyboard in Resources */,
 				927DD9AA18239270003A078F /* arrow_forward@2x.png in Resources */,
 				924058221822821700C4EB84 /* Images.xcassets in Resources */,
+				923D239118311BDC00AD3C9F /* CHWebBrowserViewController_iPad.xib in Resources */,
 				927DD9A01823914F003A078F /* arrow_back.png in Resources */,
 				9292F8331828EDC9007445BF /* exit.png in Resources */,
 				9292F8361828EDC9007445BF /* read@2x.png in Resources */,
@@ -257,8 +258,7 @@
 				9292F8341828EDC9007445BF /* exit@2x.png in Resources */,
 				924058211822821700C4EB84 /* InfoPlist.strings in Resources */,
 				927DD9A818239270003A078F /* arrow_back@2x.png in Resources */,
-				9240584118228A0800C4EB84 /* CHWebBrowserViewController.xib in Resources */,
-				9240581F1822821700C4EB84 /* Main_iPad.storyboard in Resources */,
+				9240584118228A0800C4EB84 /* CHWebBrowserViewController_iPhone.xib in Resources */,
 				927E2210182A8D9E00716FE4 /* MakeReadableJS.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -314,20 +314,12 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		924058181822821700C4EB84 /* Main_iPad.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				924058191822821700C4EB84 /* Base */,
-			);
-			name = Main_iPad.storyboard;
-			sourceTree = "<group>";
-		};
-		9240581A1822821700C4EB84 /* Main_iPhone.storyboard */ = {
+		9240581A1822821700C4EB84 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				9240581B1822821700C4EB84 /* Base */,
 			);
-			name = Main_iPhone.storyboard;
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 		9240581C1822821700C4EB84 /* InfoPlist.strings */ = {
