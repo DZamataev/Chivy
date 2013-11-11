@@ -11,6 +11,7 @@
 enum actionSheetButtonIndex {
 	kSafariButtonIndex,
 	kChromeButtonIndex,
+    kShareButtonIndex
 };
 
 #ifndef CHWebBrowserDefaultTintColor
@@ -94,41 +95,11 @@ enum actionSheetButtonIndex {
 - (void)viewDidLoad
 {
     _navigationURL = [[NSURL alloc] init];
-	// Two variants for https connection
-	// 1. Call setTrustSelfSignedCertificates:YES to allow access to hosts with untrusted certificates
-	[TKAURLProtocol setTrustSelfSignedCertificates:YES];
-	// 2. Call TKAURLProtocol addTrustedHost: with name of host to be trusted.
-	//[TKAURLProtocol addTrustedHost:@"google.com"];
-    
-    
     
     _webView.scrollView.delegate = self;
     
-    _wasOpenedModally = [self isModal];
-    if (_wasOpenedModally) {
-        //[self SuProgressForWebView:_webView inView:self.localNavigationBar];
-        
-    }
-    else {
-        [self.localTitleView removeFromSuperview];
-        self.navigationItem.titleView = self.localTitleView;
-        self.navigationItem.rightBarButtonItem = self.readBarButtonItem;
-        [self.localNavigationBar removeFromSuperview];
-        //self.localNavigationBar = nil;
-        //[self SuProgressForWebView:_webView];
-    }
-    
     self.titleLabel.scrollSpeed = CHWebBrowserTitleScrollingSpeed;
     self.titleLabel.textAlignment = CHWebBrowserTitleTextAlignment;
-    
-    [self resetInsets];
-    
-    [[self SuProgressBar] setHidden:NO];
-    
-    if (_requestUrl) {
-        _navigationURL = [NSURL URLWithString:_requestUrl];
-        [self LoadURL];
-    }
     
     [super viewDidLoad];
 }
@@ -141,16 +112,6 @@ enum actionSheetButtonIndex {
 
 - (UINavigationBar*)topBar {
     return self.wasOpenedModally ? self.localNavigationBar : self.navigationController.navigationBar;
-}
-
-- (void)setRequestUrl:(NSString *)urlToLoad
-{
-    _requestUrl = urlToLoad;
-}
-
-- (NSString*)requestUrl
-{
-    return _requestUrl;
 }
 
 - (void)didReceiveMemoryWarning
@@ -171,7 +132,36 @@ enum actionSheetButtonIndex {
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    _wasOpenedModally = [self isModal];
+    
+    if (_wasOpenedModally) {
+        //[self SuProgressForWebView:_webView inView:self.localNavigationBar];
+        
+    }
+    else {
+        [self.localTitleView removeFromSuperview];
+        self.navigationItem.titleView = self.localTitleView;
+        self.navigationItem.rightBarButtonItem = self.readBarButtonItem;
+        [self.localNavigationBar removeFromSuperview];
+        //self.localNavigationBar = nil;
+        //[self SuProgressForWebView:_webView];
+    }
+    
+    [self resetInsets];
+    
+    [[self SuProgressBar] setHidden:NO];
+    
     [TKAURLProtocol registerProtocol];
+	// Two variants for https connection
+	// 1. Call setTrustSelfSignedCertificates:YES to allow access to hosts with untrusted certificates
+	[TKAURLProtocol setTrustSelfSignedCertificates:YES];
+	// 2. Call TKAURLProtocol addTrustedHost: with name of host to be trusted.
+	//[TKAURLProtocol addTrustedHost:@"google.com"];
+    
+    if (_requestUrl) {
+        _navigationURL = [NSURL URLWithString:_requestUrl];
+        [self LoadURL];
+    }
 }
 
 -(void) viewWillDisappear:(BOOL)animated {
@@ -252,6 +242,8 @@ enum actionSheetButtonIndex {
         [actionSheet addButtonWithTitle:NSLocalizedString(@"Open in Chrome", nil)];
     }
     
+    [actionSheet addButtonWithTitle:NSLocalizedString(@"Share", @"CHWebBrowserController action sheet button title which leads to standart sharing")];
+    
     actionSheet.cancelButtonIndex = [actionSheet addButtonWithTitle:NSLocalizedString(@"Cancel", nil)];
 	actionSheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
     
@@ -266,53 +258,54 @@ enum actionSheetButtonIndex {
         theURL = [NSURL URLWithString:_requestUrl];
     }
     
-    if (buttonIndex == kSafariButtonIndex) {
-        [[UIApplication sharedApplication] openURL:theURL];
-    }
-    else if (buttonIndex == kChromeButtonIndex) {
-        NSString *scheme = theURL.scheme;
-        
-        // Replace the URL Scheme with the Chrome equivalent.
-        NSString *chromeScheme = nil;
-        if ([scheme isEqualToString:@"http"]) {
-            chromeScheme = @"googlechrome";
-        } else if ([scheme isEqualToString:@"https"]) {
-            chromeScheme = @"googlechromes";
+    switch (buttonIndex) {
+        case kSafariButtonIndex:
+        {
+            [[UIApplication sharedApplication] openURL:theURL];
         }
-        
-        // Proceed only if a valid Google Chrome URI Scheme is available.
-        if (chromeScheme) {
-            NSString *absoluteString = [theURL absoluteString];
-            NSRange rangeForScheme = [absoluteString rangeOfString:@":"];
-            NSString *urlNoScheme = [absoluteString substringFromIndex:rangeForScheme.location];
-            NSString *chromeURLString = [chromeScheme stringByAppendingString:urlNoScheme];
-            NSURL *chromeURL = [NSURL URLWithString:chromeURLString];
+            break;
             
-            // Open the URL with Chrome.
-            [[UIApplication sharedApplication] openURL:chromeURL];
+        case kChromeButtonIndex:
+        {
+            NSString *scheme = theURL.scheme;
+            
+            // Replace the URL Scheme with the Chrome equivalent.
+            NSString *chromeScheme = nil;
+            if ([scheme isEqualToString:@"http"]) {
+                chromeScheme = @"googlechrome";
+            } else if ([scheme isEqualToString:@"https"]) {
+                chromeScheme = @"googlechromes";
+            }
+            
+            // Proceed only if a valid Google Chrome URI Scheme is available.
+            if (chromeScheme) {
+                NSString *absoluteString = [theURL absoluteString];
+                NSRange rangeForScheme = [absoluteString rangeOfString:@":"];
+                NSString *urlNoScheme = [absoluteString substringFromIndex:rangeForScheme.location];
+                NSString *chromeURLString = [chromeScheme stringByAppendingString:urlNoScheme];
+                NSURL *chromeURL = [NSURL URLWithString:chromeURLString];
+                
+                // Open the URL with Chrome.
+                [[UIApplication sharedApplication] openURL:chromeURL];
+            }
+
         }
+            break;
+            
+        case kShareButtonIndex:
+        {
+            UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[theURL]
+                                                                                     applicationActivities:nil];
+            [self presentViewController:activityVC animated:YES completion:nil];
+        }
+            break;
+            
+        default:
+            break;
     }
 }
 
 #pragma mark - Actions
-
-- (IBAction)backButtonTouchUp:(id)sender {
-    [_webView goBack];
-    
-    [self toggleBackForwardButtons];
-}
-
-- (IBAction)forwardButtonTouchUp:(id)sender {
-    [_webView goForward];
-    
-    [self toggleBackForwardButtons];
-}
-
-- (IBAction)reloadButtonTouchUp:(id)sender {
-    [_webView reload];
-    
-    [self toggleBackForwardButtons];
-}
 
 - (IBAction)buttonActionTouchUp:(id)sender {
     [self showActionSheet];
@@ -455,6 +448,7 @@ enum actionSheetButtonIndex {
     // To avoid getting an error alert when you click on a link
     // before a request has finished loading.
     if ([error code] == NSURLErrorCancelled) {
+        CHWebBrowserLog(@"cancelled loading");
         return;
     }
     
@@ -709,13 +703,13 @@ enum actionSheetButtonIndex {
 clamps the value to lie betweem minimum and maximum;
 if minimum is smaller than maximum - they will be swapped;
 */
-+(float)clampFloat:(float)value withMinimum:(float)min andMaximum:(float)max {
++ (float)clampFloat:(float)value withMinimum:(float)min andMaximum:(float)max {
     CGFloat realMin = min < max ? min : max;
     CGFloat realMax = max >= min ? max : min;
     return MAX(realMin, MIN(realMax, value));
 }
 
-+(void)someValue:(float)value betweenValue:(float)f1 andValue:(float)f2 traveledDistance:(float *)distance andIsHalfPassed:(BOOL *)halfPassed andTargetLimit:(float *)targetLimit
++ (void)someValue:(float)value betweenValue:(float)f1 andValue:(float)f2 traveledDistance:(float *)distance andIsHalfPassed:(BOOL *)halfPassed andTargetLimit:(float *)targetLimit
 {
     CGFloat lowerLimit = MIN(f1, f2);
     CGFloat higherLimit = MAX(f1, f2);
@@ -727,27 +721,50 @@ if minimum is smaller than maximum - they will be swapped;
     if (targetLimit != nil) *targetLimit = targetLimit_;
 }
 
--(void) MessageBox: (NSString*) Title Description:(NSString *) Text{
-	
-	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:Title
-													message:Text
-												   delegate:self
-										  cancelButtonTitle:@"OK"
-										  otherButtonTitles:nil];
-	[alert show];
++ (NSString *) getDocumentsDirectoryPath {
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *documentsDir = [paths objectAtIndex:0];
+	return documentsDir;
 }
 
-
--(NSString *) GetDocumentsFolder {
-	NSArray  *Paths        = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-	NSString *DocumentsDir = [Paths objectAtIndex:0];
-	return   DocumentsDir;
++ (NSString *) getLibraryDirectoryPath {
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
+	NSString *documentsDir = [paths objectAtIndex:0];
+	return documentsDir;
 }
 
--(NSString *) GetLibraryFolder {
-	NSArray *Paths         = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
-	NSString *DocumentsDir = [Paths objectAtIndex:0];
-	return   DocumentsDir;
++ (void)clearCredentialsAndCookiesAndCache
+{
+    NSDictionary *credentialsDict = [[NSURLCredentialStorage sharedCredentialStorage] allCredentials];
+    
+    if ([credentialsDict count] > 0) {
+        // the credentialsDict has NSURLProtectionSpace objs as keys and dicts of userName => NSURLCredential
+        NSEnumerator *protectionSpaceEnumerator = [credentialsDict keyEnumerator];
+        id urlProtectionSpace;
+        
+        // iterate over all NSURLProtectionSpaces
+        while (urlProtectionSpace = [protectionSpaceEnumerator nextObject]) {
+            NSEnumerator *userNameEnumerator = [[credentialsDict objectForKey:urlProtectionSpace] keyEnumerator];
+            id userName;
+            
+            // iterate over all usernames for this protectionspace, which are the keys for the actual NSURLCredentials
+            while (userName = [userNameEnumerator nextObject]) {
+                NSURLCredential *cred = [[credentialsDict objectForKey:urlProtectionSpace] objectForKey:userName];
+                CHWebBrowserLog(@"removing credential for user %@",[cred user]);
+                [[NSURLCredentialStorage sharedCredentialStorage] removeCredential:cred forProtectionSpace:urlProtectionSpace];
+            }
+        }
+    }
+    
+    NSURLCache *sharedCache = [NSURLCache sharedURLCache];
+    [sharedCache removeAllCachedResponses];
+    
+    NSHTTPCookieStorage *cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    NSArray *cookies = [cookieStorage cookies];
+    for (NSHTTPCookie *cookie in cookies) {
+        CHWebBrowserLog(@"deleting cookie %@", cookie);
+        [cookieStorage deleteCookie:cookie];
+    }
 }
 
 

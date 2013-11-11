@@ -22,8 +22,6 @@
 
 @interface CHWebBrowserViewController : UIViewController <UIWebViewDelegate, NSURLConnectionDelegate, UIAlertViewDelegate, UIActionSheetDelegate, UIBarPositioningDelegate, UIScrollViewDelegate, TKAURLProtocolDelegate>
 {
-    NSString *_requestUrl;
-    
     CGPoint _lastContentOffset;
     BOOL _isScrollViewScrolling;
     BOOL _isMovingViews;
@@ -62,6 +60,7 @@
 + (id)initWithDefaultNib;
 + (id)initWithDefaultNibAndRequestUrl:(NSString*)requestUrl;
 + (void)openWebBrowserControllerModallyWithUrl:(NSString*)urlString animated:(BOOL)animated completion:(void (^)(void))completion;
++ (void)clearCredentialsAndCookiesAndCache;
 
 - (void)resetAffectedViewsAnimated:(BOOL)animated;
 @end

@@ -42,6 +42,11 @@ float randomFloat(float Min, float Max){
     [self.navigationController pushViewController:[CHWebBrowserViewController initWithDefaultNibAndRequestUrl:_urlTextField.text] animated:YES];
 }
 
+- (IBAction)clearCacheAndCredentialsAndCookies:(id)sender
+{
+    [CHWebBrowserViewController clearCredentialsAndCookiesAndCache];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

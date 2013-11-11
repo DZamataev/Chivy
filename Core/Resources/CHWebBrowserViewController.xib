@@ -39,13 +39,13 @@
                     <items>
                         <barButtonItem image="arrow_back.png" style="plain" id="srx-io-Le6">
                             <connections>
-                                <action selector="backButtonTouchUp:" destination="-1" id="gnB-qB-NjK"/>
+                                <action selector="goBack" destination="T7w-qf-GG4" id="HIl-DT-Bc8"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="sAG-Rx-px8"/>
                         <barButtonItem image="arrow_forward.png" style="plain" id="shM-CK-peR">
                             <connections>
-                                <action selector="forwardButtonTouchUp:" destination="-1" id="jiD-Tj-yNo"/>
+                                <action selector="goForward" destination="T7w-qf-GG4" id="fGP-P6-9It"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem width="90" style="plain" systemItem="fixedSpace" id="BPF-9s-alT"/>
@@ -57,7 +57,7 @@
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="oyc-mv-ZAI"/>
                         <barButtonItem systemItem="refresh" id="szP-jm-iiN">
                             <connections>
-                                <action selector="reloadButtonTouchUp:" destination="-1" id="ISt-yK-2VV"/>
+                                <action selector="reload" destination="T7w-qf-GG4" id="IJy-tk-2L4"/>
                             </connections>
                         </barButtonItem>
                     </items>

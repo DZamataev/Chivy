@@ -31,7 +31,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="http://sputnik.ru" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7tl-3n-OX3">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="http://google.com" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7tl-3n-OX3">
                                 <rect key="frame" x="10" y="98" width="300" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -67,6 +67,16 @@
                                     <action selector="randomizeTintColor:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="odc-wA-mON"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1sY-5Z-8Wd">
+                                <rect key="frame" x="30" y="252" width="261" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Clear cache, credentials, cookies">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="clearCacheAndCredentialsAndCookies:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="eoe-5q-an0"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -78,9 +88,12 @@
                             <constraint firstItem="Mxh-iq-3Xs" firstAttribute="centerX" secondItem="7tl-3n-OX3" secondAttribute="centerX" id="UVZ-Rm-MAX"/>
                             <constraint firstItem="ebX-zg-71a" firstAttribute="top" secondItem="7tl-3n-OX3" secondAttribute="bottom" constant="10" id="Yg4-be-WVT"/>
                             <constraint firstItem="Mxh-iq-3Xs" firstAttribute="top" secondItem="CV4-BU-5V7" secondAttribute="bottom" constant="8" symbolic="YES" id="YrB-7V-HHV"/>
+                            <constraint firstItem="1sY-5Z-8Wd" firstAttribute="top" secondItem="Mxh-iq-3Xs" secondAttribute="bottom" constant="8" symbolic="YES" id="ZUB-fX-sSj"/>
                             <constraint firstItem="Mxh-iq-3Xs" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="e7k-iS-Ox1"/>
                             <constraint firstItem="ebX-zg-71a" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="34" id="fjH-Pp-PSN"/>
+                            <constraint firstItem="1sY-5Z-8Wd" firstAttribute="centerX" secondItem="Mxh-iq-3Xs" secondAttribute="centerX" id="gWJ-tR-0VR"/>
                             <constraint firstAttribute="trailing" secondItem="ebX-zg-71a" secondAttribute="trailing" constant="35" id="iO5-nZ-6EP"/>
+                            <constraint firstItem="1sY-5Z-8Wd" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="30" id="pCp-es-V0W"/>
                             <constraint firstItem="7tl-3n-OX3" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="10" id="y5A-Ug-fyZ"/>
                         </constraints>
                     </view>
