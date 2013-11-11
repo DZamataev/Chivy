@@ -46,6 +46,10 @@ enum actionSheetButtonIndex {
 #define CHWebBrowserViewsAffectedByAlphaChanging (@[_titleLabel, _dismissBarButtonItem.customView, _readBarButtonItem.customView])
 #endif
 
+#ifndef CHWebBrowserEnableProgressBar
+#define CHWebBrowserEnableProgressBar FALSE
+#endif
+
 #define CHWebBrowserNavModeNavBarYPositionShownStateCorrection (_wasOpenedModally ? 0 : -2)
 
 
@@ -136,7 +140,7 @@ enum actionSheetButtonIndex {
     _webView.scrollView.delegate = self;
     
     if (_wasOpenedModally) {
-        if (![self SuProgressBar])
+        if (CHWebBrowserEnableProgressBar && ![self SuProgressBar])
             [self SuProgressForWebView:_webView inView:self.localNavigationBar];
         
     }
@@ -146,7 +150,7 @@ enum actionSheetButtonIndex {
         self.navigationItem.rightBarButtonItem = self.readBarButtonItem;
         [self.localNavigationBar removeFromSuperview];
         //self.localNavigationBar = nil;
-        if (![self SuProgressBar])
+        if (CHWebBrowserEnableProgressBar && ![self SuProgressBar])
             [self SuProgressForWebView:_webView inView:self.localNavigationBar];
     }
     
