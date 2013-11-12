@@ -164,10 +164,10 @@
 				9292F8301828EDC9007445BF /* exit@2x.png */,
 				9292F8311828EDC9007445BF /* read.png */,
 				9292F8321828EDC9007445BF /* read@2x.png */,
-				927DD9A418239270003A078F /* arrow_back@2x.png */,
-				927DD9A618239270003A078F /* arrow_forward@2x.png */,
 				927DD99B1823914F003A078F /* arrow_back.png */,
+				927DD9A418239270003A078F /* arrow_back@2x.png */,
 				927DD99D1823914F003A078F /* arrow_forward.png */,
+				927DD9A618239270003A078F /* arrow_forward@2x.png */,
 				9240584018228A0800C4EB84 /* CHWebBrowserViewController_iPhone.xib */,
 				923D239018311BDC00AD3C9F /* CHWebBrowserViewController_iPad.xib */,
 			);

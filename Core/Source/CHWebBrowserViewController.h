@@ -23,14 +23,16 @@ typedef void (^ValuesInAffectedViewsSetterBlock)(UIView *topBar,
 
 
 @interface CHWebBrowserViewControllerAttributes : NSObject
-@property (nonatomic, strong) UIColor *tintColor;
 @property (nonatomic, assign) float titleScrollingSpeed;
-@property (nonatomic, assign) float navBarHeight;
 @property (nonatomic, assign) float statusBarHeight;
 @property (nonatomic, assign) int suProgressBarTag;
 @property (nonatomic, assign) float animationDurationPerOnePixel;
 @property (nonatomic, assign) NSTextAlignment titleTextAlignment;
-@property (nonatomic, assign) BOOL progressBarEnabled;
+@property (nonatomic, assign) BOOL isProgressBarEnabled;
+@property (nonatomic, assign) BOOL isHidingBarsOnScrollingEnabled;
+@property (nonatomic, assign) BOOL shouldAutorotate;
+@property (nonatomic, assign) NSUInteger supportedInterfaceOrientations;
+
 + (CHWebBrowserViewControllerAttributes*)defaultAttributes;
 @end
 
@@ -42,6 +44,8 @@ typedef void (^ValuesInAffectedViewsSetterBlock)(UIView *topBar,
     BOOL _isMovingViews;
     BOOL _isAnimatingViews;
     BOOL _isAnimatingResettingViews;
+    
+    BOOL _wasOpenedModally;
     
     ValuesInAffectedViewsSetterBlock _valuesInAffectedViewsSetterBlock;
 }
@@ -60,8 +64,13 @@ typedef void (^ValuesInAffectedViewsSetterBlock)(UIView *topBar,
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *dismissBarButtonItem;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *readBarButtonItem;
 
+@property (nonatomic, strong) NSMutableArray *viewsAffectedByAlphaChanging;
+
 @property (nonatomic, strong) IBOutlet CBAutoScrollLabel *titleLabel;
 @property (nonatomic, strong) IBOutlet CBAutoScrollLabel *urlLabel;
+
+@property (nonatomic, readonly) UINavigationBar *topBar;
+@property (nonatomic, readonly) UIView *suProgressBar;
 
 
 /* This URL should be set after creating the controller but before viewWillAppear
@@ -70,7 +79,7 @@ typedef void (^ValuesInAffectedViewsSetterBlock)(UIView *topBar,
 @property (nonatomic, strong) NSURL *homeUrl;
 @property (nonatomic, strong) NSURLRequest *mainRequest;
 
-@property (nonatomic, assign) BOOL wasOpenedModally;
+@property (nonatomic, readonly) BOOL wasOpenedModally;
 
 /* This block is used to set **values** in **views** which both come from arguments in the following situations:
  - scroll view did scroll and user was dragging (not animated call)

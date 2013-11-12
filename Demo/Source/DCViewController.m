@@ -22,25 +22,38 @@
 
 - (IBAction)openWebBrowserModally:(id)sender
 {
-    [CHWebBrowserViewController openWebBrowserControllerModallyWithHomeUrl:[NSURL URLWithString:_urlTextField.text] animated:YES completion:^{
-        NSLog(@"Modal animation completed");
-    }];
-}
-
-- (IBAction)pushWebBrowser:(id)sender
-{
-    [self.navigationController pushViewController:[CHWebBrowserViewController initWithDefaultNibAndHomeUrl:[NSURL URLWithString:_urlTextField.text]] animated:YES];
+    [CHWebBrowserViewController openWebBrowserControllerModallyWithHomeUrl:[NSURL URLWithString:_urlTextField.text]
+                                                                  animated:YES
+                                                                completion:^{
+                                                                    NSLog(@"Modal animation completed");
+                                                                }];
 }
 
 - (IBAction)openCustomizedWebBrowserModally:(id)sender
 {
     CHWebBrowserViewController *webBrowserVC = [CHWebBrowserViewController initWithDefaultNibAndHomeUrl:[NSURL URLWithString:_urlTextField.text]];
-    webBrowserVC.cAttributes.titleScrollingSpeed = 30;
+    
+    webBrowserVC.view.tintColor = [UIColor redColor];
+    webBrowserVC.cAttributes.titleScrollingSpeed = 50.0f;
+    webBrowserVC.cAttributes.animationDurationPerOnePixel = 0.0068181818f;
     webBrowserVC.cAttributes.titleTextAlignment = NSTextAlignmentLeft;
-    webBrowserVC.cAttributes.progressBarEnabled = YES;
-    [CHWebBrowserViewController openWebBrowserController:webBrowserVC modallyWithUrl:[NSURL URLWithString:_urlTextField.text] animated:YES completion:^{
-        NSLog(@"Modal animation completed");
-    }];
+    webBrowserVC.cAttributes.isProgressBarEnabled = YES;
+    webBrowserVC.cAttributes.isHidingBarsOnScrollingEnabled = NO;
+    webBrowserVC.cAttributes.shouldAutorotate = NO;
+    webBrowserVC.cAttributes.supportedInterfaceOrientations = UIInterfaceOrientationMaskLandscape;
+    
+    [CHWebBrowserViewController openWebBrowserController:webBrowserVC
+                                          modallyWithUrl:[NSURL URLWithString:_urlTextField.text]
+                                                animated:YES
+                                              completion:^{
+                                                  NSLog(@"Modal animation completed");
+                                              }];
+}
+
+- (IBAction)pushWebBrowser:(id)sender
+{
+    [self.navigationController pushViewController:[CHWebBrowserViewController initWithDefaultNibAndHomeUrl:[NSURL URLWithString:_urlTextField.text]]
+                                         animated:YES];
 }
 
 - (IBAction)randomizeTintColor:(id)sender

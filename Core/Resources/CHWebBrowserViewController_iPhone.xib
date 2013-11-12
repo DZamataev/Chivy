@@ -37,13 +37,13 @@
                     <rect key="frame" x="0.0" y="524" width="320" height="44"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <items>
-                        <barButtonItem image="arrow_back.png" style="plain" id="srx-io-Le6">
+                        <barButtonItem enabled="NO" image="arrow_back.png" style="plain" id="srx-io-Le6">
                             <connections>
                                 <action selector="goBack" destination="T7w-qf-GG4" id="HIl-DT-Bc8"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="sAG-Rx-px8"/>
-                        <barButtonItem image="arrow_forward.png" style="plain" id="shM-CK-peR">
+                        <barButtonItem enabled="NO" image="arrow_forward.png" style="plain" id="shM-CK-peR">
                             <connections>
                                 <action selector="goForward" destination="T7w-qf-GG4" id="fGP-P6-9It"/>
                             </connections>
@@ -118,16 +118,16 @@
             </subviews>
             <color key="backgroundColor" red="0.74117647058823533" green="0.74117647058823533" blue="0.76078431372549016" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstItem="T7w-qf-GG4" firstAttribute="leading" secondItem="dkI-8x-Vos" secondAttribute="leading" id="26M-0x-37q"/>
-                <constraint firstItem="T7w-qf-GG4" firstAttribute="bottom" secondItem="dkI-8x-Vos" secondAttribute="bottom" id="4SZ-sd-cz9"/>
+                <constraint firstAttribute="bottom" secondItem="T7w-qf-GG4" secondAttribute="bottom" id="94R-YW-GRM"/>
                 <constraint firstItem="Ig9-bL-VHb" firstAttribute="top" secondItem="1" secondAttribute="top" constant="22" id="Af0-ZQ-bfX"/>
-                <constraint firstItem="Ig9-bL-VHb" firstAttribute="leading" secondItem="dkI-8x-Vos" secondAttribute="leading" id="GT2-KG-8zH"/>
+                <constraint firstItem="dkI-8x-Vos" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="GbG-UI-JEQ"/>
                 <constraint firstItem="T7w-qf-GG4" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="IEr-zs-fWc"/>
                 <constraint firstAttribute="bottom" secondItem="dkI-8x-Vos" secondAttribute="bottom" id="Mmc-X8-QqE"/>
                 <constraint firstAttribute="trailing" secondItem="dkI-8x-Vos" secondAttribute="trailing" id="Nj3-pM-a6D"/>
                 <constraint firstItem="T7w-qf-GG4" firstAttribute="top" secondItem="1" secondAttribute="top" id="PQV-kP-njz"/>
-                <constraint firstItem="dkI-8x-Vos" firstAttribute="trailing" secondItem="Ig9-bL-VHb" secondAttribute="trailing" id="oTB-ey-mFF"/>
+                <constraint firstAttribute="trailing" secondItem="Ig9-bL-VHb" secondAttribute="trailing" id="Tq9-u1-4nf"/>
                 <constraint firstAttribute="trailing" secondItem="T7w-qf-GG4" secondAttribute="trailing" id="rBJ-IG-rgW"/>
+                <constraint firstItem="Ig9-bL-VHb" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="tL7-Cw-dnV"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>

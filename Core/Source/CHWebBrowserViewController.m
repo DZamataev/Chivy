@@ -15,18 +15,18 @@ enum actionSheetButtonIndex {
 };
 
 #ifndef CHWebBrowserNavBarHeight
-#define CHWebBrowserNavBarHeight (self.cAttributes.navBarHeight)
+#define CHWebBrowserNavBarHeight (self.topBar.frame.size.height)
 #endif
 
 #ifndef CHWebBrowserStatusBarHeight
 #define CHWebBrowserStatusBarHeight (self.cAttributes.statusBarHeight)
 #endif
 
-#ifndef CHWebBrowserViewsAffectedByAlphaChanging
-#define CHWebBrowserViewsAffectedByAlphaChanging (@[_titleLabel, _dismissBarButtonItem.customView, _readBarButtonItem.customView])
+#ifndef CHWebBrowserViewsAffectedByAlphaChangingByDefault
+#define CHWebBrowserViewsAffectedByAlphaChangingByDefault (@[_titleLabel, _dismissBarButtonItem.customView, _readBarButtonItem.customView])
 #endif
 
-#define CHWebBrowser_DEBUG_LOGGING /* used to enable or disable logging */
+#define CHWebBrowser_DEBUG_LOGGING // used to enable or disable logging
 
 #ifdef CHWebBrowser_DEBUG_LOGGING
 #	define CHWebBrowserLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
@@ -39,16 +39,17 @@ enum actionSheetButtonIndex {
 @implementation CHWebBrowserViewControllerAttributes
 
 + (CHWebBrowserViewControllerAttributes*)defaultAttributes {
-    CHWebBrowserViewControllerAttributes *a = [[CHWebBrowserViewControllerAttributes alloc] init];
-    a.tintColor = [UIApplication sharedApplication].keyWindow.tintColor;
-    a.titleScrollingSpeed = 20.0f;
-    a.navBarHeight = 44.0f;
-    a.statusBarHeight = 22.0f;
-    a.suProgressBarTag = 51381;
-    a.animationDurationPerOnePixel = 0.0068181818f;
-    a.titleTextAlignment = NSTextAlignmentCenter;
-    a.progressBarEnabled = NO;
-    return a;
+    CHWebBrowserViewControllerAttributes *defaultAttributes = [[CHWebBrowserViewControllerAttributes alloc] init];
+    defaultAttributes.titleScrollingSpeed = 20.0f;
+    defaultAttributes.statusBarHeight = 22.0f;
+    defaultAttributes.suProgressBarTag = 51381;
+    defaultAttributes.animationDurationPerOnePixel = 0.0068181818f;
+    defaultAttributes.titleTextAlignment = NSTextAlignmentCenter;
+    defaultAttributes.isProgressBarEnabled = NO;
+    defaultAttributes.isHidingBarsOnScrollingEnabled = YES;
+    defaultAttributes.shouldAutorotate = YES;
+    defaultAttributes.supportedInterfaceOrientations = UIInterfaceOrientationMaskAllButUpsideDown;
+    return defaultAttributes;
 }
 
 @end
@@ -60,8 +61,6 @@ enum actionSheetButtonIndex {
 @implementation CHWebBrowserViewController
 
 #pragma mark - Initialization
-
-
 
 + (void)openWebBrowserController:(CHWebBrowserViewController*)vc modallyWithUrl:(NSURL*)url animated:(BOOL)animated completion:(void (^)(void))completion {
     vc.homeUrl = url;
@@ -115,6 +114,8 @@ enum actionSheetButtonIndex {
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
+        self.viewsAffectedByAlphaChanging = [NSMutableArray new];
+        self.automaticallyAdjustsScrollViewInsets = NO;
     }
     return self;
 }
@@ -179,15 +180,30 @@ enum actionSheetButtonIndex {
     return _cAttributes;
 }
 
+- (BOOL)wasOpenedModally {
+    return _wasOpenedModally;
+}
+
+- (UINavigationBar*)topBar {
+    return self.wasOpenedModally ? self.localNavigationBar : self.navigationController.navigationBar;
+}
+
+- (UIView*)suProgressBar {
+    UIView *result = nil;
+    result = [self.localNavigationBar viewWithTag:self.cAttributes.suProgressBarTag];
+    if (!result) {
+        result = [self.navigationController.navigationBar viewWithTag:self.cAttributes.suProgressBarTag];
+    }
+    return result;
+}
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
 {
     self.titleLabel.scrollSpeed = self.cAttributes.titleScrollingSpeed;
     self.titleLabel.textAlignment = self.cAttributes.titleTextAlignment;
-    
-    [self heartbeat];
-    
+    [self.viewsAffectedByAlphaChanging addObjectsFromArray:CHWebBrowserViewsAffectedByAlphaChangingByDefault];
     [super viewDidLoad];
 }
 
@@ -209,12 +225,12 @@ enum actionSheetButtonIndex {
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    _wasOpenedModally = [self isModal];
+    _wasOpenedModally = [CHWebBrowserViewController isViewControllerOpenedModally:self];
     
     _webView.scrollView.delegate = self;
     
     if (_wasOpenedModally) {
-        if (self.cAttributes.progressBarEnabled && ![self SuProgressBar])
+        if (self.cAttributes.isProgressBarEnabled && !self.suProgressBar)
             [self SuProgressForWebView:_webView inView:self.localNavigationBar];
         
     }
@@ -224,13 +240,13 @@ enum actionSheetButtonIndex {
         self.navigationItem.rightBarButtonItem = self.readBarButtonItem;
         [self.localNavigationBar removeFromSuperview];
         //self.localNavigationBar = nil;
-        if (self.cAttributes.progressBarEnabled && ![self SuProgressBar])
+        if (self.cAttributes.isProgressBarEnabled && !self.suProgressBar)
             [self SuProgressForWebView:_webView inView:self.localNavigationBar];
     }
     
     [self resetInsets];
     
-    [[self SuProgressBar] setHidden:NO];
+    [self.suProgressBar setHidden:NO];
     
     [TKAURLProtocol registerProtocol];
 	// Two variants for https connection
@@ -249,7 +265,7 @@ enum actionSheetButtonIndex {
     
     _webView.scrollView.delegate = nil;
     
-    [[self SuProgressBar] setHidden:YES];
+    [self.suProgressBar setHidden:YES];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
     [self resetAffectedViewsAnimated:YES];
@@ -272,35 +288,8 @@ enum actionSheetButtonIndex {
     [super viewWillDisappear:animated];
 }
 
-- (void)heartbeat {
-    CHWebBrowserLog(@"%i", self.hash);
-    //[self performSelector:@selector(heartbeat) withObject:nil afterDelay:0.1f];
-}
-
 - (void)dealloc {
-    CHWebBrowserLog(@"DEALLOC");
-}
-
-#pragma mark - Helpers
-
-- (UINavigationBar*)topBar {
-    return self.wasOpenedModally ? self.localNavigationBar : self.navigationController.navigationBar;
-}
-
-- (BOOL)isModal {
-    return self.presentingViewController.presentedViewController == self
-    || self.navigationController.presentingViewController.presentedViewController == self.navigationController
-    || [self.tabBarController.presentingViewController isKindOfClass:[UITabBarController class]];
-}
-
-- (UIView*)SuProgressBar
-{
-    UIView *result = nil;
-    result = [self.localNavigationBar viewWithTag:self.cAttributes.suProgressBarTag];
-    if (!result) {
-        result = [self.navigationController.navigationBar viewWithTag:self.cAttributes.suProgressBarTag];
-    }
-    return result;
+    CHWebBrowserLog(@"");
 }
 
 #pragma mark - View State Interactions
@@ -312,7 +301,7 @@ enum actionSheetButtonIndex {
 
 - (void)resetInsets
 {
-    UINavigationBar *topBar = [self topBar];
+    UINavigationBar *topBar = self.topBar;
     CHWebBrowserLog(@"TOP BAR SIZE %f ORIGIN Y %f VIEW FRAME %@", topBar.frame.size.height, topBar.frame.origin.y, NSStringFromCGRect(self.view.frame));
     if (_wasOpenedModally) {
         _webView.scrollView.scrollIndicatorInsets = UIEdgeInsetsMake(CHWebBrowserNavBarHeight + CHWebBrowserStatusBarHeight, 0, CHWebBrowserNavBarHeight, 0);
@@ -568,14 +557,14 @@ enum actionSheetButtonIndex {
 {
     if(!decelerate) {
         _isScrollViewScrolling = NO;
-        if (!_isMovingViews && !_isAnimatingViews && !_isAnimatingResettingViews)
+        if (self.cAttributes.isHidingBarsOnScrollingEnabled && !_isMovingViews && !_isAnimatingViews && !_isAnimatingResettingViews)
             [self animateAffectedViewsAccordingToScrollingEndedInScrollView:scrollView];
     }
 }
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     _isScrollViewScrolling = NO;
-    if (!_isMovingViews && !_isAnimatingViews && !_isAnimatingResettingViews)
+    if (self.cAttributes.isHidingBarsOnScrollingEnabled && !_isMovingViews && !_isAnimatingViews && !_isAnimatingResettingViews)
         [self animateAffectedViewsAccordingToScrollingEndedInScrollView:scrollView];
 }
 
@@ -591,9 +580,9 @@ enum actionSheetButtonIndex {
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    CHWebBrowserLog(@"\n contentOffset.y %f \n delta %f \n contentInset %@ \n scrollIndicatorsInset %@ \n topBarPositionY %f",scrollView.contentOffset.y, _lastContentOffset.y - scrollView.contentOffset.y, NSStringFromUIEdgeInsets(scrollView.contentInset), NSStringFromUIEdgeInsets(scrollView.scrollIndicatorInsets), [self topBar].frame.origin.y);
+    CHWebBrowserLog(@"\n contentOffset.y %f \n delta %f \n contentInset %@ \n scrollIndicatorsInset %@ \n topBarPositionY %f",scrollView.contentOffset.y, _lastContentOffset.y - scrollView.contentOffset.y, NSStringFromUIEdgeInsets(scrollView.contentInset), NSStringFromUIEdgeInsets(scrollView.scrollIndicatorInsets), self.topBar.frame.origin.y);
     
-    if (!_isMovingViews && !_isAnimatingViews && !_isAnimatingResettingViews && scrollView.isDragging) {
+    if (self.cAttributes.isHidingBarsOnScrollingEnabled && !_isMovingViews && !_isAnimatingViews && !_isAnimatingResettingViews && scrollView.isDragging) {
         CGFloat delta =  scrollView.contentOffset.y - _lastContentOffset.y;
         BOOL scrollingDown = delta > 0;
         BOOL scrollingBeyondTopBound = (scrollView.contentOffset.y < - scrollView.contentInset.top);
@@ -614,10 +603,10 @@ enum actionSheetButtonIndex {
     
     CGFloat delta =  scrollView.contentOffset.y - _lastContentOffset.y;
     
-    UINavigationBar *topBar = [self topBar];
+    UINavigationBar *topBar = self.topBar;
     
     float topBarYPosition = [CHWebBrowserViewController clampFloat:topBar.frame.origin.y - delta
-                                                       withMinimum:-CHWebBrowserStatusBarHeight
+                                                       withMinimum:-CHWebBrowserNavBarHeight + CHWebBrowserStatusBarHeight
                                                         andMaximum:CHWebBrowserStatusBarHeight + CHWebBrowserNavModeNavBarYPositionShownStateCorrection];
     float bottomBarYPosition = [CHWebBrowserViewController clampFloat:_bottomToolbar.frame.origin.y + delta
                                                          withMinimum:_webView.frame.size.height - CHWebBrowserNavBarHeight
@@ -636,8 +625,6 @@ enum actionSheetButtonIndex {
                                              withMinimum:0
                                               andMaximum:CHWebBrowserNavBarHeight] / CHWebBrowserNavBarHeight;
     
-    NSArray *viewsAffectedByAlphaChanging = CHWebBrowserViewsAffectedByAlphaChanging;
-    
     self.valuesInAffectedViewsSetterBlock(topBar,
                                           topBarYPosition,
                                           _bottomToolbar,
@@ -645,7 +632,7 @@ enum actionSheetButtonIndex {
                                           scrollView,
                                           contentInset,
                                           scrollingIndicatorInsets,
-                                          viewsAffectedByAlphaChanging,
+                                          _viewsAffectedByAlphaChanging,
                                           alpha);
     _isMovingViews = NO;
 }
@@ -654,11 +641,11 @@ enum actionSheetButtonIndex {
 {
     _isAnimatingViews = YES;
     
-    UINavigationBar *topBar = [self topBar];
+    UINavigationBar *topBar = self.topBar;
 
     float topBarYPosition, topBarDistanceLeft;
     [CHWebBrowserViewController someValue:topBar.frame.origin.y
-                             betweenValue:-CHWebBrowserStatusBarHeight
+                             betweenValue:-CHWebBrowserNavBarHeight + CHWebBrowserStatusBarHeight
                                  andValue:CHWebBrowserStatusBarHeight + CHWebBrowserNavModeNavBarYPositionShownStateCorrection
                          traveledDistance:&topBarDistanceLeft
                           andIsHalfPassed:nil
@@ -699,8 +686,6 @@ enum actionSheetButtonIndex {
                           andIsHalfPassed:nil
                            andTargetLimit:&alpha];
     
-    NSArray *viewsAffectedByAlphaChanging = CHWebBrowserViewsAffectedByAlphaChanging;
-    
     [UIView animateWithDuration:topBarDistanceLeft * self.cAttributes.animationDurationPerOnePixel
                           delay:0.0f
                         options:UIViewAnimationOptionBeginFromCurrentState
@@ -712,7 +697,7 @@ enum actionSheetButtonIndex {
                                                                scrollView,
                                                                contentInset,
                                                                scrollingIndicatorInsets,
-                                                               viewsAffectedByAlphaChanging,
+                                                               _viewsAffectedByAlphaChanging,
                                                                alpha);
                          
     }
@@ -724,19 +709,18 @@ enum actionSheetButtonIndex {
 
 - (void)resetAffectedViewsAnimated:(BOOL)animated
 {
-    UINavigationBar *topBar = [self topBar];
+    UINavigationBar *topBar = self.topBar;
     
-    float topBarYPosition = CHWebBrowserStatusBarHeight + CHWebBrowserNavModeNavBarYPositionShownStateCorrection;
-    CGFloat topBarLowerLimit = -CHWebBrowserStatusBarHeight;
+    CGFloat topBarLowerLimit = -CHWebBrowserNavBarHeight + CHWebBrowserStatusBarHeight;
     CGFloat topBarHigherLimit = CHWebBrowserStatusBarHeight + CHWebBrowserNavModeNavBarYPositionShownStateCorrection;
     float topBarDistanceLeft = fabsf(topBarHigherLimit - topBarLowerLimit);
+    float topBarYPosition = topBarHigherLimit;
     float bottomBarYPosition = _webView.frame.size.height - CHWebBrowserNavBarHeight;
     float topInsetTargetValue = CHWebBrowserNavBarHeight + CHWebBrowserStatusBarHeight + CHWebBrowserNavModeNavBarYPositionShownStateCorrection;
     float bottomInsetTargetValue = CHWebBrowserNavBarHeight;
     UIEdgeInsets contentInset = UIEdgeInsetsMake(topInsetTargetValue,0,bottomInsetTargetValue,0);
     UIEdgeInsets scrollingIndicatorInsets = contentInset;
     float alpha = 1.0f;
-    NSArray *viewsAffectedByAlphaChanging = CHWebBrowserViewsAffectedByAlphaChanging;
     
     void (^setValuesInViews)() = ^void() {
         self.valuesInAffectedViewsSetterBlock(topBar,
@@ -746,7 +730,7 @@ enum actionSheetButtonIndex {
                                               _webView.scrollView,
                                               contentInset,
                                               scrollingIndicatorInsets,
-                                              viewsAffectedByAlphaChanging,
+                                              _viewsAffectedByAlphaChanging,
                                               alpha);
     };
     
@@ -767,6 +751,25 @@ enum actionSheetButtonIndex {
         setValuesInViews();
         _isMovingViews = NO;
     }
+}
+
+#pragma mark - Dealing with Interface Orientation Rotation
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [self.topBar sizeToFit];
+    [_bottomToolbar sizeToFit];
+    [self resetAffectedViewsAnimated:NO];
+    
+    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+}
+
+- (BOOL)shouldAutorotate {
+    return self.cAttributes.shouldAutorotate;
+}
+
+- (NSUInteger)supportedInterfaceOrientations {
+    return self.cAttributes.supportedInterfaceOrientations;
 }
 
 #pragma mark - UIBarPositioningDelegate
@@ -800,6 +803,12 @@ if minimum is smaller than maximum - they will be swapped;
     if (distance != nil) *distance = distance_;
     if (halfPassed != nil) *halfPassed = halfPassed_;
     if (targetLimit != nil) *targetLimit = targetLimit_;
+}
+
++ (BOOL)isViewControllerOpenedModally:(UIViewController*)navigationController {
+    return navigationController.presentingViewController.presentedViewController == navigationController
+    || navigationController.navigationController.presentingViewController.presentedViewController == navigationController.navigationController
+    || [navigationController.tabBarController.presentingViewController isKindOfClass:[UITabBarController class]];
 }
 
 + (NSString *) getDocumentsDirectoryPath {
