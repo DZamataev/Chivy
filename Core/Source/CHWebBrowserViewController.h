@@ -45,9 +45,10 @@ typedef void (^ValuesInAffectedViewsSetterBlock)(UIView *topBar,
     BOOL _isAnimatingViews;
     BOOL _isAnimatingResettingViews;
     
-    BOOL _wasOpenedModally;
-    
     ValuesInAffectedViewsSetterBlock _valuesInAffectedViewsSetterBlock;
+    
+    BOOL _shouldShowDismissButton;
+    NSString *_customBackBarButtonItemTitle;
 }
 @property (nonatomic, strong) CHWebBrowserViewControllerAttributes *cAttributes;
 
@@ -72,14 +73,15 @@ typedef void (^ValuesInAffectedViewsSetterBlock)(UIView *topBar,
 @property (nonatomic, readonly) UINavigationBar *topBar;
 @property (nonatomic, readonly) UIView *suProgressBar;
 
+@property (nonatomic, assign) BOOL shouldShowDismissButton;
+@property (nonatomic, strong) NSString *customBackBarButtonItemTitle;
+
 
 /* This URL should be set after creating the controller but before viewWillAppear
  On viewWillAppear it would be used to navigate the webView
  */
 @property (nonatomic, strong) NSURL *homeUrl;
 @property (nonatomic, strong) NSURLRequest *mainRequest;
-
-@property (nonatomic, readonly) BOOL wasOpenedModally;
 
 /* This block is used to set **values** in **views** which both come from arguments in the following situations:
  - scroll view did scroll and user was dragging (not animated call)
@@ -94,6 +96,7 @@ typedef void (^ValuesInAffectedViewsSetterBlock)(UIView *topBar,
 + (id)initWithDefaultNib;
 + (id)initWithDefaultNibAndHomeUrl:(NSURL*)url;
 
++ (void)openWebBrowserController:(CHWebBrowserViewController*)vc modallyWithUrl:(NSURL*)url animated:(BOOL)animated showDismissButton:(BOOL)showDismissButton completion:(void (^)(void))completion;
 + (void)openWebBrowserController:(CHWebBrowserViewController*)vc modallyWithUrl:(NSURL*)url animated:(BOOL)animated completion:(void (^)(void))completion;
 + (void)openWebBrowserController:(CHWebBrowserViewController*)vc modallyWithUrl:(NSURL*)url animated:(BOOL)animated;
 + (void)openWebBrowserControllerModallyWithHomeUrl:(NSURL*)url animated:(BOOL)animated;

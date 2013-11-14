@@ -33,21 +33,31 @@
 {
     CHWebBrowserViewController *webBrowserVC = [CHWebBrowserViewController initWithDefaultNibAndHomeUrl:[NSURL URLWithString:_urlTextField.text]];
     
-    webBrowserVC.view.tintColor = [UIColor redColor];
-    webBrowserVC.cAttributes.titleScrollingSpeed = 50.0f;
-    webBrowserVC.cAttributes.animationDurationPerOnePixel = 0.0068181818f;
+    webBrowserVC.cAttributes.titleScrollingSpeed = 10.0f;
+    webBrowserVC.cAttributes.animationDurationPerOnePixel = 0.0008f; // faster animation on hiding bars
     webBrowserVC.cAttributes.titleTextAlignment = NSTextAlignmentLeft;
     webBrowserVC.cAttributes.isProgressBarEnabled = YES;
     webBrowserVC.cAttributes.isHidingBarsOnScrollingEnabled = NO;
     webBrowserVC.cAttributes.shouldAutorotate = NO;
     webBrowserVC.cAttributes.supportedInterfaceOrientations = UIInterfaceOrientationMaskLandscape;
-    
+    webBrowserVC.customBackBarButtonItemTitle = @"12";
+
     [CHWebBrowserViewController openWebBrowserController:webBrowserVC
                                           modallyWithUrl:[NSURL URLWithString:_urlTextField.text]
                                                 animated:YES
+                                       showDismissButton:NO
                                               completion:^{
                                                   NSLog(@"Modal animation completed");
                                               }];
+    
+    
+    float delayInSeconds = 8.0f;
+    NSLog(@"Dismiss button will appear in %f seconds. Please wait.", delayInSeconds);
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        webBrowserVC.shouldShowDismissButton = YES;
+    });
+    
 }
 
 - (IBAction)pushWebBrowser:(id)sender
