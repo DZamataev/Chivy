@@ -4,15 +4,10 @@ PODS:
 
 DEPENDENCIES:
   - AutoScrollLabel
-  - SuProgress (from `https://github.com/DZamataev/SuProgress.git`, branch `master`)
-
-EXTERNAL SOURCES:
-  SuProgress:
-    :branch: master
-    :git: https://github.com/DZamataev/SuProgress.git
+  - SuProgress
 
 SPEC CHECKSUMS:
   AutoScrollLabel: 4978b57536512a3ebf4705b1b5618354bcf4ac84
-  SuProgress: 0c0052ba21c5cb9917064ed323838e8bf2fb90b5
+  SuProgress: 5b44431401a2e114ac098a0b976550803d03fd9f
 
 COCOAPODS: 0.27.1
