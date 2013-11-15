@@ -39,7 +39,7 @@ enum actionSheetButtonIndex {
 + (CHWebBrowserViewControllerAttributes*)defaultAttributes {
     CHWebBrowserViewControllerAttributes *defaultAttributes = [[CHWebBrowserViewControllerAttributes alloc] init];
     defaultAttributes.titleScrollingSpeed = 20.0f;
-    defaultAttributes.statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
+    defaultAttributes.statusBarHeight = UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]) ? [UIApplication sharedApplication].statusBarFrame.size.height : [UIApplication sharedApplication].statusBarFrame.size.width;
     defaultAttributes.suProgressBarTag = 51381;
     defaultAttributes.animationDurationPerOnePixel = 0.0068181818f;
     defaultAttributes.titleTextAlignment = NSTextAlignmentCenter;
@@ -47,6 +47,7 @@ enum actionSheetButtonIndex {
     defaultAttributes.isHidingBarsOnScrollingEnabled = YES;
     defaultAttributes.shouldAutorotate = YES;
     defaultAttributes.supportedInterfaceOrientations = UIInterfaceOrientationMaskAllButUpsideDown;
+    defaultAttributes.preferredStatusBarStyle = UIStatusBarStyleLightContent;
     return defaultAttributes;
 }
 
@@ -122,6 +123,7 @@ enum actionSheetButtonIndex {
     if (self) {
         self.viewsAffectedByAlphaChanging = [NSMutableArray new];
         self.automaticallyAdjustsScrollViewInsets = NO;
+        self.toolbarFixedSpaceInTheMiddleDelta = 80.0f;
     }
     return self;
 }
@@ -160,7 +162,6 @@ enum actionSheetButtonIndex {
             for (id view in viewsAffectedByAlphaChanging) {
                 [view setAlpha:alpha];
             }
-            self.navigationController.navigationBar.backItem.titleView.alpha = alpha;
         };
         
     }
@@ -210,6 +211,10 @@ enum actionSheetButtonIndex {
     return [self.navigationController.navigationBar viewWithTag:self.cAttributes.suProgressBarTag];
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return self.cAttributes.preferredStatusBarStyle;
+}
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
@@ -249,6 +254,10 @@ enum actionSheetButtonIndex {
 }
 
 -(void)viewWillAppear:(BOOL)animated {
+    self.wasNavigationBarHiddenOnEnter = self.navigationController.navigationBarHidden;
+    if (self.wasNavigationBarHiddenOnEnter)
+        [self.navigationController setNavigationBarHidden:NO animated:YES];
+    
     [self resetInsets];
     
     if (self.shouldShowDismissButton)
@@ -273,6 +282,8 @@ enum actionSheetButtonIndex {
 }
 
 -(void) viewWillDisappear:(BOOL)animated {
+    [self.navigationController setNavigationBarHidden:self.wasNavigationBarHiddenOnEnter animated:YES];
+    
     [_webView stopLoading];
     
     if (!self.shouldShowDismissButton && self.navigationItem.leftBarButtonItem == self.dismissBarButtonItem)
@@ -281,8 +292,8 @@ enum actionSheetButtonIndex {
     [self.suProgressBar setHidden:YES];
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    
-    [self resetAffectedViewsAnimated:YES];
+
+//    [self resetAffectedViewsAnimated:NO];
     
     if (_mainRequest)
 	{
@@ -752,6 +763,7 @@ enum actionSheetButtonIndex {
     [self.topBar sizeToFit];
     [_bottomToolbar sizeToFit];
     [self resetAffectedViewsAnimated:NO];
+
     
     [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 }

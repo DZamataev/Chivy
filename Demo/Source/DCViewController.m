@@ -40,7 +40,6 @@
     webBrowserVC.cAttributes.isHidingBarsOnScrollingEnabled = NO;
     webBrowserVC.cAttributes.shouldAutorotate = NO;
     webBrowserVC.cAttributes.supportedInterfaceOrientations = UIInterfaceOrientationMaskLandscape;
-    webBrowserVC.customBackBarButtonItemTitle = @"12";
 
     [CHWebBrowserViewController openWebBrowserController:webBrowserVC
                                           modallyWithUrl:[NSURL URLWithString:_urlTextField.text]
@@ -66,6 +65,22 @@
                                          animated:YES];
 }
 
+- (IBAction)pushCustomizedWebBrowser:(id)sender
+{
+    CHWebBrowserViewController *webBrowserVC = [CHWebBrowserViewController initWithDefaultNibAndHomeUrl:[NSURL URLWithString:_urlTextField.text]];
+    
+    webBrowserVC.cAttributes.titleScrollingSpeed = 10.0f;
+    webBrowserVC.cAttributes.animationDurationPerOnePixel = 0.0008f; // faster animation on hiding bars
+    webBrowserVC.cAttributes.titleTextAlignment = NSTextAlignmentLeft;
+    webBrowserVC.cAttributes.isProgressBarEnabled = YES;
+    webBrowserVC.cAttributes.isHidingBarsOnScrollingEnabled = NO;
+    webBrowserVC.cAttributes.shouldAutorotate = NO;
+    webBrowserVC.cAttributes.supportedInterfaceOrientations = UIInterfaceOrientationMaskLandscape;
+    webBrowserVC.customBackBarButtonItemTitle = @"mytitle";
+    
+    [self.navigationController pushViewController:webBrowserVC animated:YES];
+}
+
 - (IBAction)randomizeTintColor:(id)sender
 {
     [[UIApplication sharedApplication].keyWindow setTintColor:[UIColor colorWithRed:randomFloat(0, 1) green:randomFloat(0, 1) blue:randomFloat(0, 1) alpha:1.0f]];
@@ -74,6 +89,11 @@
 - (IBAction)clearCacheAndCredentialsAndCookies:(id)sender
 {
     [CHWebBrowserViewController clearCredentialsAndCookiesAndCache];
+}
+
+- (IBAction)switchNavBarVisibility:(id)sender
+{
+    [self.navigationController setNavigationBarHidden:!self.navigationController.navigationBarHidden animated:YES];
 }
 
 - (void)didReceiveMemoryWarning

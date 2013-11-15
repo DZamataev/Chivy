@@ -58,7 +58,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mxh-iq-3Xs">
-                                <rect key="frame" x="69" y="252" width="180" height="30"/>
+                                <rect key="frame" x="68" y="290" width="180" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Randomize tint color">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -68,7 +68,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1sY-5Z-8Wd">
-                                <rect key="frame" x="29" y="290" width="261" height="30"/>
+                                <rect key="frame" x="28" y="328" width="261" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Clear cache, credentials, cookies">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -87,27 +87,53 @@
                                     <action selector="openCustomizedWebBrowserModally:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="AEX-PY-tjc"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SIO-xU-Tuo">
+                                <rect key="frame" x="8" y="252" width="300" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Push customized browser control">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="pushCustomizedWebBrowser:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="Km6-GY-3zx"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AAg-uc-0br">
+                                <rect key="frame" x="10" y="366" width="300" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Switch nav bar visibility">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="switchNavBarVisibility:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="MC7-nN-6Jw"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="1sY-5Z-8Wd" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="29" id="1xo-BT-1s0"/>
-                            <constraint firstAttribute="trailing" secondItem="1sY-5Z-8Wd" secondAttribute="trailing" constant="30" id="2iB-WR-l60"/>
-                            <constraint firstItem="HNZ-HR-DFD" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="7Tp-VL-gjJ"/>
-                            <constraint firstItem="Mxh-iq-3Xs" firstAttribute="centerX" secondItem="1sY-5Z-8Wd" secondAttribute="centerX" id="ABq-gn-0KI"/>
-                            <constraint firstItem="7tl-3n-OX3" firstAttribute="top" secondItem="Klk-1Q-GzU" secondAttribute="bottom" constant="34" id="HBf-WW-FPR"/>
-                            <constraint firstItem="Mxh-iq-3Xs" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="69" id="I71-JT-SG0"/>
-                            <constraint firstItem="ebX-zg-71a" firstAttribute="centerX" secondItem="Mxh-iq-3Xs" secondAttribute="centerX" id="KgR-x4-giH"/>
-                            <constraint firstItem="Mxh-iq-3Xs" firstAttribute="top" secondItem="CV4-BU-5V7" secondAttribute="bottom" constant="8" symbolic="YES" id="Rew-zk-e4U"/>
-                            <constraint firstItem="7tl-3n-OX3" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="10" id="Tct-yB-4v9"/>
-                            <constraint firstItem="ebX-zg-71a" firstAttribute="top" secondItem="7tl-3n-OX3" secondAttribute="bottom" constant="10" id="Ugd-6x-hLk"/>
-                            <constraint firstItem="HNZ-HR-DFD" firstAttribute="top" secondItem="ebX-zg-71a" secondAttribute="bottom" constant="8" symbolic="YES" id="cLy-dH-rfG"/>
-                            <constraint firstItem="CV4-BU-5V7" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="33" id="eRV-eT-IuA"/>
-                            <constraint firstAttribute="trailing" secondItem="CV4-BU-5V7" secondAttribute="trailing" constant="37" id="jt0-9B-TgJ"/>
-                            <constraint firstItem="7tl-3n-OX3" firstAttribute="leading" secondItem="HNZ-HR-DFD" secondAttribute="leading" id="p1M-Ng-6fe"/>
-                            <constraint firstItem="ebX-zg-71a" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="34" id="uM4-Xm-VE8"/>
-                            <constraint firstItem="1sY-5Z-8Wd" firstAttribute="top" secondItem="Mxh-iq-3Xs" secondAttribute="bottom" constant="8" symbolic="YES" id="vgX-4t-Nhs"/>
-                            <constraint firstItem="7tl-3n-OX3" firstAttribute="trailing" secondItem="HNZ-HR-DFD" secondAttribute="trailing" id="xIw-6Y-Ors"/>
-                            <constraint firstItem="CV4-BU-5V7" firstAttribute="top" secondItem="HNZ-HR-DFD" secondAttribute="bottom" constant="8" symbolic="YES" id="yVE-2P-pbC"/>
+                            <constraint firstAttribute="trailing" secondItem="SIO-xU-Tuo" secondAttribute="trailing" constant="12" id="0yP-7a-4JH"/>
+                            <constraint firstItem="Mxh-iq-3Xs" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="68" id="9Ov-Yy-mRe"/>
+                            <constraint firstItem="7tl-3n-OX3" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="10" id="EHu-5o-C88"/>
+                            <constraint firstItem="CV4-BU-5V7" firstAttribute="top" secondItem="HNZ-HR-DFD" secondAttribute="bottom" constant="8" symbolic="YES" id="G6m-yZ-iZz"/>
+                            <constraint firstItem="7tl-3n-OX3" firstAttribute="trailing" secondItem="HNZ-HR-DFD" secondAttribute="trailing" id="H7r-Iw-KsD"/>
+                            <constraint firstItem="ebX-zg-71a" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="34" id="Hq9-QR-9Kx"/>
+                            <constraint firstItem="SIO-xU-Tuo" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="8" id="IOv-8j-rOH"/>
+                            <constraint firstItem="7tl-3n-OX3" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="KMd-lW-ELY"/>
+                            <constraint firstItem="1sY-5Z-8Wd" firstAttribute="top" secondItem="Mxh-iq-3Xs" secondAttribute="bottom" constant="8" symbolic="YES" id="PhF-Hf-eDb"/>
+                            <constraint firstItem="Mxh-iq-3Xs" firstAttribute="top" secondItem="SIO-xU-Tuo" secondAttribute="bottom" constant="8" symbolic="YES" id="Uor-fE-EB5"/>
+                            <constraint firstItem="SIO-xU-Tuo" firstAttribute="top" secondItem="CV4-BU-5V7" secondAttribute="bottom" constant="8" symbolic="YES" id="W5p-R7-dTM"/>
+                            <constraint firstItem="CV4-BU-5V7" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="33" id="Ygr-jJ-GBR"/>
+                            <constraint firstItem="AAg-uc-0br" firstAttribute="leading" secondItem="HNZ-HR-DFD" secondAttribute="leading" id="aVY-hK-3vP"/>
+                            <constraint firstItem="HNZ-HR-DFD" firstAttribute="leading" secondItem="7tl-3n-OX3" secondAttribute="leading" id="b9m-wS-G6y"/>
+                            <constraint firstItem="AAg-uc-0br" firstAttribute="trailing" secondItem="HNZ-HR-DFD" secondAttribute="trailing" id="ft5-3t-dek"/>
+                            <constraint firstItem="7tl-3n-OX3" firstAttribute="top" secondItem="Klk-1Q-GzU" secondAttribute="bottom" constant="34" id="jgo-Fu-D3g"/>
+                            <constraint firstItem="1sY-5Z-8Wd" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="28" id="oYh-xY-ZWt"/>
+                            <constraint firstItem="AAg-uc-0br" firstAttribute="top" secondItem="1sY-5Z-8Wd" secondAttribute="bottom" constant="8" symbolic="YES" id="pcr-Zx-GHV"/>
+                            <constraint firstItem="Mxh-iq-3Xs" firstAttribute="centerX" secondItem="1sY-5Z-8Wd" secondAttribute="centerX" id="qBP-74-6IN"/>
+                            <constraint firstAttribute="trailing" secondItem="ebX-zg-71a" secondAttribute="trailing" constant="35" id="qTc-54-wFi"/>
+                            <constraint firstItem="HNZ-HR-DFD" firstAttribute="top" secondItem="ebX-zg-71a" secondAttribute="bottom" constant="8" symbolic="YES" id="uig-Oo-fa4"/>
+                            <constraint firstItem="ebX-zg-71a" firstAttribute="top" secondItem="7tl-3n-OX3" secondAttribute="bottom" constant="10" id="vaQ-zp-re1"/>
+                            <constraint firstItem="SIO-xU-Tuo" firstAttribute="centerX" secondItem="Mxh-iq-3Xs" secondAttribute="centerX" id="w6f-j3-oCt"/>
+                            <constraint firstItem="CV4-BU-5V7" firstAttribute="centerX" secondItem="SIO-xU-Tuo" secondAttribute="centerX" id="xmk-nM-99c"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="EWz-Fc-G8H"/>

@@ -32,6 +32,7 @@ typedef void (^ValuesInAffectedViewsSetterBlock)(UIView *topBar,
 @property (nonatomic, assign) BOOL isHidingBarsOnScrollingEnabled;
 @property (nonatomic, assign) BOOL shouldAutorotate;
 @property (nonatomic, assign) NSUInteger supportedInterfaceOrientations;
+@property (nonatomic, assign) UIStatusBarStyle preferredStatusBarStyle;
 
 + (CHWebBrowserViewControllerAttributes*)defaultAttributes;
 @end
@@ -60,6 +61,9 @@ typedef void (^ValuesInAffectedViewsSetterBlock)(UIView *topBar,
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *actionButton;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *refreshButton;
 
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *toolbarFixedSpaceInTheMiddleBarButtonItem;
+@property (nonatomic, assign) float toolbarFixedSpaceInTheMiddleDelta;
+
 @property (nonatomic, strong) IBOutlet UINavigationBar *localNavigationBar;
 @property (nonatomic, strong) IBOutlet UIView *localTitleView;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *dismissBarButtonItem;
@@ -75,6 +79,7 @@ typedef void (^ValuesInAffectedViewsSetterBlock)(UIView *topBar,
 
 @property (nonatomic, assign) BOOL shouldShowDismissButton;
 @property (nonatomic, strong) NSString *customBackBarButtonItemTitle;
+@property (nonatomic, assign) BOOL wasNavigationBarHiddenOnEnter;
 
 
 /* This URL should be set after creating the controller but before viewWillAppear
