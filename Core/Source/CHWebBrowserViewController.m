@@ -90,7 +90,7 @@ enum actionSheetButtonIndex {
 
 #pragma mark - Initialization
 
-+ (id)initWithDefaultNibAndHomeUrl:(NSURL*)url
++ (id)webBrowserControllerWithDefaultNibAndHomeUrl:(NSURL*)url
 {
     CHWebBrowserViewController *webBrowserController = [[CHWebBrowserViewController alloc] initWithNibName:[CHWebBrowserViewController defaultNibFileName]
                                                                                                     bundle:nil];
@@ -98,9 +98,9 @@ enum actionSheetButtonIndex {
     return webBrowserController;
 }
 
-+ (id)initWithDefaultNib
++ (id)webBrowserControllerWithDefaultNib
 {
-    return [CHWebBrowserViewController initWithDefaultNibAndHomeUrl:nil];
+    return [CHWebBrowserViewController webBrowserControllerWithDefaultNibAndHomeUrl:nil];
 }
 
 + (NSString*)defaultNibFileName {
@@ -123,7 +123,6 @@ enum actionSheetButtonIndex {
     if (self) {
         self.viewsAffectedByAlphaChanging = [NSMutableArray new];
         self.automaticallyAdjustsScrollViewInsets = NO;
-        self.toolbarFixedSpaceInTheMiddleDelta = 80.0f;
     }
     return self;
 }

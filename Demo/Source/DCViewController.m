@@ -31,7 +31,7 @@
 
 - (IBAction)openCustomizedWebBrowserModally:(id)sender
 {
-    CHWebBrowserViewController *webBrowserVC = [CHWebBrowserViewController initWithDefaultNibAndHomeUrl:[NSURL URLWithString:_urlTextField.text]];
+    CHWebBrowserViewController *webBrowserVC = [CHWebBrowserViewController webBrowserControllerWithDefaultNibAndHomeUrl:[NSURL URLWithString:_urlTextField.text]];
     
     webBrowserVC.cAttributes.titleScrollingSpeed = 10.0f;
     webBrowserVC.cAttributes.animationDurationPerOnePixel = 0.0008f; // faster animation on hiding bars
@@ -61,13 +61,13 @@
 
 - (IBAction)pushWebBrowser:(id)sender
 {
-    [self.navigationController pushViewController:[CHWebBrowserViewController initWithDefaultNibAndHomeUrl:[NSURL URLWithString:_urlTextField.text]]
+    [self.navigationController pushViewController:[CHWebBrowserViewController webBrowserControllerWithDefaultNibAndHomeUrl:[NSURL URLWithString:_urlTextField.text]]
                                          animated:YES];
 }
 
 - (IBAction)pushCustomizedWebBrowser:(id)sender
 {
-    CHWebBrowserViewController *webBrowserVC = [CHWebBrowserViewController initWithDefaultNibAndHomeUrl:[NSURL URLWithString:_urlTextField.text]];
+    CHWebBrowserViewController *webBrowserVC = [CHWebBrowserViewController webBrowserControllerWithDefaultNibAndHomeUrl:[NSURL URLWithString:_urlTextField.text]];
     
     webBrowserVC.cAttributes.titleScrollingSpeed = 10.0f;
     webBrowserVC.cAttributes.animationDurationPerOnePixel = 0.0008f; // faster animation on hiding bars

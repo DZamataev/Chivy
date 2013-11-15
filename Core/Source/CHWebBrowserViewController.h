@@ -61,9 +61,6 @@ typedef void (^ValuesInAffectedViewsSetterBlock)(UIView *topBar,
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *actionButton;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *refreshButton;
 
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *toolbarFixedSpaceInTheMiddleBarButtonItem;
-@property (nonatomic, assign) float toolbarFixedSpaceInTheMiddleDelta;
-
 @property (nonatomic, strong) IBOutlet UINavigationBar *localNavigationBar;
 @property (nonatomic, strong) IBOutlet UIView *localTitleView;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *dismissBarButtonItem;
@@ -98,8 +95,8 @@ typedef void (^ValuesInAffectedViewsSetterBlock)(UIView *topBar,
  */
 @property (nonatomic, copy) ValuesInAffectedViewsSetterBlock valuesInAffectedViewsSetterBlock;
 
-+ (id)initWithDefaultNib;
-+ (id)initWithDefaultNibAndHomeUrl:(NSURL*)url;
++ (id)webBrowserControllerWithDefaultNib;
++ (id)webBrowserControllerWithDefaultNibAndHomeUrl:(NSURL*)url;
 
 + (void)openWebBrowserController:(CHWebBrowserViewController*)vc modallyWithUrl:(NSURL*)url animated:(BOOL)animated showDismissButton:(BOOL)showDismissButton completion:(void (^)(void))completion;
 + (void)openWebBrowserController:(CHWebBrowserViewController*)vc modallyWithUrl:(NSURL*)url animated:(BOOL)animated completion:(void (^)(void))completion;
