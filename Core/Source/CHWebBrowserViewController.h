@@ -76,7 +76,8 @@ typedef void (^ValuesInAffectedViewsSetterBlock)(UIView *topBar,
 
 @property (nonatomic, assign) BOOL shouldShowDismissButton;
 @property (nonatomic, strong) NSString *customBackBarButtonItemTitle;
-@property (nonatomic, assign) BOOL wasNavigationBarHiddenOnEnter;
+@property (nonatomic, assign) BOOL wasNavigationBarHiddenByControllerOnEnter;
+@property (nonatomic, assign) BOOL wasNavigationBarHiddenAsViewOnEnter;
 
 
 /* This URL should be set after creating the controller but before viewWillAppear

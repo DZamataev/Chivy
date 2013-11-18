@@ -264,9 +264,13 @@ enum actionSheetButtonIndex {
 }
 
 -(void)viewWillAppear:(BOOL)animated {
-    self.wasNavigationBarHiddenOnEnter = self.navigationController.navigationBarHidden;
-    if (self.wasNavigationBarHiddenOnEnter)
+    self.wasNavigationBarHiddenByControllerOnEnter = self.navigationController.navigationBarHidden;
+    if (self.wasNavigationBarHiddenByControllerOnEnter)
         [self.navigationController setNavigationBarHidden:NO animated:YES];
+    
+    self.wasNavigationBarHiddenAsViewOnEnter = self.navigationController.navigationBar.hidden;
+    if (self.wasNavigationBarHiddenAsViewOnEnter)
+        self.navigationController.navigationBar.hidden = YES;
     
     [self resetInsets];
     
@@ -292,7 +296,9 @@ enum actionSheetButtonIndex {
 }
 
 -(void) viewWillDisappear:(BOOL)animated {
-    [self.navigationController setNavigationBarHidden:self.wasNavigationBarHiddenOnEnter animated:YES];
+    [self.navigationController setNavigationBarHidden:self.wasNavigationBarHiddenByControllerOnEnter animated:YES];
+    
+    self.navigationController.navigationBar.hidden = self.wasNavigationBarHiddenAsViewOnEnter;
     
     [_webView stopLoading];
     
