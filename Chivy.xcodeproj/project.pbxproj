@@ -20,7 +20,6 @@
 		9240582E1822822200C4EB84 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9240582A1822822200C4EB84 /* main.m */; };
 		9240583E182289EB00C4EB84 /* CHWebBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9240583C182289EB00C4EB84 /* CHWebBrowserViewController.m */; };
 		9240584118228A0800C4EB84 /* CHWebBrowserViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9240584018228A0800C4EB84 /* CHWebBrowserViewController_iPhone.xib */; };
-		92742211182D23B3006EFF2E /* TKAURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 92742210182D23B3006EFF2E /* TKAURLProtocol.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		927DD9A01823914F003A078F /* arrow_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 927DD99B1823914F003A078F /* arrow_back.png */; };
 		927DD9A21823914F003A078F /* arrow_forward.png in Resources */ = {isa = PBXBuildFile; fileRef = 927DD99D1823914F003A078F /* arrow_forward.png */; };
 		927DD9A818239270003A078F /* arrow_back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 927DD9A418239270003A078F /* arrow_back@2x.png */; };
@@ -30,6 +29,7 @@
 		9292F8341828EDC9007445BF /* exit@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9292F8301828EDC9007445BF /* exit@2x.png */; };
 		9292F8351828EDC9007445BF /* read.png in Resources */ = {isa = PBXBuildFile; fileRef = 9292F8311828EDC9007445BF /* read.png */; };
 		9292F8361828EDC9007445BF /* read@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9292F8321828EDC9007445BF /* read@2x.png */; };
+		92FC40271839FDA80060F226 /* TKAURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 92FC40261839FDA80060F226 /* TKAURLProtocol.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,8 +52,6 @@
 		9240583B182289EB00C4EB84 /* CHWebBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHWebBrowserViewController.h; sourceTree = "<group>"; };
 		9240583C182289EB00C4EB84 /* CHWebBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHWebBrowserViewController.m; sourceTree = "<group>"; };
 		9240584018228A0800C4EB84 /* CHWebBrowserViewController_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CHWebBrowserViewController_iPhone.xib; sourceTree = "<group>"; };
-		9274220F182D23B3006EFF2E /* TKAURLProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKAURLProtocol.h; sourceTree = "<group>"; };
-		92742210182D23B3006EFF2E /* TKAURLProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKAURLProtocol.m; sourceTree = "<group>"; };
 		927DD99B1823914F003A078F /* arrow_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_back.png; sourceTree = "<group>"; };
 		927DD99D1823914F003A078F /* arrow_forward.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_forward.png; sourceTree = "<group>"; };
 		927DD9A418239270003A078F /* arrow_back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow_back@2x.png"; sourceTree = "<group>"; };
@@ -64,6 +62,8 @@
 		9292F8311828EDC9007445BF /* read.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = read.png; sourceTree = "<group>"; };
 		9292F8321828EDC9007445BF /* read@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "read@2x.png"; sourceTree = "<group>"; };
 		9292F840182912DC007445BF /* Chivy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Chivy.h; sourceTree = "<group>"; };
+		92FC40251839FDA80060F226 /* TKAURLProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TKAURLProtocol.h; path = "Source-no-arc/TKAURLProtocol.h"; sourceTree = "<group>"; };
+		92FC40261839FDA80060F226 /* TKAURLProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TKAURLProtocol.m; path = "Source-no-arc/TKAURLProtocol.m"; sourceTree = "<group>"; };
 		9FE6A1C4A8834B11A032B93B /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCD4B13B13F4458CB4785144 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -117,6 +117,7 @@
 		924057FF18227E1400C4EB84 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				92FC40281839FDAC0060F226 /* Source-no-arc */,
 				9240583A1822886300C4EB84 /* Source */,
 				924058391822885D00C4EB84 /* Resources */,
 			);
@@ -177,13 +178,20 @@
 		9240583A1822886300C4EB84 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				9274220F182D23B3006EFF2E /* TKAURLProtocol.h */,
-				92742210182D23B3006EFF2E /* TKAURLProtocol.m */,
 				9292F840182912DC007445BF /* Chivy.h */,
 				9240583B182289EB00C4EB84 /* CHWebBrowserViewController.h */,
 				9240583C182289EB00C4EB84 /* CHWebBrowserViewController.m */,
 			);
 			path = Source;
+			sourceTree = "<group>";
+		};
+		92FC40281839FDAC0060F226 /* Source-no-arc */ = {
+			isa = PBXGroup;
+			children = (
+				92FC40251839FDA80060F226 /* TKAURLProtocol.h */,
+				92FC40261839FDA80060F226 /* TKAURLProtocol.m */,
+			);
+			name = "Source-no-arc";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -307,7 +315,7 @@
 				9240582E1822822200C4EB84 /* main.m in Sources */,
 				9240582D1822822200C4EB84 /* DCViewController.m in Sources */,
 				9240583E182289EB00C4EB84 /* CHWebBrowserViewController.m in Sources */,
-				92742211182D23B3006EFF2E /* TKAURLProtocol.m in Sources */,
+				92FC40271839FDA80060F226 /* TKAURLProtocol.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

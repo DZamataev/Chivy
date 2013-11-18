@@ -12,27 +12,26 @@ Pod::Spec.new do |s|
     }
 	
   s.ios.deployment_target = '7.0'
-  
-  non_arc_files = 'Core/Source/TKAURLProtocol.m'
-
-  s.requires_arc = true
-  
+    
   s.default_subspec = 'Core'
 
   s.subspec 'Core' do |c|
+    c.requires_arc = true
     c.source_files = 'Core/Source/*'
-	c.exclude_files = non_arc_files
     c.resources = 'Core/Resources/*'
+	c.dependency 'Chivy/Core-no-arc'
     c.dependency 'SuProgress'
     c.dependency 'AutoScrollLabel'
   end
   
   s.subspec 'Core-no-arc' do |cna|
     cna.requires_arc = false
-    cna.source_files = non_arc_files
+    cna.source_files = 'Core/Source-no-arc'
+	cna.dependency 'Chivy/Core'
   end
 
   s.subspec 'Demo' do |d|
+    d.requires_arc = true
     d.source_files = 'Demo/Source/*'
     d.resources = 'Demo/Resources/*'
     d.preserve_paths = "Chivy.xcodeproj", "Podfile"
