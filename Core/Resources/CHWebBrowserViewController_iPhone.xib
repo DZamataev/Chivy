@@ -16,7 +16,6 @@
                 <outlet property="readBarButtonItem" destination="ir7-VW-CWB" id="x5f-xE-KhK"/>
                 <outlet property="refreshButton" destination="YM5-0e-Eu1" id="vQH-Ez-Keq"/>
                 <outlet property="titleLabel" destination="45c-ZR-gcT" id="A5S-O6-aww"/>
-                <outlet property="toolbarFixedSpaceInTheMiddleBarButtonItem" destination="BPF-9s-alT" id="j65-Xd-2eb"/>
                 <outlet property="view" destination="1" id="3"/>
                 <outlet property="webView" destination="T7w-qf-GG4" id="xXt-Af-noh"/>
             </connections>

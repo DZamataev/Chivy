@@ -176,6 +176,17 @@ enum actionSheetButtonIndex {
     return self.titleLabel.text;
 }
 
+- (void)setCustomBackBarButtonItemTitle:(NSString *)customBackBarButtonItemTitle {
+    _customBackBarButtonItemTitle = customBackBarButtonItemTitle;
+    if (_customBackBarButtonItemTitle) {
+        self.navigationController.navigationBar.backItem.title = _customBackBarButtonItemTitle;
+    }
+}
+
+- (NSString*)customBackBarButtonItemTitle {
+    return _customBackBarButtonItemTitle;
+}
+
 - (void)setCAttributes:(CHWebBrowserViewControllerAttributes *)attributes {
     _cAttributes = attributes;
 }
