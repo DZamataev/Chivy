@@ -270,7 +270,7 @@ enum actionSheetButtonIndex {
     
     self.wasNavigationBarHiddenAsViewOnEnter = self.navigationController.navigationBar.hidden;
     if (self.wasNavigationBarHiddenAsViewOnEnter)
-        self.navigationController.navigationBar.hidden = YES;
+        self.navigationController.navigationBar.hidden = NO;
     
     [self resetInsets];
     
