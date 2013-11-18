@@ -26,7 +26,7 @@ Pod::Spec.new do |s|
   
   s.subspec 'Core-no-arc' do |cna|
     cna.requires_arc = false
-    cna.source_files = 'Core/Source-no-arc'
+    cna.source_files = 'Core/Source-no-arc/*'
 	cna.dependency 'Chivy/Core'
   end
 
