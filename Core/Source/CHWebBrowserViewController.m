@@ -47,7 +47,7 @@ enum actionSheetButtonIndex {
     defaultAttributes.isHidingBarsOnScrollingEnabled = YES;
     defaultAttributes.shouldAutorotate = YES;
     defaultAttributes.supportedInterfaceOrientations = UIInterfaceOrientationMaskAllButUpsideDown;
-    defaultAttributes.preferredStatusBarStyle = UIStatusBarStyleLightContent;
+    defaultAttributes.preferredStatusBarStyle = UIStatusBarStyleDefault;
     return defaultAttributes;
 }
 
