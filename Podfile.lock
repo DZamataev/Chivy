@@ -1,13 +1,23 @@
 PODS:
   - AutoScrollLabel (0.2.1)
+  - DKNavbarBackButton (0.1.1):
+    - DKNavbarBackButton/core
+  - DKNavbarBackButton/core (0.1.1)
   - SuProgress (0.8.1)
 
 DEPENDENCIES:
   - AutoScrollLabel
+  - DKNavbarBackButton (from `https://github.com/wade0n/DKNavbarBackButton.git`, branch `master`)
   - SuProgress
+
+EXTERNAL SOURCES:
+  DKNavbarBackButton:
+    :branch: master
+    :git: https://github.com/wade0n/DKNavbarBackButton.git
 
 SPEC CHECKSUMS:
   AutoScrollLabel: 4978b57536512a3ebf4705b1b5618354bcf4ac84
+  DKNavbarBackButton: b188b3c0b2508bfb786518177f097f4ca5fa4bc1
   SuProgress: 5b44431401a2e114ac098a0b976550803d03fd9f
 
 COCOAPODS: 0.27.1

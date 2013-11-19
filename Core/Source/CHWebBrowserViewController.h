@@ -9,7 +9,26 @@
 #import <UIKit/UIKit.h>
 #import <CBAutoScrollLabel.h>
 #import <SuProgress.h>
+#import <DKBackBarButtonItem.h>
 #import "TKAURLProtocol.h"
+
+#ifndef CHWebBrowserNavBarHeight
+#define CHWebBrowserNavBarHeight (self.topBar.frame.size.height)
+#endif
+
+#ifndef CHWebBrowserStatusBarHeight
+#define CHWebBrowserStatusBarHeight (self.cAttributes.statusBarHeight)
+#endif
+
+#ifndef CHWebBrowserViewsAffectedByAlphaChangingByDefault
+#define CHWebBrowserViewsAffectedByAlphaChangingByDefault (@[self.titleLabel, self.dismissBarButtonItem.customView, self.readBarButtonItem.customView, self.customBackBarButtonItem.customView])
+#endif
+
+#ifdef DEBUG
+#	define CHWebBrowserLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
+#else
+#	define CHWebBrowserLog(...)
+#endif
 
 typedef void (^ValuesInAffectedViewsSetterBlock)(UIView *topBar,
                                                  float topBarYPosition,
@@ -39,16 +58,17 @@ typedef void (^ValuesInAffectedViewsSetterBlock)(UIView *topBar,
 
 @interface CHWebBrowserViewController : UIViewController <UIWebViewDelegate, NSURLConnectionDelegate, UIAlertViewDelegate, UIActionSheetDelegate, UIBarPositioningDelegate, UIScrollViewDelegate, TKAURLProtocolDelegate>
 {
-    CHWebBrowserViewControllerAttributes *_cAttributes;
     CGPoint _lastContentOffset;
     BOOL _isScrollViewScrolling;
     BOOL _isMovingViews;
     BOOL _isAnimatingViews;
     BOOL _isAnimatingResettingViews;
     
+    // baking ivars
+    CHWebBrowserViewControllerAttributes *_cAttributes;
     ValuesInAffectedViewsSetterBlock _valuesInAffectedViewsSetterBlock;
-    
     BOOL _shouldShowDismissButton;
+    DKBackBarButtonItem *_customBackBarButtonItem;
     NSString *_customBackBarButtonItemTitle;
 }
 @property (nonatomic, strong) CHWebBrowserViewControllerAttributes *cAttributes;
@@ -71,11 +91,13 @@ typedef void (^ValuesInAffectedViewsSetterBlock)(UIView *topBar,
 @property (nonatomic, strong) IBOutlet CBAutoScrollLabel *titleLabel;
 @property (nonatomic, strong) IBOutlet CBAutoScrollLabel *urlLabel;
 
+@property (nonatomic, strong) DKBackBarButtonItem *customBackBarButtonItem;
+@property (nonatomic, strong) NSString *customBackBarButtonItemTitle;
+
 @property (nonatomic, readonly) UINavigationBar *topBar;
 @property (nonatomic, readonly) UIView *suProgressBar;
 
 @property (nonatomic, assign) BOOL shouldShowDismissButton;
-@property (nonatomic, strong) NSString *customBackBarButtonItemTitle;
 @property (nonatomic, assign) BOOL wasNavigationBarHiddenByControllerOnEnter;
 @property (nonatomic, assign) BOOL wasNavigationBarHiddenAsViewOnEnter;
 

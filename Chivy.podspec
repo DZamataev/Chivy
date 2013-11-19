@@ -22,6 +22,7 @@ Pod::Spec.new do |s|
 	c.dependency 'Chivy/Core-no-arc'
     c.dependency 'SuProgress'
     c.dependency 'AutoScrollLabel'
+	c.dependency 'DKNavbarBackButton'
   end
   
   s.subspec 'Core-no-arc' do |cna|
