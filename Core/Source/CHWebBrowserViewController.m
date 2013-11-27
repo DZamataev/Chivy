@@ -51,7 +51,7 @@ enum actionSheetButtonIndex {
 }
 
 + (void)openWebBrowserController:(CHWebBrowserViewController*)vc modallyWithUrl:(NSURL*)url animated:(BOOL)animated completion:(void (^)(void))completion {
-    [CHWebBrowserViewController openWebBrowserController:vc modallyWithUrl:url animated:animated showDismissButton:shadow completion:completion];
+    [CHWebBrowserViewController openWebBrowserController:vc modallyWithUrl:url animated:animated showDismissButton:YES completion:completion];
 }
 
 + (void)openWebBrowserController:(CHWebBrowserViewController*)vc modallyWithUrl:(NSURL*)url animated:(BOOL)animated {
@@ -166,8 +166,8 @@ enum actionSheetButtonIndex {
 - (DKBackBarButtonItem*)customBackBarButtonItem {
     if (!_customBackBarButtonItem) {
         _customBackBarButtonItem = [[DKBackBarButtonItem alloc] init];
-        if (self.customBackBarButtonItemTitle)
-            _customBackBarButtonItem.title = self.customBackBarButtonItemTitle;
+        
+        _customBackBarButtonItem.title = self.customBackBarButtonItemTitle;
         
         _customBackBarButtonItem.action = @selector(navigationControllerPopViewControllerAnimated);
         _customBackBarButtonItem.target = self;
@@ -264,6 +264,7 @@ enum actionSheetButtonIndex {
 
 -(void)viewWillAppear:(BOOL)animated {
     // we need nav bar to be shown
+    
     self.wasNavigationBarHiddenByControllerOnEnter = self.navigationController.navigationBarHidden;
     if (self.wasNavigationBarHiddenByControllerOnEnter)
         [self.navigationController setNavigationBarHidden:NO animated:YES];
@@ -307,6 +308,8 @@ enum actionSheetButtonIndex {
 
 -(void) viewWillDisappear:(BOOL)animated {
     // restore nav bar visibility to entry state
+    [self resetAffectedViewsAnimated:YES];
+    
     [self.navigationController setNavigationBarHidden:self.wasNavigationBarHiddenByControllerOnEnter animated:YES];
     
     self.navigationController.navigationBar.hidden = self.wasNavigationBarHiddenAsViewOnEnter;
