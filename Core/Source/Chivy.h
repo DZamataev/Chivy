@@ -8,4 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "CHWebBrowserViewController.h"
+#import "CHWebBrowserViewController_iPad.h"
+#import "CHWebBrowserViewController_iPhone.h"
 #import "TKAURLProtocol.h"
