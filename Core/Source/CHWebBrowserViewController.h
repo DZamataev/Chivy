@@ -121,6 +121,12 @@ typedef void (^ValuesInAffectedViewsSetterBlock)(UIView *topBar,
 + (id)webBrowserControllerWithDefaultNib;
 + (id)webBrowserControllerWithDefaultNibAndHomeUrl:(NSURL*)url;
 
++ (void)openWebBrowserController:(CHWebBrowserViewController*)vc
+                  modallyWithUrl:(NSURL*)url
+                  fromController:(UIViewController*)viewControllerToPresetFrom
+                        animated:(BOOL)animated
+               showDismissButton:(BOOL)showDismissButton
+                      completion:(void (^)(void))completion;
 + (void)openWebBrowserController:(CHWebBrowserViewController*)vc modallyWithUrl:(NSURL*)url animated:(BOOL)animated showDismissButton:(BOOL)showDismissButton completion:(void (^)(void))completion;
 + (void)openWebBrowserController:(CHWebBrowserViewController*)vc modallyWithUrl:(NSURL*)url animated:(BOOL)animated completion:(void (^)(void))completion;
 + (void)openWebBrowserController:(CHWebBrowserViewController*)vc modallyWithUrl:(NSURL*)url animated:(BOOL)animated;

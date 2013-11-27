@@ -41,31 +41,59 @@ enum actionSheetButtonIndex {
 
 #pragma mark - Opening helpers
 
-+ (void)openWebBrowserController:(CHWebBrowserViewController*)vc modallyWithUrl:(NSURL*)url animated:(BOOL)animated showDismissButton:(BOOL)showDismissButton completion:(void (^)(void))completion {
+
++ (void)openWebBrowserController:(CHWebBrowserViewController*)vc
+                  modallyWithUrl:(NSURL*)url
+                  fromController:(UIViewController*)viewControllerToPresetFrom
+                        animated:(BOOL)animated
+               showDismissButton:(BOOL)showDismissButton
+                      completion:(void (^)(void))completion
+{
     UINavigationController *navVc = [[UINavigationController alloc] initWithRootViewController:vc];
     vc.homeUrl = url;
     vc.shouldShowDismissButton = showDismissButton;
+    [viewControllerToPresetFrom presentViewController:navVc animated:animated completion:completion];
+}
+
++ (void)openWebBrowserController:(CHWebBrowserViewController*)vc modallyWithUrl:(NSURL*)url animated:(BOOL)animated showDismissButton:(BOOL)showDismissButton completion:(void (^)(void))completion {
     UIWindow *window = [UIApplication sharedApplication].keyWindow;
     UIViewController *rootViewController = window.rootViewController;
-    [rootViewController presentViewController:navVc animated:animated completion:completion];
+    [CHWebBrowserViewController openWebBrowserController:vc
+                                          modallyWithUrl:url
+                                          fromController:rootViewController
+                                                animated:animated
+                                       showDismissButton:showDismissButton
+                                              completion:completion];
 }
 
 + (void)openWebBrowserController:(CHWebBrowserViewController*)vc modallyWithUrl:(NSURL*)url animated:(BOOL)animated completion:(void (^)(void))completion {
-    [CHWebBrowserViewController openWebBrowserController:vc modallyWithUrl:url animated:animated showDismissButton:YES completion:completion];
+    [CHWebBrowserViewController openWebBrowserController:vc
+                                          modallyWithUrl:url
+                                                animated:animated
+                                       showDismissButton:YES
+                                              completion:completion];
 }
 
 + (void)openWebBrowserController:(CHWebBrowserViewController*)vc modallyWithUrl:(NSURL*)url animated:(BOOL)animated {
-    [CHWebBrowserViewController openWebBrowserController:vc modallyWithUrl:url animated:animated completion:nil];
+    [CHWebBrowserViewController openWebBrowserController:vc
+                                          modallyWithUrl:url
+                                                animated:animated
+                                              completion:nil];
 }
 
 + (void)openWebBrowserControllerModallyWithHomeUrl:(NSURL*)url animated:(BOOL)animated completion:(void (^)(void))completion {
     CHWebBrowserViewController *webBrowserController = [[CHWebBrowserViewController alloc] initWithNibName:[CHWebBrowserViewController defaultNibFileName]
                                                                                                     bundle:nil];
-    [CHWebBrowserViewController openWebBrowserController:webBrowserController modallyWithUrl:url animated:animated completion:completion];
+    [CHWebBrowserViewController openWebBrowserController:webBrowserController
+                                          modallyWithUrl:url
+                                                animated:animated
+                                              completion:completion];
 }
 
 + (void)openWebBrowserControllerModallyWithHomeUrl:(NSURL*)url animated:(BOOL)animated {
-    [CHWebBrowserViewController openWebBrowserControllerModallyWithHomeUrl:url animated:animated completion:nil];
+    [CHWebBrowserViewController openWebBrowserControllerModallyWithHomeUrl:url
+                                                                  animated:animated
+                                                                completion:nil];
 }
 
 #pragma mark - Initialization
