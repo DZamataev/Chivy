@@ -243,6 +243,8 @@ enum actionSheetButtonIndex {
     if (self.cAttributes.isProgressBarEnabled && !self.suProgressBar)
         [self SuProgressForWebView:self.webView];
     
+    self.bottomToolbar.tintColor = self.navigationController.navigationBar.tintColor;
+    
     [super viewDidLoad];
 }
 

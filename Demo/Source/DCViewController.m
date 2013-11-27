@@ -83,7 +83,9 @@
 
 - (IBAction)randomizeTintColor:(id)sender
 {
-    [[UIApplication sharedApplication].keyWindow setTintColor:[UIColor colorWithRed:randomFloat(0, 1) green:randomFloat(0, 1) blue:randomFloat(0, 1) alpha:1.0f]];
+    UIColor *randomColor = [UIColor colorWithRed:randomFloat(0, 1) green:randomFloat(0, 1) blue:randomFloat(0, 1) alpha:1.0f];
+    [[UIApplication sharedApplication].keyWindow setTintColor:randomColor]; // this would color everything, including buttons
+    self.navigationController.navigationBar.tintColor = randomColor; // this is another way that colors only bar buttons, it will also work
 }
 
 - (IBAction)clearCacheAndCredentialsAndCookies:(id)sender
