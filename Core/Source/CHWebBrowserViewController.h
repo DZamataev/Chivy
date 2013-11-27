@@ -142,4 +142,11 @@ typedef void (^ValuesInAffectedViewsSetterBlock)(UIView *topBar,
 - (void)loadUrl:(NSURL*)url;
 
 - (void)resetAffectedViewsAnimated:(BOOL)animated;
+
+@end
+
+@interface CHWebBrowserViewController_iPad : CHWebBrowserViewController
+@end
+
+@interface CHWebBrowserViewController_iPhone : CHWebBrowserViewController
 @end
