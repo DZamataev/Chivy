@@ -3,6 +3,12 @@ Chivy
 
 iOS web browser control which looks and behaves like modern Safari and is highly customizable
 
+Demo
+====
+
+![gif demo](http://d.pr/i/cPIG+)
+
+[Demo on YouTube](http://youtu.be/PGDK-ACwDA0)
 
 Work in progress
 ================
