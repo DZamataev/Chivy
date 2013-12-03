@@ -8,12 +8,6 @@
 
 #import "CHWebBrowserViewController.h"
 
-enum actionSheetButtonIndex {
-	kSafariButtonIndex,
-	kChromeButtonIndex,
-    kShareButtonIndex
-};
-
 @implementation CHWebBrowserViewControllerAttributes
 
 + (CHWebBrowserViewControllerAttributes*)defaultAttributes {
@@ -23,7 +17,7 @@ enum actionSheetButtonIndex {
     defaultAttributes.suProgressBarTag = 51381;
     defaultAttributes.animationDurationPerOnePixel = 0.0068181818f;
     defaultAttributes.titleTextAlignment = NSTextAlignmentCenter;
-    defaultAttributes.isProgressBarEnabled = NO;
+    defaultAttributes.isProgressBarEnabled = YES;
     defaultAttributes.isHidingBarsOnScrollingEnabled = YES;
     defaultAttributes.shouldAutorotate = YES;
     defaultAttributes.supportedInterfaceOrientations = UIInterfaceOrientationMaskAllButUpsideDown;
@@ -435,18 +429,22 @@ enum actionSheetButtonIndex {
     NSString *urlString = @"";
     NSURL* url = [self.webView.request URL];
     urlString = [url absoluteString];
+    int index = _safariButtonIndex = _chromeButtonIndex = _shareButtonIndex = -1;
     
     UIActionSheet *actionSheet = [[UIActionSheet alloc] init];
     actionSheet.title = urlString;
     actionSheet.delegate = self;
     [actionSheet addButtonWithTitle:NSLocalizedString(@"Open in Safari", @"CHWebBrowserController action sheet button title which leads to opening current url in Safari web browser application")];
+    _safariButtonIndex = ++index;
     
     if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"googlechrome://"]]) {
         // Chrome is installed, add the option to open in chrome.
         [actionSheet addButtonWithTitle:NSLocalizedString(@"Open in Chrome", @"CHWebBrowserController action sheet button title which leads to opening current url in google chrome web browser application")];
+        _chromeButtonIndex = ++index;
     }
     
     [actionSheet addButtonWithTitle:NSLocalizedString(@"Share", @"CHWebBrowserController action sheet button title which leads to standart sharing")];
+    _shareButtonIndex = ++index;
     
     actionSheet.cancelButtonIndex = [actionSheet addButtonWithTitle:NSLocalizedString(@"Cancel", nil)];
 	actionSheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
@@ -462,50 +460,37 @@ enum actionSheetButtonIndex {
         theURL = self.homeUrl;
     }
     
-    switch (buttonIndex) {
-        case kSafariButtonIndex:
-        {
-            [[UIApplication sharedApplication] openURL:theURL];
+    if (buttonIndex == _safariButtonIndex && _safariButtonIndex >= 0) {
+        
+        [[UIApplication sharedApplication] openURL:theURL];
+    }
+    else if (buttonIndex == _chromeButtonIndex && _chromeButtonIndex >= 0) {
+        NSString *scheme = theURL.scheme;
+        
+        // Replace the URL Scheme with the Chrome equivalent.
+        NSString *chromeScheme = nil;
+        if ([scheme isEqualToString:@"http"]) {
+            chromeScheme = @"googlechrome";
+        } else if ([scheme isEqualToString:@"https"]) {
+            chromeScheme = @"googlechromes";
         }
-            break;
+        
+        // Proceed only if a valid Google Chrome URI Scheme is available.
+        if (chromeScheme) {
+            NSString *absoluteString = [theURL absoluteString];
+            NSRange rangeForScheme = [absoluteString rangeOfString:@":"];
+            NSString *urlNoScheme = [absoluteString substringFromIndex:rangeForScheme.location];
+            NSString *chromeURLString = [chromeScheme stringByAppendingString:urlNoScheme];
+            NSURL *chromeURL = [NSURL URLWithString:chromeURLString];
             
-        case kChromeButtonIndex:
-        {
-            NSString *scheme = theURL.scheme;
-            
-            // Replace the URL Scheme with the Chrome equivalent.
-            NSString *chromeScheme = nil;
-            if ([scheme isEqualToString:@"http"]) {
-                chromeScheme = @"googlechrome";
-            } else if ([scheme isEqualToString:@"https"]) {
-                chromeScheme = @"googlechromes";
-            }
-            
-            // Proceed only if a valid Google Chrome URI Scheme is available.
-            if (chromeScheme) {
-                NSString *absoluteString = [theURL absoluteString];
-                NSRange rangeForScheme = [absoluteString rangeOfString:@":"];
-                NSString *urlNoScheme = [absoluteString substringFromIndex:rangeForScheme.location];
-                NSString *chromeURLString = [chromeScheme stringByAppendingString:urlNoScheme];
-                NSURL *chromeURL = [NSURL URLWithString:chromeURLString];
-                
-                // Open the URL with Chrome.
-                [[UIApplication sharedApplication] openURL:chromeURL];
-            }
-
+            // Open the URL with Chrome.
+            [[UIApplication sharedApplication] openURL:chromeURL];
         }
-            break;
-            
-        case kShareButtonIndex:
-        {
-            UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[theURL]
-                                                                                     applicationActivities:nil];
-            [self presentViewController:activityVC animated:YES completion:nil];
-        }
-            break;
-            
-        default:
-            break;
+    }
+    else if (buttonIndex == _shareButtonIndex && _shareButtonIndex >= 0) {
+        UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[theURL]
+                                                                                 applicationActivities:nil];
+        [self presentViewController:activityVC animated:YES completion:nil];
     }
 }
 

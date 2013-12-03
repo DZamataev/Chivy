@@ -64,6 +64,10 @@ typedef void (^ValuesInAffectedViewsSetterBlock)(UIView *topBar,
     BOOL _isAnimatingViews;
     BOOL _isAnimatingResettingViews;
     
+    int _safariButtonIndex;
+	int _chromeButtonIndex;
+    int _shareButtonIndex;
+    
     // baking ivars
     CHWebBrowserViewControllerAttributes *_cAttributes;
     ValuesInAffectedViewsSetterBlock _valuesInAffectedViewsSetterBlock;
