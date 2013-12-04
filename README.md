@@ -8,7 +8,7 @@ Demo
 
 ![gif demo](http://mkerala.com/u/image.php?di=7UZA)
 
-[Demo on YouTube](http://youtu.be/PGDK-ACwDA0)
+[Full Demo on YouTube](http://youtu.be/PGDK-ACwDA0)
 
 Work in progress
 ================
