@@ -6,7 +6,7 @@ iOS web browser control which looks and behaves like modern Safari and is highly
 Demo
 ====
 
-![gif demo](http://d.pr/i/3Cam+)
+![gif demo](http://mkerala.com/u/image.php?di=7UZA)
 
 [Demo on YouTube](http://youtu.be/PGDK-ACwDA0)
 
