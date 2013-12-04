@@ -24,6 +24,7 @@ Work in progress
 * web browser controller handles basic HTTP authentication, providing user to enter login and password. Credits goes to TKAURLProtocol by Kiril Antonov. I've just patched it a bit to work with iOS 7;
 * 'make page readable' action is a simple trigger of [Readability](http://www.readability.com/) bookmarklet (provided in .js), it features the user to experience the Readability service which makes (usually) the page easy to read on mobile device;
 * the appearance can be customized using Interface Builder. I like it, neither do you?
+* 'Share' action provides not only native way of sharing URL, but the possibility to open it in Safari or Google Chrome (if it is installed)
 
 
 Installation
