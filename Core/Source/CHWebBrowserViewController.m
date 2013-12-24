@@ -8,6 +8,8 @@
 
 #import "CHWebBrowserViewController.h"
 
+#define LocalizationTableName @"ChivyLocalizable"
+
 @implementation CHWebBrowserViewControllerAttributes
 
 + (CHWebBrowserViewControllerAttributes*)defaultAttributes {
@@ -275,12 +277,12 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
     [_webView stopLoading];
-    UIAlertView *memoryWarningAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Memory warning",
+    UIAlertView *memoryWarningAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Memory warning", LocalizationTableName,
                                                                                            @"Alert view title. Memory warning alert in web browser.")
-                                                                 message:NSLocalizedString(@"The page will stop loading.",
+                                                                 message:NSLocalizedStringFromTable(@"The page will stop loading.", LocalizationTableName,
                                                                                            @"Alert view message. Memory warning alert in web browser.")
                                                                 delegate:nil
-                                                       cancelButtonTitle:NSLocalizedString(@"Cancel",
+                                                       cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", LocalizationTableName,
                                                                                            @"Alert view cancel button title. Memory warning alert in web browser.")
                                                        otherButtonTitles:nil];
     [memoryWarningAlert show];
@@ -434,19 +436,19 @@
     UIActionSheet *actionSheet = [[UIActionSheet alloc] init];
     actionSheet.title = urlString;
     actionSheet.delegate = self;
-    [actionSheet addButtonWithTitle:NSLocalizedString(@"Open in Safari", @"CHWebBrowserController action sheet button title which leads to opening current url in Safari web browser application")];
+    [actionSheet addButtonWithTitle:NSLocalizedStringFromTable(@"Open in Safari", LocalizationTableName, @"CHWebBrowserController action sheet button title which leads to opening current url in Safari web browser application")];
     _safariButtonIndex = ++index;
     
     if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"googlechrome://"]]) {
         // Chrome is installed, add the option to open in chrome.
-        [actionSheet addButtonWithTitle:NSLocalizedString(@"Open in Chrome", @"CHWebBrowserController action sheet button title which leads to opening current url in google chrome web browser application")];
+        [actionSheet addButtonWithTitle:NSLocalizedStringFromTable(@"Open in Chrome", LocalizationTableName, @"CHWebBrowserController action sheet button title which leads to opening current url in google chrome web browser application")];
         _chromeButtonIndex = ++index;
     }
     
-    [actionSheet addButtonWithTitle:NSLocalizedString(@"Share", @"CHWebBrowserController action sheet button title which leads to standart sharing")];
+    [actionSheet addButtonWithTitle:NSLocalizedStringFromTable(@"Share", LocalizationTableName, @"CHWebBrowserController action sheet button title which leads to standart sharing")];
     _shareButtonIndex = ++index;
     
-    actionSheet.cancelButtonIndex = [actionSheet addButtonWithTitle:NSLocalizedString(@"Cancel", nil)];
+    actionSheet.cancelButtonIndex = [actionSheet addButtonWithTitle:NSLocalizedStringFromTable(@"Cancel", LocalizationTableName, nil)];
 	actionSheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
     
     [actionSheet showFromToolbar:self.bottomToolbar];
@@ -603,11 +605,11 @@
     [self resetAffectedViewsAnimated:YES];
 	
     // Show error alert
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Could not load page", nil)
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Could not load page", LocalizationTableName, nil)
                                                     message:error.localizedDescription
                                                    delegate:self
                                           cancelButtonTitle:nil
-                                          otherButtonTitles:NSLocalizedString(@"OK", nil), nil];
+                                          otherButtonTitles:NSLocalizedStringFromTable(@"OK", LocalizationTableName, nil), nil];
 	[alert show];
 }
 

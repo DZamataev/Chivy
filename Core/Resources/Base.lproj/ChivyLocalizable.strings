@@ -1,0 +1,17 @@
+/* 
+  ChivyLocalizable.strings
+  Chivy
+
+  Created by Denis Zamataev on 12/24/13.
+  Copyright (c) 2013 Denis Zamataev. All rights reserved.
+*/
+
+"Memory warning" = "Memory warning";
+"The page will stop loading." = "The page will stop loading.";
+"Cancel" = "Cancel";
+"Open in Safari" = "Open in Safari";
+"Open in Chrome" = "Open in Chrome";
+"Share" = "Share";
+"Could not load page" = "Could not load page";
+"OK" = "OK";
+"Authentication required" = "Authentication required";

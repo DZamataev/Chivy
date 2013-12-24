@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		416C97A9EAE84C2B80379410 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FE6A1C4A8834B11A032B93B /* libPods.a */; };
+		921E76DC1869AC6E0072122E /* ChivyLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 921E76DE1869AC6E0072122E /* ChivyLocalizable.strings */; };
 		923D239118311BDC00AD3C9F /* CHWebBrowserViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 923D239018311BDC00AD3C9F /* CHWebBrowserViewController_iPad.xib */; };
 		924057C818227CDF00C4EB84 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 924057C718227CDF00C4EB84 /* Foundation.framework */; };
 		924057CA18227CDF00C4EB84 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 924057C918227CDF00C4EB84 /* CoreGraphics.framework */; };
@@ -35,6 +36,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		921E76DD1869AC6E0072122E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file; name = Base; path = Base.lproj/ChivyLocalizable.strings; sourceTree = "<group>"; };
+		921E76E21869B04F0072122E /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Main.strings; sourceTree = "<group>"; };
+		921E76E31869B04F0072122E /* ru */ = {isa = PBXFileReference; lastKnownFileType = file; name = ru; path = ru.lproj/ChivyLocalizable.strings; sourceTree = "<group>"; };
+		921E76E41869B04F0072122E /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		923D239018311BDC00AD3C9F /* CHWebBrowserViewController_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CHWebBrowserViewController_iPad.xib; sourceTree = "<group>"; };
 		924057C418227CDF00C4EB84 /* Chivy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chivy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		924057C718227CDF00C4EB84 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -177,6 +182,7 @@
 				927DD9A618239270003A078F /* arrow_forward@2x.png */,
 				9240584018228A0800C4EB84 /* CHWebBrowserViewController_iPhone.xib */,
 				923D239018311BDC00AD3C9F /* CHWebBrowserViewController_iPad.xib */,
+				921E76DE1869AC6E0072122E /* ChivyLocalizable.strings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -248,6 +254,8 @@
 			knownRegions = (
 				en,
 				Base,
+				"ru-RU",
+				ru,
 			);
 			mainGroup = 924057BB18227CDF00C4EB84;
 			productRefGroup = 924057C518227CDF00C4EB84 /* Products */;
@@ -264,6 +272,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				921E76DC1869AC6E0072122E /* ChivyLocalizable.strings in Resources */,
 				924058201822821700C4EB84 /* Main.storyboard in Resources */,
 				927DD9AA18239270003A078F /* arrow_forward@2x.png in Resources */,
 				924058221822821700C4EB84 /* Images.xcassets in Resources */,
@@ -334,10 +343,20 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		921E76DE1869AC6E0072122E /* ChivyLocalizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				921E76DD1869AC6E0072122E /* Base */,
+				921E76E31869B04F0072122E /* ru */,
+			);
+			name = ChivyLocalizable.strings;
+			sourceTree = "<group>";
+		};
 		9240581A1822821700C4EB84 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				9240581B1822821700C4EB84 /* Base */,
+				921E76E21869B04F0072122E /* ru */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -346,6 +365,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				9240581D1822821700C4EB84 /* en */,
+				921E76E41869B04F0072122E /* ru */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";

@@ -1,0 +1,24 @@
+
+/* Class = "IBUIButton"; normalTitle = "Clear cache, credentials, cookies"; ObjectID = "1sY-5Z-8Wd"; */
+"1sY-5Z-8Wd.normalTitle" = "Clear cache, credentials, cookies";
+
+/* Class = "IBUITextField"; text = "http://lipsum.com"; ObjectID = "7tl-3n-OX3"; */
+"7tl-3n-OX3.text" = "http://lipsum.com";
+
+/* Class = "IBUIButton"; normalTitle = "Switch nav bar visibility"; ObjectID = "AAg-uc-0br"; */
+"AAg-uc-0br.normalTitle" = "Switch nav bar visibility";
+
+/* Class = "IBUIButton"; normalTitle = "Push browser control"; ObjectID = "CV4-BU-5V7"; */
+"CV4-BU-5V7.normalTitle" = "Push browser control";
+
+/* Class = "IBUIButton"; normalTitle = "Open customized browser control modally"; ObjectID = "HNZ-HR-DFD"; */
+"HNZ-HR-DFD.normalTitle" = "Open customized browser control modally";
+
+/* Class = "IBUIButton"; normalTitle = "Randomize tint color"; ObjectID = "Mxh-iq-3Xs"; */
+"Mxh-iq-3Xs.normalTitle" = "Randomize tint color";
+
+/* Class = "IBUIButton"; normalTitle = "Push customized browser control"; ObjectID = "SIO-xU-Tuo"; */
+"SIO-xU-Tuo.normalTitle" = "Push customized browser control";
+
+/* Class = "IBUIButton"; normalTitle = "Open browser control modally"; ObjectID = "ebX-zg-71a"; */
+"ebX-zg-71a.normalTitle" = "Open browser control modally";

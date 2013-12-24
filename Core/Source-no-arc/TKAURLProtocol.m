@@ -145,7 +145,9 @@ static NSLock*                      VariableLock                 = nil;
 }
 
 -(void) PresentCredentialDialog{
-	LoginView                        = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Authentication required", @"Basic authorization login and password promt title")
+	LoginView                        = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Authentication required",
+                                                                                                     @"ChivyLocalizable",
+                                                                                                     @"Basic authorization login and password promt title")
 																  message:@""
 																 delegate:self 
 														cancelButtonTitle:@"Cancel" 
