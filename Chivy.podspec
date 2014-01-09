@@ -23,6 +23,8 @@ Pod::Spec.new do |s|
     c.dependency 'SuProgress'
     c.dependency 'AutoScrollLabel'
 	c.dependency 'DKNavbarBackButton'
+	c.dependency 'ARChromeActivity'
+	c.dependency 'ARSafariActivity'
   end
   
   s.subspec 'Core-no-arc' do |cna|

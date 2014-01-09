@@ -1,4 +1,6 @@
 PODS:
+  - ARChromeActivity (1.0.1)
+  - ARSafariActivity (0.0.1)
   - AutoScrollLabel (0.2.1)
   - DKNavbarBackButton (0.1.1):
     - DKNavbarBackButton/core
@@ -6,16 +8,23 @@ PODS:
   - SuProgress (0.8.1)
 
 DEPENDENCIES:
+  - ARChromeActivity
+  - ARSafariActivity (from `https://github.com/alexruperez/ARSafariActivity.git`, branch `master`)
   - AutoScrollLabel
   - DKNavbarBackButton (from `https://github.com/wade0n/DKNavbarBackButton.git`, branch `master`)
   - SuProgress
 
 EXTERNAL SOURCES:
+  ARSafariActivity:
+    :branch: master
+    :git: https://github.com/alexruperez/ARSafariActivity.git
   DKNavbarBackButton:
     :branch: master
     :git: https://github.com/wade0n/DKNavbarBackButton.git
 
 SPEC CHECKSUMS:
+  ARChromeActivity: eb9770a933cfe2b914b8e4e22b684eb7f43f24df
+  ARSafariActivity: 5a99ddb49c748d32682fab566452f002d9177bbb
   AutoScrollLabel: 4978b57536512a3ebf4705b1b5618354bcf4ac84
   DKNavbarBackButton: b188b3c0b2508bfb786518177f097f4ca5fa4bc1
   SuProgress: 5b44431401a2e114ac098a0b976550803d03fd9f

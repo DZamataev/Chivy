@@ -428,72 +428,14 @@
 #pragma mark - Action Sheet
 
 - (void)showActionSheet {
-    NSString *urlString = @"";
     NSURL* url = [self.webView.request URL];
-    urlString = [url absoluteString];
-    int index = _safariButtonIndex = _chromeButtonIndex = _shareButtonIndex = -1;
     
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] init];
-    actionSheet.title = urlString;
-    actionSheet.delegate = self;
-    [actionSheet addButtonWithTitle:NSLocalizedStringFromTable(@"Open in Safari", LocalizationTableName, @"CHWebBrowserController action sheet button title which leads to opening current url in Safari web browser application")];
-    _safariButtonIndex = ++index;
+    ARSafariActivity *safariActivity = [[ARSafariActivity alloc] init];
+    ARChromeActivity *chromeActivity = [[ARChromeActivity alloc] init];
     
-    if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"googlechrome://"]]) {
-        // Chrome is installed, add the option to open in chrome.
-        [actionSheet addButtonWithTitle:NSLocalizedStringFromTable(@"Open in Chrome", LocalizationTableName, @"CHWebBrowserController action sheet button title which leads to opening current url in google chrome web browser application")];
-        _chromeButtonIndex = ++index;
-    }
-    
-    [actionSheet addButtonWithTitle:NSLocalizedStringFromTable(@"Share", LocalizationTableName, @"CHWebBrowserController action sheet button title which leads to standart sharing")];
-    _shareButtonIndex = ++index;
-    
-    actionSheet.cancelButtonIndex = [actionSheet addButtonWithTitle:NSLocalizedStringFromTable(@"Cancel", LocalizationTableName, nil)];
-	actionSheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
-    
-    [actionSheet showFromToolbar:self.bottomToolbar];
-    
-}
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == [actionSheet cancelButtonIndex]) return;
-    
-    NSURL *theURL = [self.webView.request URL];
-    if (theURL == nil || [theURL isEqual:[NSURL URLWithString:@""]]) {
-        theURL = self.homeUrl;
-    }
-    
-    if (buttonIndex == _safariButtonIndex && _safariButtonIndex >= 0) {
-        
-        [[UIApplication sharedApplication] openURL:theURL];
-    }
-    else if (buttonIndex == _chromeButtonIndex && _chromeButtonIndex >= 0) {
-        NSString *scheme = theURL.scheme;
-        
-        // Replace the URL Scheme with the Chrome equivalent.
-        NSString *chromeScheme = nil;
-        if ([scheme isEqualToString:@"http"]) {
-            chromeScheme = @"googlechrome";
-        } else if ([scheme isEqualToString:@"https"]) {
-            chromeScheme = @"googlechromes";
-        }
-        
-        // Proceed only if a valid Google Chrome URI Scheme is available.
-        if (chromeScheme) {
-            NSString *absoluteString = [theURL absoluteString];
-            NSRange rangeForScheme = [absoluteString rangeOfString:@":"];
-            NSString *urlNoScheme = [absoluteString substringFromIndex:rangeForScheme.location];
-            NSString *chromeURLString = [chromeScheme stringByAppendingString:urlNoScheme];
-            NSURL *chromeURL = [NSURL URLWithString:chromeURLString];
-            
-            // Open the URL with Chrome.
-            [[UIApplication sharedApplication] openURL:chromeURL];
-        }
-    }
-    else if (buttonIndex == _shareButtonIndex && _shareButtonIndex >= 0) {
-        UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[theURL]
-                                                                                 applicationActivities:nil];
-        [self presentViewController:activityVC animated:YES completion:nil];
-    }
+    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[url]
+                                                                             applicationActivities:@[safariActivity, chromeActivity]];
+    [self presentViewController:activityVC animated:YES completion:nil];
 }
 
 #pragma mark - TKAURLProtocol
