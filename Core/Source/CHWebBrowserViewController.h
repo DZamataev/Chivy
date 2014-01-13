@@ -67,6 +67,7 @@ typedef void (^ValuesInAffectedViewsSetterBlock)(UIView *topBar,
     BOOL _isAnimatingResettingViews;
         
     // baking ivars
+    NSMutableArray *_viewsAffectedByAlphaChanging;
     CHWebBrowserViewControllerAttributes *_cAttributes;
     ValuesInAffectedViewsSetterBlock _valuesInAffectedViewsSetterBlock;
     BOOL _shouldShowDismissButton;

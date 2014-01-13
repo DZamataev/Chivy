@@ -107,7 +107,7 @@
                                     <action selector="switchNavBarVisibility:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="MC7-nN-6Jw"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U7Z-4r-xf8">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U7Z-4r-xf8">
                                 <rect key="frame" x="20" y="404" width="280" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Perform Segue For iPhone">
@@ -117,7 +117,7 @@
                                     <segue destination="7hn-px-3d9" kind="push" identifier="DemoToBrowser_iPhone" id="tsu-Ip-13C"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ITs-u7-6Ra">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ITs-u7-6Ra">
                                 <rect key="frame" x="20" y="442" width="280" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Perform Segue for iPad">
@@ -137,9 +137,15 @@
                             <constraint firstItem="7tl-3n-OX3" firstAttribute="trailing" secondItem="HNZ-HR-DFD" secondAttribute="trailing" id="H7r-Iw-KsD"/>
                             <constraint firstItem="ebX-zg-71a" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="34" id="Hq9-QR-9Kx"/>
                             <constraint firstItem="SIO-xU-Tuo" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="8" id="IOv-8j-rOH"/>
+                            <constraint firstItem="ITs-u7-6Ra" firstAttribute="top" secondItem="U7Z-4r-xf8" secondAttribute="bottom" constant="8" symbolic="YES" id="IdM-mf-y0Y"/>
+                            <constraint firstItem="U7Z-4r-xf8" firstAttribute="centerX" secondItem="AAg-uc-0br" secondAttribute="centerX" id="Iu2-IU-95Q"/>
+                            <constraint firstItem="U7Z-4r-xf8" firstAttribute="top" secondItem="AAg-uc-0br" secondAttribute="bottom" constant="8" symbolic="YES" id="J0S-8a-Bcf"/>
+                            <constraint firstItem="U7Z-4r-xf8" firstAttribute="trailing" secondItem="ITs-u7-6Ra" secondAttribute="trailing" id="JPS-jo-E6X"/>
                             <constraint firstItem="7tl-3n-OX3" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="KMd-lW-ELY"/>
+                            <constraint firstItem="U7Z-4r-xf8" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="20" symbolic="YES" id="PAD-L2-jNn"/>
                             <constraint firstItem="1sY-5Z-8Wd" firstAttribute="top" secondItem="Mxh-iq-3Xs" secondAttribute="bottom" constant="8" symbolic="YES" id="PhF-Hf-eDb"/>
                             <constraint firstItem="Mxh-iq-3Xs" firstAttribute="top" secondItem="SIO-xU-Tuo" secondAttribute="bottom" constant="8" symbolic="YES" id="Uor-fE-EB5"/>
+                            <constraint firstItem="U7Z-4r-xf8" firstAttribute="leading" secondItem="ITs-u7-6Ra" secondAttribute="leading" id="V1p-Zd-Y8S"/>
                             <constraint firstItem="SIO-xU-Tuo" firstAttribute="top" secondItem="CV4-BU-5V7" secondAttribute="bottom" constant="8" symbolic="YES" id="W5p-R7-dTM"/>
                             <constraint firstItem="CV4-BU-5V7" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="33" id="Ygr-jJ-GBR"/>
                             <constraint firstItem="AAg-uc-0br" firstAttribute="leading" secondItem="HNZ-HR-DFD" secondAttribute="leading" id="aVY-hK-3vP"/>

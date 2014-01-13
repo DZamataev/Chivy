@@ -125,8 +125,6 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        self.viewsAffectedByAlphaChanging = [NSMutableArray new];
-        self.automaticallyAdjustsScrollViewInsets = NO;
     }
     return self;
 }
@@ -169,6 +167,17 @@
         
     }
     return _valuesInAffectedViewsSetterBlock;
+}
+
+- (void)setViewsAffectedByAlphaChanging:(NSMutableArray *)viewsAffectedByAlphaChanging {
+    _viewsAffectedByAlphaChanging = viewsAffectedByAlphaChanging;
+}
+
+- (NSMutableArray*)viewsAffectedByAlphaChanging {
+    if (!_viewsAffectedByAlphaChanging) {
+        _viewsAffectedByAlphaChanging = [NSMutableArray new];
+    }
+    return _viewsAffectedByAlphaChanging;
 }
 
 - (void)setTitle:(NSString *)title
