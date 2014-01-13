@@ -432,6 +432,9 @@
     
     ARSafariActivity *safariActivity = [[ARSafariActivity alloc] init];
     ARChromeActivity *chromeActivity = [[ARChromeActivity alloc] init];
+    if (self.chromeActivityCallbackUrl) {
+        chromeActivity.callbackURL = self.chromeActivityCallbackUrl;
+    }
     
     UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[url]
                                                                              applicationActivities:@[safariActivity, chromeActivity]];

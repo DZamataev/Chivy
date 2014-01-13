@@ -31,7 +31,8 @@
 
 - (IBAction)openCustomizedWebBrowserModally:(id)sender
 {
-    CHWebBrowserViewController *webBrowserVC = [CHWebBrowserViewController webBrowserControllerWithDefaultNibAndHomeUrl:[NSURL URLWithString:_urlTextField.text]];
+    NSURL *urlToOpen = [NSURL URLWithString:_urlTextField.text];
+    CHWebBrowserViewController *webBrowserVC = [CHWebBrowserViewController webBrowserControllerWithDefaultNibAndHomeUrl:urlToOpen];
     
     webBrowserVC.cAttributes.titleScrollingSpeed = 10.0f;
     webBrowserVC.cAttributes.animationDurationPerOnePixel = 0.0008f; // faster animation on hiding bars
@@ -40,6 +41,14 @@
     webBrowserVC.cAttributes.isHidingBarsOnScrollingEnabled = NO;
     webBrowserVC.cAttributes.shouldAutorotate = NO;
     webBrowserVC.cAttributes.supportedInterfaceOrientations = UIInterfaceOrientationMaskLandscape;
+    
+    /* 
+     let's use google chrome URI scheme which provides callback url.
+     we should specify only 'x-success' parameter using webBrowserViewController property
+     the 'x-source' would be taken from 'CFBundleName' in InfoPlist.strings
+     */
+    NSURL *callbackURL = [NSURL URLWithString:@"returned-from-chrome"];
+    webBrowserVC.chromeActivityCallbackUrl = callbackURL;
 
     [CHWebBrowserViewController openWebBrowserController:webBrowserVC
                                           modallyWithUrl:[NSURL URLWithString:_urlTextField.text]
@@ -78,6 +87,14 @@
     webBrowserVC.cAttributes.supportedInterfaceOrientations = UIInterfaceOrientationMaskLandscape;
     webBrowserVC.customBackBarButtonItemTitle = @"mytitle";
     
+    /*
+     let's use google chrome URI scheme which provides callback url.
+     we should specify only 'x-success' parameter using webBrowserViewController property
+     the 'x-source' would be taken from 'CFBundleName' in InfoPlist.strings
+     */
+    NSURL *callbackURL = [NSURL URLWithString:@"chivy://"];
+    webBrowserVC.chromeActivityCallbackUrl = callbackURL;
+    
     [self.navigationController pushViewController:webBrowserVC animated:YES];
 }
 
@@ -96,6 +113,13 @@
 - (IBAction)switchNavBarVisibility:(id)sender
 {
     [self.navigationController setNavigationBarHidden:!self.navigationController.navigationBarHidden animated:YES];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.destinationViewController isKindOfClass:[CHWebBrowserViewController class]]) {
+        CHWebBrowserViewController *webBrowserVC = segue.destinationViewController;
+        webBrowserVC.homeUrl = [NSURL URLWithString:_urlTextField.text];
+    }
 }
 
 - (void)didReceiveMemoryWarning

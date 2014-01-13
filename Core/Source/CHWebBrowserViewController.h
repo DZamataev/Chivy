@@ -99,6 +99,8 @@ typedef void (^ValuesInAffectedViewsSetterBlock)(UIView *topBar,
 @property (nonatomic, readonly) UINavigationBar *topBar;
 @property (nonatomic, readonly) UIView *suProgressBar;
 
+@property (nonatomic, strong) NSURL *chromeActivityCallbackUrl; // Nil by default. Defines whether or not 'googlechrome-x-callback' URI scheme should be used instead of 'googlechrome' ('googlechromes') URI scheme. More about callback url here: https://developers.google.com/chrome/mobile/docs/ios-links
+
 @property (nonatomic, assign) BOOL shouldShowDismissButton;
 @property (nonatomic, assign) BOOL wasNavigationBarHiddenByControllerOnEnter;
 @property (nonatomic, assign) BOOL wasNavigationBarHiddenAsViewOnEnter;
