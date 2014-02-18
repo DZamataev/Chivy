@@ -82,7 +82,7 @@
     webBrowserVC.cAttributes.animationDurationPerOnePixel = 0.0008f; // faster animation on hiding bars
     webBrowserVC.cAttributes.titleTextAlignment = NSTextAlignmentLeft;
     webBrowserVC.cAttributes.isProgressBarEnabled = YES;
-    webBrowserVC.cAttributes.isHidingBarsOnScrollingEnabled = NO;
+    webBrowserVC.cAttributes.isHidingBarsOnScrollingEnabled = YES;
     webBrowserVC.cAttributes.shouldAutorotate = NO;
     webBrowserVC.cAttributes.supportedInterfaceOrientations = UIInterfaceOrientationMaskLandscape;
     webBrowserVC.customBackBarButtonItemTitle = @"mytitle";

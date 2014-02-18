@@ -198,9 +198,7 @@
 
 - (DKBackBarButtonItem*)customBackBarButtonItem {
     if (!_customBackBarButtonItem) {
-        _customBackBarButtonItem = [[DKBackBarButtonItem alloc] init];
-        
-        _customBackBarButtonItem.title = self.customBackBarButtonItemTitle;
+        _customBackBarButtonItem = [[DKBackBarButtonItem alloc] initWithTitle:self.customBackBarButtonItemTitle];
         
         _customBackBarButtonItem.action = @selector(navigationControllerPopViewControllerAnimated);
         _customBackBarButtonItem.target = self;
