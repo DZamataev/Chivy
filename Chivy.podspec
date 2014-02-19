@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "Chivy"
-  s.version      = "0.1.0"
+  s.version      = "0.2.0"
   s.summary      = "iOS web browser control which looks and behaves like modern Safari and is highly customizable"
   s.homepage     = "https://github.com/DZamataev/Chivy.git"
   s.license      = { :type => 'MIT', :file => 'LICENSE'}
@@ -20,7 +20,7 @@ Pod::Spec.new do |s|
     c.source_files = 'Core/Source/*'
     c.resources = 'Core/Resources/*'
 	c.dependency 'Chivy/Core-no-arc'
-    c.dependency 'SuProgress'
+    c.dependency 'NJKWebViewProgress'
     c.dependency 'AutoScrollLabel'
 	c.dependency 'DKNavbarBackButton'
 	c.dependency 'ARChromeActivity'
