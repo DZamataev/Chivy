@@ -258,7 +258,7 @@
 {
     [self.localNavigationBar removeFromSuperview];
     
-    [self recreateTitleLabelWithText:@""];
+    [self recreateTitleLabelWithText:@"" force:YES];
     
     [self refreshTitleView];
     
@@ -396,20 +396,23 @@
     self.webView.scrollView.contentInset = UIEdgeInsetsMake(0, 0, CHWebBrowserNavBarHeight, 0);
 }
 
-- (void)recreateTitleLabelWithText:(NSString*)text
+- (void)recreateTitleLabelWithText:(NSString*)text force:(BOOL)force
 {
-    if (self.titleLabel)
-        [self.titleLabel removeFromSuperview];
+    if (!self.titleLabel || force || ![self.titleLabel.text isEqualToString:text] || !text) {
     
-    self.titleLabel = [[CBAutoScrollLabel alloc] initWithFrame:CGRectMake(0, 0, self.localTitleView.frame.size.width, self.localTitleView.frame.size.height)];
-    self.titleLabel.scrollSpeed = self.cAttributes.titleScrollingSpeed;
-    self.titleLabel.textAlignment = self.cAttributes.titleTextAlignment;
-    self.titleLabel.text = text;
-    self.titleLabel.alpha = 0.0f;
-    [UIView animateWithDuration:0.2f animations:^{
-        self.titleLabel.alpha = 1.0f;
-    } completion:nil];
-    [self.localTitleView addSubview:self.titleLabel];
+        if (self.titleLabel)
+            [self.titleLabel removeFromSuperview];
+        
+        self.titleLabel = [[CBAutoScrollLabel alloc] initWithFrame:CGRectMake(0, 0, self.localTitleView.frame.size.width, self.localTitleView.frame.size.height)];
+        self.titleLabel.scrollSpeed = self.cAttributes.titleScrollingSpeed;
+        self.titleLabel.textAlignment = self.cAttributes.titleTextAlignment;
+        self.titleLabel.text = text;
+        self.titleLabel.alpha = 0.0f;
+        [UIView animateWithDuration:0.2f animations:^{
+            self.titleLabel.alpha = 1.0f;
+        } completion:nil];
+        [self.localTitleView addSubview:self.titleLabel];
+    }
 }
 
 - (void)refreshTitleView {
@@ -566,7 +569,7 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     NSString *pageTitle = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
-    [self recreateTitleLabelWithText:pageTitle];
+    [self recreateTitleLabelWithText:pageTitle force:NO];
     [self toggleBackForwardButtons];
 }
 
@@ -798,7 +801,7 @@
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-    [self recreateTitleLabelWithText:self.titleLabel.text];
+    [self recreateTitleLabelWithText:self.titleLabel.text force:YES];
 }
 
 - (BOOL)shouldAutorotate {
