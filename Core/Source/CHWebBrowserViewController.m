@@ -325,8 +325,6 @@
 //        self.customBackBarButtonItem.title = self.customBackBarButtonItemTitle;
 //    }
     
-    [self.suProgressBar setHidden:NO]; // cannot dismiss it, workaround
-    
     [TKAURLProtocol registerProtocol];
 	// Two variants for https connection
 	// 1. Call setTrustSelfSignedCertificates:YES to allow access to hosts with untrusted certificates
@@ -352,7 +350,8 @@
     if (!self.shouldShowDismissButton && self.navigationItem.leftBarButtonItem == self.dismissBarButtonItem)
         self.navigationItem.leftBarButtonItem = nil;
     
-    [self.suProgressBar setHidden:YES]; // cannot dismiss it, workaround
+    [self.suProgressBar removeFromSuperview];
+    
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
     if (self.mainRequest)
