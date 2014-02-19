@@ -20,7 +20,7 @@
 #endif
 
 #ifndef CHWebBrowserStatusBarHeight
-#define CHWebBrowserStatusBarHeight (self.cAttributes.statusBarHeight)
+#define CHWebBrowserStatusBarHeight (UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]) ? [UIApplication sharedApplication].statusBarFrame.size.height : [UIApplication sharedApplication].statusBarFrame.size.width)
 #endif
 
 #ifndef CHWebBrowserViewsAffectedByAlphaChangingByDefault
@@ -46,7 +46,6 @@ typedef void (^ValuesInAffectedViewsSetterBlock)(UIView *topBar,
 
 @interface CHWebBrowserViewControllerAttributes : NSObject
 @property (nonatomic, assign) float titleScrollingSpeed;
-@property (nonatomic, assign) float statusBarHeight;
 @property (nonatomic, assign) float animationDurationPerOnePixel;
 @property (nonatomic, assign) NSTextAlignment titleTextAlignment;
 @property (nonatomic, assign) BOOL isProgressBarEnabled;

@@ -15,7 +15,6 @@
 + (CHWebBrowserViewControllerAttributes*)defaultAttributes {
     CHWebBrowserViewControllerAttributes *defaultAttributes = [[CHWebBrowserViewControllerAttributes alloc] init];
     defaultAttributes.titleScrollingSpeed = 20.0f;
-    defaultAttributes.statusBarHeight = UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]) ? [UIApplication sharedApplication].statusBarFrame.size.height : [UIApplication sharedApplication].statusBarFrame.size.width;
     defaultAttributes.animationDurationPerOnePixel = 0.0068181818f;
     defaultAttributes.titleTextAlignment = NSTextAlignmentCenter;
     defaultAttributes.isProgressBarEnabled = YES;
@@ -767,6 +766,8 @@
     [self.topBar sizeToFit];
     [self.bottomToolbar sizeToFit];
     [self resetAffectedViewsAnimated:NO];
+    _progressView.frame = CGRectMake(0, self.topBar.frame.size.height-self.cAttributes.progressBarViewThickness,
+                                     self.topBar.frame.size.width, self.cAttributes.progressBarViewThickness);
 
     [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 }
