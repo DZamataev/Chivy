@@ -54,6 +54,7 @@ typedef void (^ValuesInAffectedViewsSetterBlock)(UIView *topBar,
 @property (nonatomic, assign) BOOL shouldAutorotate;
 @property (nonatomic, assign) NSUInteger supportedInterfaceOrientations;
 @property (nonatomic, assign) UIStatusBarStyle preferredStatusBarStyle;
+@property (nonatomic, assign) BOOL isHttpAuthenticationPromptEnabled;
 
 + (CHWebBrowserViewControllerAttributes*)defaultAttributes;
 @end

@@ -24,6 +24,7 @@
     defaultAttributes.shouldAutorotate = YES;
     defaultAttributes.supportedInterfaceOrientations = UIInterfaceOrientationMaskAllButUpsideDown;
     defaultAttributes.preferredStatusBarStyle = UIStatusBarStyleDefault;
+    defaultAttributes.isHttpAuthenticationPromptEnabled = NO;
     return defaultAttributes;
 }
 
@@ -324,13 +325,14 @@
 //        self.navigationItem.backBarButtonItem.title = self.customBackBarButtonItemTitle;
 //        self.customBackBarButtonItem.title = self.customBackBarButtonItemTitle;
 //    }
-    
-    [TKAURLProtocol registerProtocol];
-	// Two variants for https connection
-	// 1. Call setTrustSelfSignedCertificates:YES to allow access to hosts with untrusted certificates
-	[TKAURLProtocol setTrustSelfSignedCertificates:YES];
-	// 2. Call TKAURLProtocol addTrustedHost: with name of host to be trusted.
-	//[TKAURLProtocol addTrustedHost:@"google.com"];
+    if (self.cAttributes.isHttpAuthenticationPromptEnabled) {
+        [TKAURLProtocol registerProtocol];
+        // Two variants for https connection
+        // 1. Call setTrustSelfSignedCertificates:YES to allow access to hosts with untrusted certificates
+        [TKAURLProtocol setTrustSelfSignedCertificates:YES];
+        // 2. Call TKAURLProtocol addTrustedHost: with name of host to be trusted.
+        //[TKAURLProtocol addTrustedHost:@"google.com"];
+    }
     
     if (self.homeUrl) {
         [self loadUrl:self.homeUrl];
@@ -354,15 +356,17 @@
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
-    if (self.mainRequest)
-	{
-		[TKAURLProtocol removeDownloadDelegateForRequest:self.mainRequest];
-		[TKAURLProtocol removeObserverDelegateForRequest:self.mainRequest];
-		[TKAURLProtocol removeLoginDelegateForRequest:self.mainRequest];
-		[TKAURLProtocol removeSenderObjectForRequest:self.mainRequest];
-	}
-	[TKAURLProtocol setTrustSelfSignedCertificates:NO];
-    [TKAURLProtocol unregisterProtocol];
+    if (self.cAttributes.isHttpAuthenticationPromptEnabled) {
+        if (self.mainRequest)
+        {
+            [TKAURLProtocol removeDownloadDelegateForRequest:self.mainRequest];
+            [TKAURLProtocol removeObserverDelegateForRequest:self.mainRequest];
+            [TKAURLProtocol removeLoginDelegateForRequest:self.mainRequest];
+            [TKAURLProtocol removeSenderObjectForRequest:self.mainRequest];
+        }
+        [TKAURLProtocol setTrustSelfSignedCertificates:NO];
+        [TKAURLProtocol unregisterProtocol];
+    }
     
     if ([self.navigationController.viewControllers indexOfObject:self]==NSNotFound) {
         // back button was pressed.  We know this is true because self is no longer
@@ -385,8 +389,8 @@
 
 - (void)resetInsets
 {
-    UINavigationBar *topBar = self.topBar;
-    CHWebBrowserLog(@"TOP BAR SIZE %f ORIGIN Y %f VIEW FRAME %@", topBar.frame.size.height, topBar.frame.origin.y, NSStringFromCGRect(self.view.frame));
+//    UINavigationBar *topBar = self.topBar;
+//    CHWebBrowserLog(@"TOP BAR SIZE %f ORIGIN Y %f VIEW FRAME %@", topBar.frame.size.height, topBar.frame.origin.y, NSStringFromCGRect(self.view.frame));
     self.webView.scrollView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, CHWebBrowserNavBarHeight, 0);
     self.webView.scrollView.contentInset = UIEdgeInsetsMake(0, 0, CHWebBrowserNavBarHeight, 0);
 }
@@ -395,18 +399,13 @@
 
 - (void)loadUrlString:(NSString*)urlString
 {
-    if (urlString) {
-        [self loadUrl:[NSURL URLWithString:urlString]];
-    }
+    [self loadUrl:[NSURL URLWithString:urlString]];
 }
 
 - (void)loadUrl:(NSURL*)url
 {
-    if (url)
-	{
-		NSMutableURLRequest *request = [[NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0] mutableCopy];
-		[self.webView loadRequest:request];
-	}
+    NSMutableURLRequest *request = [[NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0] mutableCopy];
+    [self.webView loadRequest:request];
 }
 
 - (void)navigationControllerPopViewControllerAnimated
@@ -436,15 +435,17 @@
 - (void)showActionSheet {
     NSURL* url = [self.webView.request URL];
     
-    ARSafariActivity *safariActivity = [[ARSafariActivity alloc] init];
-    ARChromeActivity *chromeActivity = [[ARChromeActivity alloc] init];
-    if (self.chromeActivityCallbackUrl) {
-        chromeActivity.callbackURL = self.chromeActivityCallbackUrl;
+    if (url && url.absoluteString.length > 0) {
+        ARSafariActivity *safariActivity = [[ARSafariActivity alloc] init];
+        ARChromeActivity *chromeActivity = [[ARChromeActivity alloc] init];
+        if (self.chromeActivityCallbackUrl) {
+            chromeActivity.callbackURL = self.chromeActivityCallbackUrl;
+        }
+        
+        UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[url]
+                                                                                 applicationActivities:@[safariActivity, chromeActivity]];
+        [self presentViewController:activityVC animated:YES completion:nil];
     }
-    
-    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[url]
-                                                                             applicationActivities:@[safariActivity, chromeActivity]];
-    [self presentViewController:activityVC animated:YES completion:nil];
 }
 
 #pragma mark - TKAURLProtocol
@@ -511,23 +512,25 @@
 		}
     }
     
-	// Configure TKAURLProtocol - authentication engine for UIWebView
-	if ([request.mainDocumentURL isEqual:request.URL])
-	{
-        if (self.mainRequest)
+    if (self.cAttributes.isHttpAuthenticationPromptEnabled) {
+        // Configure TKAURLProtocol - authentication engine for UIWebView
+        if ([request.mainDocumentURL isEqual:request.URL])
         {
-            [TKAURLProtocol removeDownloadDelegateForRequest:self.mainRequest];
-            [TKAURLProtocol removeObserverDelegateForRequest:self.mainRequest];
-            [TKAURLProtocol removeLoginDelegateForRequest:self.mainRequest];
-            [TKAURLProtocol removeSenderObjectForRequest:self.mainRequest];
-            self.mainRequest = nil;
+            if (self.mainRequest)
+            {
+                [TKAURLProtocol removeDownloadDelegateForRequest:self.mainRequest];
+                [TKAURLProtocol removeObserverDelegateForRequest:self.mainRequest];
+                [TKAURLProtocol removeLoginDelegateForRequest:self.mainRequest];
+                [TKAURLProtocol removeSenderObjectForRequest:self.mainRequest];
+                self.mainRequest = nil;
+            }
+            self.mainRequest = request;
+            [TKAURLProtocol addDownloadDelegate:self ForRequest:request];
+            [TKAURLProtocol addObserverDelegate:self ForRequest:request];
+            [TKAURLProtocol addLoginDelegate:self ForRequest:request];
+            [TKAURLProtocol addSenderObject:webView ForRequest:request];
         }
-        self.mainRequest = request;
-        [TKAURLProtocol addDownloadDelegate:self ForRequest:request];
-        [TKAURLProtocol addObserverDelegate:self ForRequest:request];
-        [TKAURLProtocol addLoginDelegate:self ForRequest:request];
-        [TKAURLProtocol addSenderObject:webView ForRequest:request];
-	}
+    }
     
     return YES;
 }
@@ -599,7 +602,7 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    CHWebBrowserLog(@"\n contentOffset.y %f \n delta %f \n contentInset %@ \n scrollIndicatorsInset %@ \n topBarPositionY %f",scrollView.contentOffset.y, _lastContentOffset.y - scrollView.contentOffset.y, NSStringFromUIEdgeInsets(scrollView.contentInset), NSStringFromUIEdgeInsets(scrollView.scrollIndicatorInsets), self.topBar.frame.origin.y);
+//    CHWebBrowserLog(@"\n contentOffset.y %f \n delta %f \n contentInset %@ \n scrollIndicatorsInset %@ \n topBarPositionY %f",scrollView.contentOffset.y, _lastContentOffset.y - scrollView.contentOffset.y, NSStringFromUIEdgeInsets(scrollView.contentInset), NSStringFromUIEdgeInsets(scrollView.scrollIndicatorInsets), self.topBar.frame.origin.y);
     
     if (self.cAttributes.isHidingBarsOnScrollingEnabled && !_isMovingViews && !_isAnimatingViews && !_isAnimatingResettingViews && scrollView.isDragging) {
         CGFloat delta =  scrollView.contentOffset.y - _lastContentOffset.y;
