@@ -16,7 +16,6 @@
     CHWebBrowserViewControllerAttributes *defaultAttributes = [[CHWebBrowserViewControllerAttributes alloc] init];
     defaultAttributes.titleScrollingSpeed = 20.0f;
     defaultAttributes.statusBarHeight = UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]) ? [UIApplication sharedApplication].statusBarFrame.size.height : [UIApplication sharedApplication].statusBarFrame.size.width;
-    defaultAttributes.suProgressBarTag = 51381;
     defaultAttributes.animationDurationPerOnePixel = 0.0068181818f;
     defaultAttributes.titleTextAlignment = NSTextAlignmentCenter;
     defaultAttributes.isProgressBarEnabled = YES;
@@ -25,6 +24,7 @@
     defaultAttributes.supportedInterfaceOrientations = UIInterfaceOrientationMaskAllButUpsideDown;
     defaultAttributes.preferredStatusBarStyle = UIStatusBarStyleDefault;
     defaultAttributes.isHttpAuthenticationPromptEnabled = NO;
+    defaultAttributes.progressBarViewThickness = 1.0f;
     return defaultAttributes;
 }
 
@@ -248,9 +248,6 @@
     return self.navigationController.navigationBar;
 }
 
-- (UIView*)suProgressBar {
-    return [self.navigationController.navigationBar viewWithTag:self.cAttributes.suProgressBarTag];
-}
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
     return self.cAttributes.preferredStatusBarStyle;
@@ -272,8 +269,12 @@
     self.navigationItem.titleView = self.localTitleView;
     self.navigationItem.rightBarButtonItem = self.readBarButtonItem;
     
-    if (self.cAttributes.isProgressBarEnabled && !self.suProgressBar)
-        [self SuProgressForWebView:self.webView];
+    if (self.cAttributes.isProgressBarEnabled) {
+        _progressDelegateProxy = [[NJKWebViewProgress alloc] init];
+        self.webView.delegate = _progressDelegateProxy;
+        _progressDelegateProxy.webViewProxyDelegate = self;
+        _progressDelegateProxy.progressDelegate = self;
+    }
     
     self.bottomToolbar.tintColor = self.navigationController.navigationBar.tintColor;
     
@@ -319,12 +320,11 @@
         self.navigationItem.leftBarButtonItem = self.customBackBarButtonItem;
     }
     
-    
-//    if (self.customBackBarButtonItemTitle) {
-//        self.navigationController.navigationBar.backItem.title = self.customBackBarButtonItemTitle;
-//        self.navigationItem.backBarButtonItem.title = self.customBackBarButtonItemTitle;
-//        self.customBackBarButtonItem.title = self.customBackBarButtonItemTitle;
-//    }
+    if (_progressView) [_progressView removeFromSuperview];
+    _progressView = [[NJKWebViewProgressView alloc] initWithFrame:CGRectMake(0, self.topBar.frame.size.height-self.cAttributes.progressBarViewThickness,
+                                                                             self.topBar.frame.size.width, self.cAttributes.progressBarViewThickness)];
+    [self.topBar addSubview:_progressView];
+
     if (self.cAttributes.isHttpAuthenticationPromptEnabled) {
         [TKAURLProtocol registerProtocol];
         // Two variants for https connection
@@ -352,7 +352,7 @@
     if (!self.shouldShowDismissButton && self.navigationItem.leftBarButtonItem == self.dismissBarButtonItem)
         self.navigationItem.leftBarButtonItem = nil;
     
-    [self.suProgressBar removeFromSuperview];
+    [_progressView removeFromSuperview];
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
@@ -778,11 +778,18 @@
     return self.cAttributes.supportedInterfaceOrientations;
 }
 
-#pragma mark - UIBarPositioningDelegate
+#pragma mark - UIBarPositioningDelegate protocol implementation
 
 - (UIBarPosition)positionForBar:(id <UIBarPositioning>)bar
 {
     return UIBarPositionTopAttached;
+}
+
+#pragma mark - NJKWebViewProgressDelegate protocol implementation
+
+- (void)webViewProgress:(NJKWebViewProgress *)webViewProgress updateProgress:(float)progress
+{
+    [_progressView setProgress:progress animated:YES];
 }
 
 #pragma mark - Static Helpers

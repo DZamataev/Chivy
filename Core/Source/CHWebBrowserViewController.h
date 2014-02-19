@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import <CBAutoScrollLabel.h>
-#import <SuProgress.h>
 #import <DKBackBarButtonItem.h>
 #import <ARSafariActivity.h>
 #import <ARChromeActivity.h>
+#import <NJKWebViewProgress.h>
+#import <NJKWebViewProgressView.h>
 #import "TKAURLProtocol.h"
 
 #ifndef CHWebBrowserNavBarHeight
@@ -46,7 +47,6 @@ typedef void (^ValuesInAffectedViewsSetterBlock)(UIView *topBar,
 @interface CHWebBrowserViewControllerAttributes : NSObject
 @property (nonatomic, assign) float titleScrollingSpeed;
 @property (nonatomic, assign) float statusBarHeight;
-@property (nonatomic, assign) int suProgressBarTag;
 @property (nonatomic, assign) float animationDurationPerOnePixel;
 @property (nonatomic, assign) NSTextAlignment titleTextAlignment;
 @property (nonatomic, assign) BOOL isProgressBarEnabled;
@@ -55,17 +55,20 @@ typedef void (^ValuesInAffectedViewsSetterBlock)(UIView *topBar,
 @property (nonatomic, assign) NSUInteger supportedInterfaceOrientations;
 @property (nonatomic, assign) UIStatusBarStyle preferredStatusBarStyle;
 @property (nonatomic, assign) BOOL isHttpAuthenticationPromptEnabled;
+@property (nonatomic, assign) float progressBarViewThickness;
 
 + (CHWebBrowserViewControllerAttributes*)defaultAttributes;
 @end
 
-@interface CHWebBrowserViewController : UIViewController <UIWebViewDelegate, NSURLConnectionDelegate, UIAlertViewDelegate, UIActionSheetDelegate, UIBarPositioningDelegate, UIScrollViewDelegate, TKAURLProtocolDelegate>
+@interface CHWebBrowserViewController : UIViewController <UIWebViewDelegate, NSURLConnectionDelegate, UIAlertViewDelegate, UIActionSheetDelegate, UIBarPositioningDelegate, UIScrollViewDelegate, TKAURLProtocolDelegate, NJKWebViewProgressDelegate>
 {
     CGPoint _lastContentOffset;
     BOOL _isScrollViewScrolling;
     BOOL _isMovingViews;
     BOOL _isAnimatingViews;
     BOOL _isAnimatingResettingViews;
+    NJKWebViewProgress *_progressDelegateProxy;
+    NJKWebViewProgressView *_progressView;
         
     // baking ivars
     NSMutableArray *_viewsAffectedByAlphaChanging;
@@ -99,7 +102,6 @@ typedef void (^ValuesInAffectedViewsSetterBlock)(UIView *topBar,
 @property (nonatomic, strong) NSString *customBackBarButtonItemTitle;
 
 @property (nonatomic, readonly) UINavigationBar *topBar;
-@property (nonatomic, readonly) UIView *suProgressBar;
 
 @property (nonatomic, strong) NSURL *chromeActivityCallbackUrl; // Nil by default. Defines whether or not 'googlechrome-x-callback' URI scheme should be used instead of 'googlechrome' ('googlechromes') URI scheme. More about callback url here: https://developers.google.com/chrome/mobile/docs/ios-links
 
