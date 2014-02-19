@@ -323,6 +323,7 @@
     if (_progressView) [_progressView removeFromSuperview];
     _progressView = [[NJKWebViewProgressView alloc] initWithFrame:CGRectMake(0, self.topBar.frame.size.height-self.cAttributes.progressBarViewThickness,
                                                                              self.topBar.frame.size.width, self.cAttributes.progressBarViewThickness)];
+    [_progressView setProgress:0 animated:NO];
     [self.topBar addSubview:_progressView];
 
     if (self.cAttributes.isHttpAuthenticationPromptEnabled) {
