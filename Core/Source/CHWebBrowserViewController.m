@@ -258,8 +258,9 @@
 {
     [self.localNavigationBar removeFromSuperview];
     
-    self.titleLabel.scrollSpeed = self.cAttributes.titleScrollingSpeed;
-    self.titleLabel.textAlignment = self.cAttributes.titleTextAlignment;
+    [self recreateTitleLabelWithText:@""];
+    
+    [self refreshTitleView];
     
     [self.viewsAffectedByAlphaChanging addObjectsFromArray:CHWebBrowserViewsAffectedByAlphaChangingByDefault];
     
@@ -393,6 +394,28 @@
 //    CHWebBrowserLog(@"TOP BAR SIZE %f ORIGIN Y %f VIEW FRAME %@", topBar.frame.size.height, topBar.frame.origin.y, NSStringFromCGRect(self.view.frame));
     self.webView.scrollView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, CHWebBrowserNavBarHeight, 0);
     self.webView.scrollView.contentInset = UIEdgeInsetsMake(0, 0, CHWebBrowserNavBarHeight, 0);
+}
+
+- (void)recreateTitleLabelWithText:(NSString*)text
+{
+    if (self.titleLabel)
+        [self.titleLabel removeFromSuperview];
+    
+    self.titleLabel = [[CBAutoScrollLabel alloc] initWithFrame:CGRectMake(0, 0, self.localTitleView.frame.size.width, self.localTitleView.frame.size.height)];
+    self.titleLabel.scrollSpeed = self.cAttributes.titleScrollingSpeed;
+    self.titleLabel.textAlignment = self.cAttributes.titleTextAlignment;
+    self.titleLabel.text = text;
+    self.titleLabel.alpha = 0.0f;
+    [UIView animateWithDuration:0.2f animations:^{
+        self.titleLabel.alpha = 1.0f;
+    } completion:nil];
+    [self.localTitleView addSubview:self.titleLabel];
+}
+
+- (void)refreshTitleView {
+    float width = self.topBar.frame.size.width - self.navigationItem.leftBarButtonItem.customView.frame.size.width - self.navigationItem.rightBarButtonItem.customView.frame.size.width;
+    self.localTitleView.frame = CGRectMake(self.localTitleView.frame.origin.x, self.localTitleView.frame.origin.y, width, self.localTitleView.frame.size.height);
+    
 }
 
 #pragma mark - Public Actions
@@ -538,13 +561,13 @@
 - (void)webViewDidStartLoad:(UIWebView *)webView {
     [self resetAffectedViewsAnimated:YES];
     [self toggleBackForwardButtons];
+    self.webView.hidden = NO;
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     NSString *pageTitle = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
-    self.titleLabel.text = pageTitle;
+    [self recreateTitleLabelWithText:pageTitle];
     [self toggleBackForwardButtons];
-    self.webView.hidden = NO;
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
@@ -768,8 +791,14 @@
     [self resetAffectedViewsAnimated:NO];
     _progressView.frame = CGRectMake(0, self.topBar.frame.size.height-self.cAttributes.progressBarViewThickness,
                                      self.topBar.frame.size.width, self.cAttributes.progressBarViewThickness);
-
+    [self refreshTitleView];
+    self.titleLabel.alpha = 0.0f;
     [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [self recreateTitleLabelWithText:self.titleLabel.text];
 }
 
 - (BOOL)shouldAutorotate {

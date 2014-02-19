@@ -24,7 +24,7 @@
 #endif
 
 #ifndef CHWebBrowserViewsAffectedByAlphaChangingByDefault
-#define CHWebBrowserViewsAffectedByAlphaChangingByDefault (@[self.titleLabel, self.dismissBarButtonItem.customView, self.readBarButtonItem.customView, self.customBackBarButtonItem.customView])
+#define CHWebBrowserViewsAffectedByAlphaChangingByDefault (@[self.localTitleView, self.dismissBarButtonItem.customView, self.readBarButtonItem.customView, self.customBackBarButtonItem.customView])
 #endif
 
 #ifdef DEBUG

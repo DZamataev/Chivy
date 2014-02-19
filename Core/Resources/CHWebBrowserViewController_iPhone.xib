@@ -15,7 +15,6 @@
                 <outlet property="navigateForwardButton" destination="shM-CK-peR" id="oKU-9A-iLf"/>
                 <outlet property="readBarButtonItem" destination="ir7-VW-CWB" id="x5f-xE-KhK"/>
                 <outlet property="refreshButton" destination="YM5-0e-Eu1" id="vQH-Ez-Keq"/>
-                <outlet property="titleLabel" destination="45c-ZR-gcT" id="A5S-O6-aww"/>
                 <outlet property="view" destination="1" id="3"/>
                 <outlet property="webView" destination="T7w-qf-GG4" id="xXt-Af-noh"/>
             </connections>
@@ -85,20 +84,7 @@
                             <view key="titleView" contentMode="scaleToFill" id="AZq-qW-Szc">
                                 <rect key="frame" x="60" y="6" width="200" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="45c-ZR-gcT" customClass="CBAutoScrollLabel">
-                                        <rect key="frame" x="0.0" y="0.0" width="200" height="33"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    </view>
-                                </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="45c-ZR-gcT" secondAttribute="bottom" id="MG0-Ib-hbz"/>
-                                    <constraint firstItem="45c-ZR-gcT" firstAttribute="leading" secondItem="AZq-qW-Szc" secondAttribute="leading" id="d3F-ba-GIC"/>
-                                    <constraint firstAttribute="trailing" secondItem="45c-ZR-gcT" secondAttribute="trailing" id="wJe-iK-78z"/>
-                                    <constraint firstItem="45c-ZR-gcT" firstAttribute="top" secondItem="AZq-qW-Szc" secondAttribute="top" id="xpW-TY-Av0"/>
-                                </constraints>
                             </view>
                             <barButtonItem key="rightBarButtonItem" id="ir7-VW-CWB">
                                 <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="CJe-ID-94r">

@@ -15,7 +15,6 @@
                 <outlet property="navigateForwardButton" destination="IST-hO-AKK" id="xkR-45-8bS"/>
                 <outlet property="readBarButtonItem" destination="dV3-KI-Bm2" id="RPy-By-RuI"/>
                 <outlet property="refreshButton" destination="caa-eA-YZH" id="J3Z-hO-rgI"/>
-                <outlet property="titleLabel" destination="yWK-n6-HKO" id="YSG-2i-Ch6"/>
                 <outlet property="view" destination="uQK-m9-hG7" id="uLK-af-ug5"/>
                 <outlet property="webView" destination="tDW-i3-zdB" id="KoS-Ao-QaS"/>
             </connections>
@@ -86,20 +85,7 @@
                             <view key="titleView" contentMode="scaleToFill" id="8Vo-Nv-OJX">
                                 <rect key="frame" x="109" y="6" width="550" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yWK-n6-HKO" customClass="CBAutoScrollLabel">
-                                        <rect key="frame" x="0.0" y="0.0" width="550" height="33"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    </view>
-                                </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="yWK-n6-HKO" secondAttribute="trailing" id="CXM-HE-mhB"/>
-                                    <constraint firstItem="yWK-n6-HKO" firstAttribute="top" secondItem="8Vo-Nv-OJX" secondAttribute="top" id="dTe-jy-nqM"/>
-                                    <constraint firstAttribute="bottom" secondItem="yWK-n6-HKO" secondAttribute="bottom" id="qoj-BN-vMP"/>
-                                    <constraint firstItem="yWK-n6-HKO" firstAttribute="leading" secondItem="8Vo-Nv-OJX" secondAttribute="leading" id="ynW-6O-LaW"/>
-                                </constraints>
                             </view>
                             <barButtonItem key="rightBarButtonItem" id="dV3-KI-Bm2">
                                 <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Ifx-9b-QER">
