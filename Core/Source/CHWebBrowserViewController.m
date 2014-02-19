@@ -666,7 +666,7 @@
     UIEdgeInsets contentInset = UIEdgeInsetsMake(topInset, 0, bottomInset, 0);
     UIEdgeInsets scrollingIndicatorInsets = UIEdgeInsetsMake(topInset, 0, bottomInset, 0);
     
-    float alpha = [CHWebBrowserViewController clampFloat:CHWebBrowserNavBarHeight * _titleLabel.alpha - delta
+    float alpha = [CHWebBrowserViewController clampFloat:CHWebBrowserNavBarHeight * self.localTitleView.alpha - delta
                                              withMinimum:0
                                               andMaximum:CHWebBrowserNavBarHeight] / CHWebBrowserNavBarHeight;
     
@@ -711,7 +711,7 @@
     UIEdgeInsets contentInset = UIEdgeInsetsMake(topInsetTargetValue,0,bottomInsetTargetValue,0);
     UIEdgeInsets scrollingIndicatorInsets = contentInset;
     
-    float alpha = [CHWebBrowserViewController maximizeValue:self.titleLabel.alpha
+    float alpha = [CHWebBrowserViewController maximizeValue:self.localTitleView.alpha
                                                betweenValue:0
                                                    andValue:1.0f];
     
