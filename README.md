@@ -6,9 +6,9 @@ iOS web browser control which looks and behaves like modern Safari and is highly
 Demo
 ====
 
-![gif demo](http://mkerala.com/u/image.php?di=7UZA)
+![screenshot iPhone](https://raw.github.com/DZamataev/Chivy/master/Chivy-0.2.0-iPhone-screenshot.png)
 
-[Full Demo on YouTube (720p)](http://youtu.be/PGDK-ACwDA0)
+[Full Demo on YouTube (720p)](http://youtu.be/BtioTMk8IyM)
 
 Work in progress
 ================
@@ -32,12 +32,9 @@ Installation
 
 ### via CocoaPods (not yet released)
 
-for now you will need [my fork of SuProgress](https://github.com/DZamataev/SuProgress) project, cuz the original not yet accepted the necessery pull requests
-
-and the project itself, which is not yet released to CocoaPods, so the bleeding edge version is the only available option
+the project itself, which is not yet released to CocoaPods, so the bleeding edge version is the only available option
 
 ```
-pod 'SuProgress', :git => 'https://github.com/DZamataev/SuProgress.git', :branch => 'master'
 pod 'Chivy', :git => 'https://github.com/DZamataev/Chivy.git', :branch => 'master'
 ```
 
