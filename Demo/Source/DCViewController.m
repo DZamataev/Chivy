@@ -50,6 +50,10 @@
     NSURL *callbackURL = [NSURL URLWithString:@"returned-from-chrome"];
     webBrowserVC.chromeActivityCallbackUrl = callbackURL;
 
+    [webBrowserVC setOnDismissCallback:^(CHWebBrowserViewController *webBrowser) {
+        NSLog(@"dismiss callback trigerred");
+    }];
+    
     [CHWebBrowserViewController openWebBrowserController:webBrowserVC
                                           modallyWithUrl:[NSURL URLWithString:_urlTextField.text]
                                                 animated:YES
@@ -59,7 +63,7 @@
                                               }];
     
     
-    float delayInSeconds = 8.0f;
+    float delayInSeconds = 5.0f;
     NSLog(@"Dismiss button will appear in %f seconds. Please wait.", delayInSeconds);
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -94,6 +98,10 @@
      */
     NSURL *callbackURL = [NSURL URLWithString:@"chivy://"];
     webBrowserVC.chromeActivityCallbackUrl = callbackURL;
+    
+    [webBrowserVC setOnDismissCallback:^(CHWebBrowserViewController *webBrowser) {
+        NSLog(@"dismiss callback trigerred");
+    }];
     
     [self.navigationController pushViewController:webBrowserVC animated:YES];
 }

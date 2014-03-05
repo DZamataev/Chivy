@@ -104,6 +104,8 @@ typedef void (^ValuesInAffectedViewsSetterBlock)(UIView *topBar,
 
 @property (nonatomic, strong) NSURL *chromeActivityCallbackUrl; // Nil by default. Defines whether or not 'googlechrome-x-callback' URI scheme should be used instead of 'googlechrome' ('googlechromes') URI scheme. More about callback url here: https://developers.google.com/chrome/mobile/docs/ios-links
 
+@property (nonatomic, copy) void (^onDismissCallback)(CHWebBrowserViewController *webBrowser);
+
 @property (nonatomic, assign) BOOL shouldShowDismissButton;
 @property (nonatomic, assign) BOOL wasNavigationBarHiddenByControllerOnEnter;
 @property (nonatomic, assign) BOOL wasNavigationBarHiddenAsViewOnEnter;

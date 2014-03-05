@@ -117,8 +117,11 @@
 }
 
 - (id)init {
-    NSAssert(FALSE, @"Init not implemented, use initWithNibName instead");
-    return nil;
+    self = [super init];
+    if (self) {
+        
+    }
+    return self;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -230,12 +233,16 @@
 
 - (void)setShouldShowDismissButton:(BOOL)shouldShowDismissButton
 {
+    BOOL titleNeedsRefresh = (shouldShowDismissButton != _shouldShowDismissButton);
     _shouldShowDismissButton = shouldShowDismissButton;
     if (_shouldShowDismissButton && self.navigationItem.leftBarButtonItem != self.dismissBarButtonItem) {
         self.navigationItem.leftBarButtonItem = self.dismissBarButtonItem;
     }
     else if (!_shouldShowDismissButton && self.navigationItem.leftBarButtonItem == self.dismissBarButtonItem) {
         self.navigationItem.leftBarButtonItem = nil;
+    }
+    if (titleNeedsRefresh) {
+        [self recreateTitleLabelWithText:self.titleLabel.text force:YES];
     }
 }
 
@@ -372,6 +379,9 @@
     if ([self.navigationController.viewControllers indexOfObject:self]==NSNotFound) {
         // back button was pressed.  We know this is true because self is no longer
         // in the navigation stack.
+        if (self.onDismissCallback) {
+            self.onDismissCallback(self);
+        }
     }
     
     [super viewWillDisappear:animated];
@@ -447,6 +457,9 @@
 
 - (IBAction)dismissModally:(id)sender {
     [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
+    if (self.onDismissCallback) {
+        self.onDismissCallback(self);
+    }
 }
 
 - (IBAction)readingModeToggle:(id)sender {
