@@ -463,10 +463,12 @@
 }
 
 - (IBAction)readingModeToggle:(id)sender {
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"MakeReadableJS" ofType:@"txt"];
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"MakeReadable" ofType:@"js"];
     NSString *content = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
     NSString *s = [self.webView stringByEvaluatingJavaScriptFromString:content];
-    CHWebBrowserLog(@"readable script %@\n outputs: %@", content, s);
+    if (s && s.length) {
+        CHWebBrowserLog(@"  readable script: %@\n  outputs: %@", content, s);
+    }
 }
 
 #pragma mark - Action Sheet
@@ -571,25 +573,32 @@
         }
     }
     
+    self.webView.hidden = NO;
+    
+    self.readBarButtonItem.enabled = NO;
+    
     return YES;
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
+    _loadsInProgressCount++;
     [self resetAffectedViewsAnimated:YES];
     [self toggleBackForwardButtons];
-    self.webView.hidden = NO;
-    self.readBarButtonItem.enabled = NO;
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
+    _loadsInProgressCount--;
     NSString *pageTitle = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
     [self recreateTitleLabelWithText:pageTitle force:NO];
     [self toggleBackForwardButtons];
-    self.readBarButtonItem.enabled = YES;
+    
+    if (_loadsInProgressCount == 0) {
+        [self webViewDidFinishLoadTheWholePage:webView];
+    }
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-    
+    _loadsInProgressCount = 0;
     // To avoid getting an error alert when you click on a link
     // before a request has finished loading.
     if ([error code] == NSURLErrorCancelled) {
@@ -606,6 +615,10 @@
                                           cancelButtonTitle:nil
                                           otherButtonTitles:NSLocalizedStringFromTable(@"OK", LocalizationTableName, nil), nil];
 	[alert show];
+}
+
+- (void)webViewDidFinishLoadTheWholePage:(UIWebView*)webView {
+    self.readBarButtonItem.enabled = YES;
 }
 
 

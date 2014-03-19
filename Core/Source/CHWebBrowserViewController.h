@@ -68,6 +68,7 @@ typedef void (^ValuesInAffectedViewsSetterBlock)(UIView *topBar,
     BOOL _isAnimatingResettingViews;
     NJKWebViewProgress *_progressDelegateProxy;
     NJKWebViewProgressView *_progressView;
+    NSInteger _loadsInProgressCount;
         
     // baking ivars
     NSMutableArray *_viewsAffectedByAlphaChanging;
