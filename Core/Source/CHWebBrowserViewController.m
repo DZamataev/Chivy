@@ -578,12 +578,14 @@
     [self resetAffectedViewsAnimated:YES];
     [self toggleBackForwardButtons];
     self.webView.hidden = NO;
+    self.readBarButtonItem.enabled = NO;
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     NSString *pageTitle = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
     [self recreateTitleLabelWithText:pageTitle force:NO];
     [self toggleBackForwardButtons];
+    self.readBarButtonItem.enabled = YES;
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
