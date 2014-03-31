@@ -203,7 +203,7 @@
     if (!_customBackBarButtonItem) {
         _customBackBarButtonItem = [[DKBackBarButtonItem alloc] initWithTitle:self.customBackBarButtonItemTitle];
         
-        _customBackBarButtonItem.action = @selector(navigationControllerPopViewControllerAnimated);
+        _customBackBarButtonItem.action = @selector(navigationControllerPopViewControllerAnimated:);
         _customBackBarButtonItem.target = self;
     }
     return _customBackBarButtonItem;
@@ -444,9 +444,11 @@
     [self.webView loadRequest:request];
 }
 
-- (void)navigationControllerPopViewControllerAnimated
+- (void)navigationControllerPopViewControllerAnimated:(id)sender
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    if (self.navigationController && self.navigationController.topViewController == self) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 #pragma mark - IBActions
