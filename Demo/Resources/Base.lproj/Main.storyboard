@@ -12,49 +12,12 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="Z6d-sc-ABb" kind="relationship" relationship="rootViewController" id="yI2-Tt-r8Y"/>
+                        <segue destination="vXZ-lx-hvc" kind="relationship" relationship="rootViewController" id="mMd-90-cwP"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8vf-hM-FEw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-554" y="274"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="9Yl-1H-bTG">
-            <objects>
-                <viewController id="Z6d-sc-ABb" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="vBO-Qr-bZo"/>
-                        <viewControllerLayoutGuide type="bottom" id="rWc-Wh-o1z"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="NjE-FT-PcX">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QQX-qh-4aw">
-                                <rect key="frame" x="49" y="269" width="223" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Deeper">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <segue destination="vXZ-lx-hvc" kind="push" id="aUr-Vg-eRY"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="QQX-qh-4aw" firstAttribute="top" secondItem="vBO-Qr-bZo" secondAttribute="bottom" constant="205" id="3ZN-rc-Vzl"/>
-                            <constraint firstAttribute="trailing" secondItem="QQX-qh-4aw" secondAttribute="trailing" constant="48" id="bi4-Hm-d42"/>
-                            <constraint firstItem="rWc-Wh-o1z" firstAttribute="top" secondItem="QQX-qh-4aw" secondAttribute="bottom" constant="269" id="kjH-DY-3rp"/>
-                            <constraint firstItem="QQX-qh-4aw" firstAttribute="leading" secondItem="NjE-FT-PcX" secondAttribute="leading" constant="49" id="zE6-XF-fqM"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="NSu-aU-85N"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="p6U-5y-wYl" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-98" y="274"/>
+            <point key="canvasLocation" x="-64" y="274"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="ufC-wZ-h7g">
