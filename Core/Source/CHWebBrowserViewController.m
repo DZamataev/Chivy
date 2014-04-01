@@ -203,8 +203,8 @@
     if (!_customBackBarButtonItem) {
         _customBackBarButtonItem = [[DKBackBarButtonItem alloc] initWithTitle:self.customBackBarButtonItemTitle];
         
-        _customBackBarButtonItem.action = @selector(navigationControllerPopViewControllerAnimated:);
         _customBackBarButtonItem.target = self;
+        _customBackBarButtonItem.action = @selector(navigationControllerPopViewControllerAnimated:);
     }
     return _customBackBarButtonItem;
 }
