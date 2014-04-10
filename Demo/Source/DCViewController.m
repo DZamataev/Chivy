@@ -126,7 +126,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.destinationViewController isKindOfClass:[CHWebBrowserViewController class]]) {
         CHWebBrowserViewController *webBrowserVC = segue.destinationViewController;
-        webBrowserVC.homeUrl = [NSURL URLWithString:_urlTextField.text];
+        webBrowserVC.homeUrlString = _urlTextField.text;
     }
 }
 
@@ -134,6 +134,14 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - UITextField protocol implementation
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
 }
 
 #pragma mark - Helpers

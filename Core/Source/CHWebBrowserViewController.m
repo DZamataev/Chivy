@@ -250,10 +250,20 @@
     return _shouldShowDismissButton;
 }
 
+- (void)setHomeUrlString:(NSString *)homeUrlString
+{
+    NSString *encoded = [NSURL IDNEncodedURL:homeUrlString];
+    self.homeUrl = [NSURL URLWithString:encoded];
+}
+
+- (NSString*)homeUrlString
+{
+    return self.homeUrl.absoluteString;
+}
+
 - (UINavigationBar*)topBar {
     return self.navigationController.navigationBar;
 }
-
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
     return self.cAttributes.preferredStatusBarStyle;

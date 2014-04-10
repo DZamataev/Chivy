@@ -14,6 +14,7 @@
 #import <NJKWebViewProgress.h>
 #import <NJKWebViewProgressView.h>
 #import "TKAURLProtocol.h"
+#import "NSURL+IDN.h"
 
 #ifndef CHWebBrowserNavBarHeight
 #define CHWebBrowserNavBarHeight (self.topBar.frame.size.height)
@@ -116,6 +117,7 @@ typedef void (^ValuesInAffectedViewsSetterBlock)(UIView *topBar,
  On viewWillAppear it would be used to navigate the webView
  */
 @property (nonatomic, strong) NSURL *homeUrl;
+@property (nonatomic, strong) NSString *homeUrlString;
 @property (nonatomic, strong) NSURLRequest *mainRequest;
 
 /* This block is used to set **values** in **views** which both come from arguments in the following situations:

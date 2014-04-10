@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "Chivy.h"
 
-@interface DCViewController : UIViewController
+@interface DCViewController : UIViewController <UITextFieldDelegate>
 @property (nonatomic, strong) IBOutlet UITextField *urlTextField;
 @end

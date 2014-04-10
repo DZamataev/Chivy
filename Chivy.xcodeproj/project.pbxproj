@@ -23,6 +23,7 @@
 		927DD9A818239270003A078F /* arrow_back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 927DD9A418239270003A078F /* arrow_back@2x.png */; };
 		927DD9AA18239270003A078F /* arrow_forward@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 927DD9A618239270003A078F /* arrow_forward@2x.png */; };
 		927E2210182A8D9E00716FE4 /* MakeReadable.js in Resources */ = {isa = PBXBuildFile; fileRef = 927E220F182A8D9E00716FE4 /* MakeReadable.js */; };
+		9282DAB118F68A0000B5E1C3 /* NSURL+IDN.m in Sources */ = {isa = PBXBuildFile; fileRef = 9282DAB018F68A0000B5E1C3 /* NSURL+IDN.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		9292F8331828EDC9007445BF /* exit.png in Resources */ = {isa = PBXBuildFile; fileRef = 9292F82F1828EDC9007445BF /* exit.png */; };
 		9292F8341828EDC9007445BF /* exit@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9292F8301828EDC9007445BF /* exit@2x.png */; };
 		9292F8351828EDC9007445BF /* read.png in Resources */ = {isa = PBXBuildFile; fileRef = 9292F8311828EDC9007445BF /* read.png */; };
@@ -59,6 +60,8 @@
 		927DD9A418239270003A078F /* arrow_back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow_back@2x.png"; sourceTree = "<group>"; };
 		927DD9A618239270003A078F /* arrow_forward@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow_forward@2x.png"; sourceTree = "<group>"; };
 		927E220F182A8D9E00716FE4 /* MakeReadable.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = MakeReadable.js; sourceTree = "<group>"; };
+		9282DAAF18F68A0000B5E1C3 /* NSURL+IDN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSURL+IDN.h"; path = "Source-no-arc/NSURL+IDN.h"; sourceTree = "<group>"; };
+		9282DAB018F68A0000B5E1C3 /* NSURL+IDN.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSURL+IDN.m"; path = "Source-no-arc/NSURL+IDN.m"; sourceTree = "<group>"; };
 		9292F82F1828EDC9007445BF /* exit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = exit.png; sourceTree = "<group>"; };
 		9292F8301828EDC9007445BF /* exit@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "exit@2x.png"; sourceTree = "<group>"; };
 		9292F8311828EDC9007445BF /* read.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = read.png; sourceTree = "<group>"; };
@@ -204,6 +207,8 @@
 		92FC40281839FDAC0060F226 /* Source-no-arc */ = {
 			isa = PBXGroup;
 			children = (
+				9282DAAF18F68A0000B5E1C3 /* NSURL+IDN.h */,
+				9282DAB018F68A0000B5E1C3 /* NSURL+IDN.m */,
 				92FC40251839FDA80060F226 /* TKAURLProtocol.h */,
 				92FC40261839FDA80060F226 /* TKAURLProtocol.m */,
 			);
@@ -330,6 +335,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9282DAB118F68A0000B5E1C3 /* NSURL+IDN.m in Sources */,
 				9240582C1822822200C4EB84 /* DCAppDelegate.m in Sources */,
 				92B8B31718461B70005BE407 /* CHWebBrowserViewController_iPad.m in Sources */,
 				9240582E1822822200C4EB84 /* main.m in Sources */,
