@@ -252,8 +252,18 @@
 
 - (void)setHomeUrlString:(NSString *)homeUrlString
 {
-    NSString *encoded = [NSURL IDNEncodedURL:homeUrlString];
-    self.homeUrl = [NSURL URLWithString:encoded];
+    NSString *stringToEncode;
+    NSArray *components = [homeUrlString componentsSeparatedByString:@"://"];
+    if ([components count] < 2) {
+        stringToEncode = [NSString stringWithFormat:@"%@%@", @"http://", homeUrlString];
+    }
+    else {
+        stringToEncode = homeUrlString;
+    }
+    NSString *encodedString = [NSURL IDNEncodedURL:stringToEncode];
+    
+    NSURL *url = [NSURL URLWithString:encodedString];
+    self.homeUrl = url;
 }
 
 - (NSString*)homeUrlString
