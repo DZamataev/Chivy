@@ -271,6 +271,7 @@
         pathString = [stringToEncode substringFromIndex:match.range.length];
         
         hostString = [NSURL IDNEncodedURL:hostString];
+        pathString = [pathString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         pathString = [pathString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         encodedString = [NSString stringWithFormat:@"%@%@", hostString, pathString];
     } else {
