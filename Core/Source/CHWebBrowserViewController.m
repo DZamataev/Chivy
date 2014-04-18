@@ -260,7 +260,23 @@
     else {
         stringToEncode = homeUrlString;
     }
-    NSString *encodedString = [NSURL IDNEncodedURL:stringToEncode];
+
+    NSString *encodedString = nil;
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"http://[^/]+" options:0 error:NULL];
+    NSTextCheckingResult *match = [regex firstMatchInString:stringToEncode options:0 range:NSMakeRange(0, [stringToEncode length])];
+    if (match.range.length > 0 && (match.range.length + match.range.location) < stringToEncode.length) {
+        NSString *hostString = nil;
+        NSString *pathString = nil;
+        hostString = [stringToEncode substringToIndex:match.range.length];
+        pathString = [stringToEncode substringFromIndex:match.range.length];
+        
+        hostString = [NSURL IDNEncodedURL:hostString];
+        pathString = [pathString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        pathString = [pathString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        encodedString = [NSString stringWithFormat:@"%@%@", hostString, pathString];
+    } else {
+        encodedString = [NSURL IDNEncodedURL:stringToEncode];
+    }
     
     NSURL *url = [NSURL URLWithString:encodedString];
     self.homeUrl = url;
