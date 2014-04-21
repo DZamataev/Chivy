@@ -34,7 +34,7 @@
 #	define CHWebBrowserLog(...)
 #endif
 
-typedef void (^ValuesInAffectedViewsSetterBlock)(UIView *topBar,
+typedef void (^CHValuesInAffectedViewsSetterBlock)(UIView *topBar,
                                                  float topBarYPosition,
                                                  UIView *bottomBar,
                                                  float bottomBarYPosition,
@@ -74,7 +74,7 @@ typedef void (^ValuesInAffectedViewsSetterBlock)(UIView *topBar,
     // baking ivars
     NSMutableArray *_viewsAffectedByAlphaChanging;
     CHWebBrowserViewControllerAttributes *_cAttributes;
-    ValuesInAffectedViewsSetterBlock _valuesInAffectedViewsSetterBlock;
+    CHValuesInAffectedViewsSetterBlock _valuesInAffectedViewsSetterBlock;
     BOOL _shouldShowDismissButton;
     DKBackBarButtonItem *_customBackBarButtonItem;
     NSString *_customBackBarButtonItemTitle;
@@ -106,7 +106,8 @@ typedef void (^ValuesInAffectedViewsSetterBlock)(UIView *topBar,
 
 @property (nonatomic, strong) NSURL *chromeActivityCallbackUrl; // Nil by default. Defines whether or not 'googlechrome-x-callback' URI scheme should be used instead of 'googlechrome' ('googlechromes') URI scheme. More about callback url here: https://developers.google.com/chrome/mobile/docs/ios-links
 
-@property (nonatomic, copy) void (^onDismissCallback)(CHWebBrowserViewController *webBrowser);
+@property (nonatomic, copy) void (^onDismissCallback)(CHWebBrowserViewController *webBrowserVC);
+@property (nonatomic, copy) void (^onLoadingFailedCallback)(CHWebBrowserViewController *webBrowserVC, NSError *error, NSURL *requestUrl, BOOL* shouldShowAlert);
 
 @property (nonatomic, assign) BOOL shouldShowDismissButton;
 @property (nonatomic, assign) BOOL wasNavigationBarHiddenByControllerOnEnter;
@@ -128,7 +129,7 @@ typedef void (^ValuesInAffectedViewsSetterBlock)(UIView *topBar,
  
  The ivar is created on first getter occurs
  */
-@property (nonatomic, copy) ValuesInAffectedViewsSetterBlock valuesInAffectedViewsSetterBlock;
+@property (nonatomic, copy) CHValuesInAffectedViewsSetterBlock valuesInAffectedViewsSetterBlock;
 
 + (id)webBrowserControllerWithDefaultNib;
 + (id)webBrowserControllerWithDefaultNibAndHomeUrl:(NSURL*)url;
@@ -144,6 +145,12 @@ typedef void (^ValuesInAffectedViewsSetterBlock)(UIView *topBar,
 + (void)openWebBrowserController:(CHWebBrowserViewController*)vc modallyWithUrl:(NSURL*)url animated:(BOOL)animated;
 + (void)openWebBrowserControllerModallyWithHomeUrl:(NSURL*)url animated:(BOOL)animated;
 + (void)openWebBrowserControllerModallyWithHomeUrl:(NSURL*)url animated:(BOOL)animated completion:(void (^)(void))completion;
+/*
+ This method will handle proper encoding both host (domain) and path parts of your URL provided as string.
+ It will add http:// scheme if there is no other scheme.
+ It will most likely give you proper URL in situation where [NSURL URLWithString:s] will give you nothing (nil).
+ */
++(NSURL*)URLWithString:(NSString*)string;
 
 + (void)clearCredentialsAndCookiesAndCache;
 + (void)clearCredentials;

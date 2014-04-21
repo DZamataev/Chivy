@@ -35,7 +35,7 @@
 
 @implementation CHWebBrowserViewController
 
-#pragma mark - Opening helpers
+#pragma mark - Open helpers
 
 
 + (void)openWebBrowserController:(CHWebBrowserViewController*)vc
@@ -134,12 +134,12 @@
 
 #pragma mark - Properties
 
-- (void)setValuesInAffectedViewsSetterBlock:(ValuesInAffectedViewsSetterBlock)valuesInAffectedViewsSetterBlock
+- (void)setValuesInAffectedViewsSetterBlock:(CHValuesInAffectedViewsSetterBlock)valuesInAffectedViewsSetterBlock
 {
     _valuesInAffectedViewsSetterBlock = valuesInAffectedViewsSetterBlock;
 }
 
-- (ValuesInAffectedViewsSetterBlock)valuesInAffectedViewsSetterBlock {
+- (CHValuesInAffectedViewsSetterBlock)valuesInAffectedViewsSetterBlock {
     if (!_valuesInAffectedViewsSetterBlock) {
         _valuesInAffectedViewsSetterBlock = ^(UIView *topBar,
                                               float topBarYPosition,
@@ -252,34 +252,7 @@
 
 - (void)setHomeUrlString:(NSString *)homeUrlString
 {
-    NSString *stringToEncode;
-    NSArray *components = [homeUrlString componentsSeparatedByString:@"://"];
-    if ([components count] < 2) {
-        stringToEncode = [NSString stringWithFormat:@"%@%@", @"http://", homeUrlString];
-    }
-    else {
-        stringToEncode = homeUrlString;
-    }
-
-    NSString *encodedString = nil;
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"http://[^/]+" options:0 error:NULL];
-    NSTextCheckingResult *match = [regex firstMatchInString:stringToEncode options:0 range:NSMakeRange(0, [stringToEncode length])];
-    if (match.range.length > 0 && (match.range.length + match.range.location) < stringToEncode.length) {
-        NSString *hostString = nil;
-        NSString *pathString = nil;
-        hostString = [stringToEncode substringToIndex:match.range.length];
-        pathString = [stringToEncode substringFromIndex:match.range.length];
-        
-        hostString = [NSURL IDNEncodedURL:hostString];
-        pathString = [pathString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        pathString = [pathString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        encodedString = [NSString stringWithFormat:@"%@%@", hostString, pathString];
-    } else {
-        encodedString = [NSURL IDNEncodedURL:stringToEncode];
-    }
-    
-    NSURL *url = [NSURL URLWithString:encodedString];
-    self.homeUrl = url;
+    self.homeUrl = [CHWebBrowserViewController URLWithString:homeUrlString];
 }
 
 - (NSString*)homeUrlString
@@ -296,9 +269,10 @@
 }
 
 #pragma mark - View lifecycle
-
 - (void)viewDidLoad
 {
+    [super viewDidLoad];
+    
     [self.localNavigationBar removeFromSuperview];
     
     [self recreateTitleLabelWithText:@"" force:YES];
@@ -321,28 +295,7 @@
     
     self.bottomToolbar.tintColor = self.navigationController.navigationBar.tintColor;
     
-    [super viewDidLoad];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-    [_webView stopLoading];
-    UIAlertView *memoryWarningAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Memory warning", LocalizationTableName,
-                                                                                           @"Alert view title. Memory warning alert in web browser.")
-                                                                 message:NSLocalizedStringFromTable(@"The page will stop loading.", LocalizationTableName,
-                                                                                           @"Alert view message. Memory warning alert in web browser.")
-                                                                delegate:nil
-                                                       cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", LocalizationTableName,
-                                                                                           @"Alert view cancel button title. Memory warning alert in web browser.")
-                                                       otherButtonTitles:nil];
-    [memoryWarningAlert show];
-}
-
--(void)viewWillAppear:(BOOL)animated {
     // we need nav bar to be shown
-    
     self.wasNavigationBarHiddenByControllerOnEnter = self.navigationController.navigationBarHidden;
     if (self.wasNavigationBarHiddenByControllerOnEnter)
         [self.navigationController setNavigationBarHidden:NO animated:YES];
@@ -368,7 +321,7 @@
                                                                              self.topBar.frame.size.width, self.cAttributes.progressBarViewThickness)];
     [_progressView setProgress:0 animated:NO];
     [self.topBar addSubview:_progressView];
-
+    
     if (self.cAttributes.isHttpAuthenticationPromptEnabled) {
         [TKAURLProtocol registerProtocol];
         // Two variants for https connection
@@ -383,22 +336,32 @@
     }
 }
 
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+}
+
 -(void) viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
     // restore nav bar visibility to entry state
-    [self resetAffectedViewsAnimated:YES];
+    [self resetAffectedViewsAnimated:NO];
     
     [self.navigationController setNavigationBarHidden:self.wasNavigationBarHiddenByControllerOnEnter animated:YES];
     
     self.navigationController.navigationBar.hidden = self.wasNavigationBarHiddenAsViewOnEnter;
     
-    [self.webView stopLoading];
-    
-    if (!self.shouldShowDismissButton && self.navigationItem.leftBarButtonItem == self.dismissBarButtonItem)
-        self.navigationItem.leftBarButtonItem = nil;
+    if ([self.navigationController.viewControllers indexOfObject:self]==NSNotFound) {
+        // back button was pressed.  We know this is true because self is no longer
+        // in the navigation stack.
+        if (self.onDismissCallback) {
+            self.onDismissCallback(self);
+        }
+    }
+}
+
+- (void)dealloc {
+    CHWebBrowserLog(@"");
     
     [_progressView removeFromSuperview];
-    
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
     if (self.cAttributes.isHttpAuthenticationPromptEnabled) {
         if (self.mainRequest)
@@ -411,20 +374,22 @@
         [TKAURLProtocol setTrustSelfSignedCertificates:NO];
         [TKAURLProtocol unregisterProtocol];
     }
-    
-    if ([self.navigationController.viewControllers indexOfObject:self]==NSNotFound) {
-        // back button was pressed.  We know this is true because self is no longer
-        // in the navigation stack.
-        if (self.onDismissCallback) {
-            self.onDismissCallback(self);
-        }
-    }
-    
-    [super viewWillDisappear:animated];
 }
 
-- (void)dealloc {
-    CHWebBrowserLog(@"");
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+    [_webView stopLoading];
+    UIAlertView *memoryWarningAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Memory warning", LocalizationTableName,
+                                                                                                    @"Alert view title. Memory warning alert in web browser.")
+                                                                 message:NSLocalizedStringFromTable(@"The page will stop loading.", LocalizationTableName,
+                                                                                                    @"Alert view message. Memory warning alert in web browser.")
+                                                                delegate:nil
+                                                       cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", LocalizationTableName,
+                                                                                                    @"Alert view cancel button title. Memory warning alert in web browser.")
+                                                       otherButtonTitles:nil];
+    [memoryWarningAlert show];
 }
 
 #pragma mark - View State Interactions
@@ -490,7 +455,7 @@
 #pragma mark - IBActions
 
 - (IBAction)buttonActionTouchUp:(id)sender {
-    [self showActionSheet];
+    [self showActivities];
 }
 
 - (IBAction)dismissModally:(id)sender {
@@ -509,9 +474,9 @@
     }
 }
 
-#pragma mark - Action Sheet
+#pragma mark - Private actions
 
-- (void)showActionSheet {
+- (void)showActivities {
     NSURL* url = [self.webView.request URL];
     
     if (url && url.absoluteString.length > 0) {
@@ -646,13 +611,20 @@
     
     [self resetAffectedViewsAnimated:YES];
 	
-    // Show error alert
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Could not load page", LocalizationTableName, nil)
-                                                    message:error.localizedDescription
-                                                   delegate:self
-                                          cancelButtonTitle:nil
-                                          otherButtonTitles:NSLocalizedStringFromTable(@"OK", LocalizationTableName, nil), nil];
-	[alert show];
+    BOOL shouldShowAlert = YES;
+    
+    if (self.onLoadingFailedCallback) {
+        self.onLoadingFailedCallback(self,error,webView.request.URL, &shouldShowAlert);
+    }
+    
+    if (shouldShowAlert) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Could not load page", LocalizationTableName, nil)
+                                                        message:error.localizedDescription
+                                                       delegate:self
+                                              cancelButtonTitle:nil
+                                              otherButtonTitles:NSLocalizedStringFromTable(@"OK", LocalizationTableName, nil), nil];
+        [alert show];
+    }
 }
 
 - (void)webViewDidFinishLoadTheWholePage:(UIWebView*)webView {
@@ -893,6 +865,41 @@
 }
 
 #pragma mark - Static Helpers
+
++(NSURL*)URLWithString:(NSString*)string
+{
+    if (!string || string.length == 0) return nil;
+    
+    NSString *stringToEncode = string;
+    
+    // add http:// scheme at least if there is no scheme at all.
+    NSArray *components = [stringToEncode componentsSeparatedByString:@"://"];
+    if ([components count] < 2) {
+        stringToEncode = [NSString stringWithFormat:@"http://%@", stringToEncode];
+    }
+    
+    // encode host (domain) part with IDN encoding and path part with percent escapes UTF8 encoding
+    NSString *encodedString = nil;
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"http://[^/]+" options:0 error:NULL];
+    NSTextCheckingResult *match = [regex firstMatchInString:stringToEncode options:0 range:NSMakeRange(0, [stringToEncode length])];
+    if (match.range.length > 0 && (match.range.length + match.range.location) < stringToEncode.length) {
+        NSString *hostString = nil;
+        NSString *pathString = nil;
+        hostString = [stringToEncode substringToIndex:match.range.length];
+        pathString = [stringToEncode substringFromIndex:match.range.length];
+        
+        hostString = [NSURL IDNEncodedURL:hostString];
+        pathString = [pathString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        pathString = [pathString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        encodedString = [NSString stringWithFormat:@"%@%@", hostString, pathString];
+    } else {
+        encodedString = [NSURL IDNEncodedURL:stringToEncode];
+    }
+    
+    NSURL *url = [NSURL URLWithString:encodedString];
+    return url;
+}
+
 /*
 clamps the value to lie betweem minimum and maximum;
 if minimum is smaller than maximum - they will be swapped;
