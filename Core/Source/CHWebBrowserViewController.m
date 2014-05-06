@@ -889,8 +889,15 @@
         pathString = [stringToEncode substringFromIndex:match.range.length];
         
         hostString = [NSURL IDNEncodedURL:hostString];
-        pathString = [pathString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        pathString = [pathString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        
+        NSString *encodedPath = [pathString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        if (encodedPath) {
+            NSString *decodedPath = [encodedPath stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            if (decodedPath) {
+                pathString = decodedPath;
+            }
+        }
+        
         encodedString = [NSString stringWithFormat:@"%@%@", hostString, pathString];
     } else {
         encodedString = [NSURL IDNEncodedURL:stringToEncode];
