@@ -6,7 +6,7 @@ iOS web browser control which looks and behaves like modern Safari and is highly
 Demo
 ====
 
-![screenshot iPhone](https://raw.github.com/DZamataev/Chivy/master/Chivy-0.2.0-iPhone-screenshot.png)
+![screenshot iPhone](https://raw.githubusercontent.com/DZamataev/Chivy/master/Chivy-0.2.0-iPhone-screenshot.png)
 
 [Full Demo on YouTube (720p)](http://youtu.be/BtioTMk8IyM)
 
