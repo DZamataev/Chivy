@@ -53,6 +53,7 @@ typedef void (^CHValuesInAffectedViewsSetterBlock)(UIView *topBar,
 @property (nonatomic, strong) UIColor *titleTextColor;
 @property (nonatomic, assign) BOOL isProgressBarEnabled;
 @property (nonatomic, assign) BOOL isHidingBarsOnScrollingEnabled;
+@property (nonatomic, assign) BOOL isReadabilityButtonHidden;
 @property (nonatomic, assign) BOOL shouldAutorotate;
 @property (nonatomic, assign) NSUInteger supportedInterfaceOrientations;
 @property (nonatomic, assign) UIStatusBarStyle preferredStatusBarStyle;

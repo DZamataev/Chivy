@@ -21,6 +21,7 @@
     defaultAttributes.titleTextAlignment = NSTextAlignmentCenter;
     defaultAttributes.isProgressBarEnabled = YES;
     defaultAttributes.isHidingBarsOnScrollingEnabled = YES;
+    defaultAttributes.isReadabilityButtonHidden = NO;
     defaultAttributes.shouldAutorotate = YES;
     defaultAttributes.supportedInterfaceOrientations = UIInterfaceOrientationMaskAllButUpsideDown;
     defaultAttributes.preferredStatusBarStyle = UIStatusBarStyleDefault;
@@ -287,6 +288,10 @@
     
     self.navigationItem.titleView = self.localTitleView;
     self.navigationItem.rightBarButtonItem = self.readBarButtonItem;
+    
+    if (self.cAttributes.isReadabilityButtonHidden && self.navigationItem.rightBarButtonItem == self.readBarButtonItem) {
+        self.navigationItem.rightBarButtonItem = nil;
+    }
     
     if (self.cAttributes.isProgressBarEnabled) {
         _progressDelegateProxy = [[NJKWebViewProgress alloc] init];

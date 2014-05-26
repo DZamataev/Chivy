@@ -39,6 +39,7 @@
     webBrowserVC.cAttributes.titleTextAlignment = NSTextAlignmentLeft;
     webBrowserVC.cAttributes.isProgressBarEnabled = YES;
     webBrowserVC.cAttributes.isHidingBarsOnScrollingEnabled = NO;
+    webBrowserVC.cAttributes.isReadabilityButtonHidden = YES;
     webBrowserVC.cAttributes.shouldAutorotate = NO;
     webBrowserVC.cAttributes.supportedInterfaceOrientations = UIInterfaceOrientationMaskLandscape;
     
