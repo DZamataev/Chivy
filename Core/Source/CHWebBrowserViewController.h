@@ -50,6 +50,7 @@ typedef void (^CHValuesInAffectedViewsSetterBlock)(UIView *topBar,
 @property (nonatomic, assign) float animationDurationPerOnePixel;
 @property (nonatomic, assign) NSTextAlignment titleTextAlignment;
 @property (nonatomic, strong) UIFont *titleFont;
+@property (nonatomic, strong) UIColor *titleTextColor;
 @property (nonatomic, assign) BOOL isProgressBarEnabled;
 @property (nonatomic, assign) BOOL isHidingBarsOnScrollingEnabled;
 @property (nonatomic, assign) BOOL shouldAutorotate;
