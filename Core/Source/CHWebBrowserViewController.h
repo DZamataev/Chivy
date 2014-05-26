@@ -17,7 +17,7 @@
 #import "NSURL+IDN.h"
 
 #ifndef CHWebBrowserNavBarHeight
-#define CHWebBrowserNavBarHeight (self.topBar.frame.size.height)
+#define CHWebBrowserNavBarHeight  (self.topBar.frame.size.height) 
 #endif
 
 #ifndef CHWebBrowserStatusBarHeight
@@ -49,6 +49,7 @@ typedef void (^CHValuesInAffectedViewsSetterBlock)(UIView *topBar,
 @property (nonatomic, assign) float titleScrollingSpeed;
 @property (nonatomic, assign) float animationDurationPerOnePixel;
 @property (nonatomic, assign) NSTextAlignment titleTextAlignment;
+@property (nonatomic, strong) UIFont *titleFont;
 @property (nonatomic, assign) BOOL isProgressBarEnabled;
 @property (nonatomic, assign) BOOL isHidingBarsOnScrollingEnabled;
 @property (nonatomic, assign) BOOL shouldAutorotate;

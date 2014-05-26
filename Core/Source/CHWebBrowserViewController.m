@@ -15,6 +15,7 @@
 + (CHWebBrowserViewControllerAttributes*)defaultAttributes {
     CHWebBrowserViewControllerAttributes *defaultAttributes = [[CHWebBrowserViewControllerAttributes alloc] init];
     defaultAttributes.titleScrollingSpeed = 20.0f;
+    defaultAttributes.titleFont = [UIFont systemFontOfSize:17.0f];
     defaultAttributes.animationDurationPerOnePixel = 0.0068181818f;
     defaultAttributes.titleTextAlignment = NSTextAlignmentCenter;
     defaultAttributes.isProgressBarEnabled = YES;
@@ -417,6 +418,7 @@
         self.titleLabel = [[CBAutoScrollLabel alloc] initWithFrame:CGRectMake(0, 0, self.localTitleView.frame.size.width, self.localTitleView.frame.size.height)];
         self.titleLabel.scrollSpeed = self.cAttributes.titleScrollingSpeed;
         self.titleLabel.textAlignment = self.cAttributes.titleTextAlignment;
+        self.titleLabel.font = self.cAttributes.titleFont;
         self.titleLabel.text = text;
         self.titleLabel.alpha = 0.0f;
         [UIView animateWithDuration:0.2f animations:^{
