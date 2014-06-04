@@ -90,6 +90,7 @@
     webBrowserVC.cAttributes.isHidingBarsOnScrollingEnabled = YES;
     webBrowserVC.cAttributes.shouldAutorotate = NO;
     webBrowserVC.cAttributes.supportedInterfaceOrientations = UIInterfaceOrientationMaskLandscape;
+    webBrowserVC.cAttributes.toolbarTintColor = [UIColor redColor];
     webBrowserVC.customBackBarButtonItemTitle = @"mytitle";
     
     /*

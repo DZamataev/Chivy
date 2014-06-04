@@ -27,6 +27,7 @@
     defaultAttributes.preferredStatusBarStyle = UIStatusBarStyleDefault;
     defaultAttributes.isHttpAuthenticationPromptEnabled = NO;
     defaultAttributes.progressBarViewThickness = 1.0f;
+    defaultAttributes.toolbarTintColor = nil; // will be taken from nav bar tint color
     return defaultAttributes;
 }
 
@@ -303,7 +304,7 @@
     
     self.webViewTopOffsetConstraint.constant = self.navigationController.navigationBar.translucent ? 0 : - (CHWebBrowserNavBarHeight + CHWebBrowserStatusBarHeight);
     
-    self.bottomToolbar.tintColor = self.navigationController.navigationBar.tintColor;
+    self.bottomToolbar.tintColor = self.cAttributes.toolbarTintColor ? self.cAttributes.toolbarTintColor : self.navigationController.navigationBar.tintColor;
     
     // we need nav bar to be shown
     self.wasNavigationBarHiddenByControllerOnEnter = self.navigationController.navigationBarHidden;

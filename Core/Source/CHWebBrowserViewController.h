@@ -59,6 +59,7 @@ typedef void (^CHValuesInAffectedViewsSetterBlock)(UIView *topBar,
 @property (nonatomic, assign) UIStatusBarStyle preferredStatusBarStyle;
 @property (nonatomic, assign) BOOL isHttpAuthenticationPromptEnabled;
 @property (nonatomic, assign) float progressBarViewThickness;
+@property (nonatomic, strong) UIColor *toolbarTintColor;
 
 + (CHWebBrowserViewControllerAttributes*)defaultAttributes;
 @end
