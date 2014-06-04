@@ -97,6 +97,9 @@ typedef void (^CHValuesInAffectedViewsSetterBlock)(UIView *topBar,
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *dismissBarButtonItem;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *readBarButtonItem;
 
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *webViewTopOffsetConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *bottomToolbarBottomOffsetConstraint;
+
 @property (nonatomic, strong) NSMutableArray *viewsAffectedByAlphaChanging;
 
 @property (nonatomic, strong) IBOutlet CBAutoScrollLabel *titleLabel;

@@ -144,6 +144,7 @@
 
 - (CHValuesInAffectedViewsSetterBlock)valuesInAffectedViewsSetterBlock {
     if (!_valuesInAffectedViewsSetterBlock) {
+        NSLayoutConstraint __weak *weakBottomToolbarBottomOffsetConstraint = self.bottomToolbarBottomOffsetConstraint;
         _valuesInAffectedViewsSetterBlock = ^(UIView *topBar,
                                               float topBarYPosition,
                                               UIView *bottomBar,
@@ -158,10 +159,10 @@
                                       topBarYPosition,
                                       topBar.frame.size.width,
                                       topBar.frame.size.height);
-            bottomBar.frame = CGRectMake(bottomBar.frame.origin.x,
-                                         bottomBarYPosition,
-                                         bottomBar.frame.size.width,
-                                         bottomBar.frame.size.height);
+            if (weakBottomToolbarBottomOffsetConstraint)
+                weakBottomToolbarBottomOffsetConstraint.constant = bottomBarYPosition;
+            [bottomBar setNeedsLayout];
+            [bottomBar layoutIfNeeded];
             
             scrollView.scrollIndicatorInsets = scrollingIndicatorInsets;
             scrollView.contentInset = contentInset;
@@ -299,6 +300,8 @@
         _progressDelegateProxy.webViewProxyDelegate = self;
         _progressDelegateProxy.progressDelegate = self;
     }
+    
+    self.webViewTopOffsetConstraint.constant = self.navigationController.navigationBar.translucent ? 0 : - (CHWebBrowserNavBarHeight + CHWebBrowserStatusBarHeight);
     
     self.bottomToolbar.tintColor = self.navigationController.navigationBar.tintColor;
     
@@ -703,9 +706,9 @@
     float topBarYPosition = [CHWebBrowserViewController clampFloat:topBar.frame.origin.y - delta
                                                        withMinimum:-CHWebBrowserNavBarHeight + CHWebBrowserStatusBarHeight
                                                         andMaximum:CHWebBrowserStatusBarHeight];
-    float bottomBarYPosition = [CHWebBrowserViewController clampFloat:_bottomToolbar.frame.origin.y + delta
-                                                         withMinimum:_webView.frame.size.height - CHWebBrowserNavBarHeight
-                                                           andMaximum:_webView.frame.size.height];
+    float bottomBarYPosition = [CHWebBrowserViewController clampFloat:self.bottomToolbarBottomOffsetConstraint.constant - delta
+                                                          withMinimum:0
+                                                           andMaximum:-self.bottomToolbar.bounds.size.height];
     
     float topInset = [CHWebBrowserViewController clampFloat:scrollView.contentInset.top - delta
                                                 withMinimum:CHWebBrowserStatusBarHeight
@@ -746,9 +749,9 @@
                               andIsHalfPassed:nil
                                andTargetLimit:&topBarYPosition];
     
-    float bottomBarYPosition = [CHWebBrowserViewController maximizeValue:self.bottomToolbar.frame.origin.y
-                                                            betweenValue:self.webView.frame.size.height - CHWebBrowserNavBarHeight
-                                                                andValue:self.webView.frame.size.height];
+    float bottomBarYPosition = [CHWebBrowserViewController maximizeValue:self.bottomToolbarBottomOffsetConstraint.constant
+                                                            betweenValue:0
+                                                                andValue:-self.bottomToolbar.bounds.size.height];
     
     float topInsetTargetValue = [CHWebBrowserViewController maximizeValue:scrollView.contentInset.top
                                                              betweenValue:CHWebBrowserStatusBarHeight
@@ -794,7 +797,7 @@
     CGFloat topBarHigherLimit = CHWebBrowserStatusBarHeight;
     float topBarDistanceLeft = fabsf(topBarHigherLimit - topBarLowerLimit);
     float topBarYPosition = topBarHigherLimit;
-    float bottomBarYPosition = self.webView.frame.size.height - CHWebBrowserNavBarHeight;
+    float bottomBarYPosition = 0;
     float topInsetTargetValue = CHWebBrowserNavBarHeight + CHWebBrowserStatusBarHeight;
     float bottomInsetTargetValue = CHWebBrowserNavBarHeight;
     UIEdgeInsets contentInset = UIEdgeInsetsMake(topInsetTargetValue,0,bottomInsetTargetValue,0);
