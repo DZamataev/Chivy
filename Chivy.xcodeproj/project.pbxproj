@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		416C97A9EAE84C2B80379410 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FE6A1C4A8834B11A032B93B /* libPods.a */; };
 		921E76DC1869AC6E0072122E /* ChivyLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 921E76DE1869AC6E0072122E /* ChivyLocalizable.strings */; };
+		921E91C81977C597007E86B1 /* CHButtonActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 921E91C71977C597007E86B1 /* CHButtonActivity.m */; };
 		923D239118311BDC00AD3C9F /* CHWebBrowserViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 923D239018311BDC00AD3C9F /* CHWebBrowserViewController_iPad.xib */; };
 		924057C818227CDF00C4EB84 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 924057C718227CDF00C4EB84 /* Foundation.framework */; };
 		924057CA18227CDF00C4EB84 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 924057C918227CDF00C4EB84 /* CoreGraphics.framework */; };
@@ -30,6 +31,8 @@
 		9292F8361828EDC9007445BF /* read@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9292F8321828EDC9007445BF /* read@2x.png */; };
 		92B8B31718461B70005BE407 /* CHWebBrowserViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 92B8B31618461B70005BE407 /* CHWebBrowserViewController_iPad.m */; };
 		92B8B31A18461B9A005BE407 /* CHWebBrowserViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 92B8B31918461B9A005BE407 /* CHWebBrowserViewController_iPhone.m */; };
+		92EEA2771976788F000BA125 /* SearchWebView.js in Sources */ = {isa = PBXBuildFile; fileRef = 92EEA2761976788F000BA125 /* SearchWebView.js */; };
+		92EEA278197678C0000BA125 /* SearchWebView.js in Resources */ = {isa = PBXBuildFile; fileRef = 92EEA2761976788F000BA125 /* SearchWebView.js */; };
 		92F1588E18E5A7AE0088A10D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 92F1588918E5A7AE0088A10D /* InfoPlist.strings */; };
 		92F1588F18E5A7AE0088A10D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 92F1588B18E5A7AE0088A10D /* Images.xcassets */; };
 		92F1589218E5A8460088A10D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 92F1589418E5A8460088A10D /* Main.storyboard */; };
@@ -39,6 +42,8 @@
 /* Begin PBXFileReference section */
 		921E76DD1869AC6E0072122E /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/ChivyLocalizable.strings; sourceTree = "<group>"; };
 		921E76E31869B04F0072122E /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/ChivyLocalizable.strings; sourceTree = "<group>"; };
+		921E91C61977C597007E86B1 /* CHButtonActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHButtonActivity.h; sourceTree = "<group>"; };
+		921E91C71977C597007E86B1 /* CHButtonActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHButtonActivity.m; sourceTree = "<group>"; };
 		923D239018311BDC00AD3C9F /* CHWebBrowserViewController_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CHWebBrowserViewController_iPad.xib; sourceTree = "<group>"; };
 		924057C418227CDF00C4EB84 /* Chivy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chivy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		924057C718227CDF00C4EB84 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -71,6 +76,7 @@
 		92B8B31618461B70005BE407 /* CHWebBrowserViewController_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHWebBrowserViewController_iPad.m; sourceTree = "<group>"; };
 		92B8B31818461B9A005BE407 /* CHWebBrowserViewController_iPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHWebBrowserViewController_iPhone.h; sourceTree = "<group>"; };
 		92B8B31918461B9A005BE407 /* CHWebBrowserViewController_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHWebBrowserViewController_iPhone.m; sourceTree = "<group>"; };
+		92EEA2761976788F000BA125 /* SearchWebView.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = SearchWebView.js; sourceTree = "<group>"; };
 		92F1588B18E5A7AE0088A10D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		92F1588D18E5A7AE0088A10D /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		92F1589118E5A7B40088A10D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -164,6 +170,7 @@
 		924058391822885D00C4EB84 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				92EEA2761976788F000BA125 /* SearchWebView.js */,
 				927E220F182A8D9E00716FE4 /* MakeReadable.js */,
 				9292F82F1828EDC9007445BF /* exit.png */,
 				9292F8301828EDC9007445BF /* exit@2x.png */,
@@ -190,6 +197,8 @@
 				92B8B31618461B70005BE407 /* CHWebBrowserViewController_iPad.m */,
 				92B8B31818461B9A005BE407 /* CHWebBrowserViewController_iPhone.h */,
 				92B8B31918461B9A005BE407 /* CHWebBrowserViewController_iPhone.m */,
+				921E91C61977C597007E86B1 /* CHButtonActivity.h */,
+				921E91C71977C597007E86B1 /* CHButtonActivity.m */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -277,6 +286,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				92EEA278197678C0000BA125 /* SearchWebView.js in Resources */,
 				921E76DC1869AC6E0072122E /* ChivyLocalizable.strings in Resources */,
 				927DD9AA18239270003A078F /* arrow_forward@2x.png in Resources */,
 				923D239118311BDC00AD3C9F /* CHWebBrowserViewController_iPad.xib in Resources */,
@@ -337,10 +347,12 @@
 			files = (
 				9282DAB118F68A0000B5E1C3 /* NSURL+IDN.m in Sources */,
 				9240582C1822822200C4EB84 /* DCAppDelegate.m in Sources */,
+				92EEA2771976788F000BA125 /* SearchWebView.js in Sources */,
 				92B8B31718461B70005BE407 /* CHWebBrowserViewController_iPad.m in Sources */,
 				9240582E1822822200C4EB84 /* main.m in Sources */,
 				9240582D1822822200C4EB84 /* DCViewController.m in Sources */,
 				92B8B31A18461B9A005BE407 /* CHWebBrowserViewController_iPhone.m in Sources */,
+				921E91C81977C597007E86B1 /* CHButtonActivity.m in Sources */,
 				9240583E182289EB00C4EB84 /* CHWebBrowserViewController.m in Sources */,
 				92FC40271839FDA80060F226 /* TKAURLProtocol.m in Sources */,
 			);

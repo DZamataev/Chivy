@@ -279,6 +279,10 @@
     [super viewDidLoad];
     
     [self.localNavigationBar removeFromSuperview];
+    [self.accessoryView removeFromSuperview];
+    self.accessoryView.frame = CGRectMake(0, 0, 320, 44);
+    self.searchWebViewTextField.inputAccessoryView = self.accessoryView;
+    self.searchWebViewAccessoryTextField.inputAccessoryView = self.accessoryView;
     
     [self recreateTitleLabelWithText:@"" force:YES];
     
@@ -465,6 +469,25 @@
     }
 }
 
+- (NSInteger)highlightAllOccurencesOfString:(NSString*)str
+{
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"SearchWebView" ofType:@"js"];
+    NSString *jsCode = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
+    [self.webView stringByEvaluatingJavaScriptFromString:jsCode];
+    
+    NSString *startSearch = [NSString stringWithFormat:@"MyApp_HighlightAllOccurencesOfString('%@')",str];
+    [self.webView stringByEvaluatingJavaScriptFromString:startSearch];
+    
+    NSString *result = [self.webView stringByEvaluatingJavaScriptFromString:@"MyApp_SearchResultCount"];
+    return [result integerValue];
+}
+
+- (void)removeAllHighlights
+{
+    [self.webView stringByEvaluatingJavaScriptFromString:@"MyApp_RemoveAllHighlights()"];
+}
+
+
 #pragma mark - IBActions
 
 - (IBAction)buttonActionTouchUp:(id)sender {
@@ -494,15 +517,47 @@
     
     if (url && url.absoluteString.length > 0) {
         ARSafariActivity *safariActivity = [[ARSafariActivity alloc] init];
+        
         ARChromeActivity *chromeActivity = [[ARChromeActivity alloc] init];
         if (self.chromeActivityCallbackUrl) {
             chromeActivity.callbackURL = self.chromeActivityCallbackUrl;
         }
         
+        CHButtonActivity *searchWebViewActivity = [[CHButtonActivity alloc] initWithTitle:@"Search on Page"
+                                                                                    image:[UIImage imageNamed:@"ARChromeActivity"]];
+        CHWebBrowserViewController __weak *weakSelf = self;
+        searchWebViewActivity.actionBlock = ^void(CHButtonActivity *sender) {
+            if (weakSelf) {
+                [weakSelf showWebViewSearchBar:sender];
+            }
+        };
+        
         UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[url]
-                                                                                 applicationActivities:@[safariActivity, chromeActivity]];
+                                                                                 applicationActivities:@[searchWebViewActivity, safariActivity, chromeActivity]];
         [self presentViewController:activityVC animated:YES completion:nil];
     }
+}
+
+- (IBAction)showWebViewSearchBar:(id)sender {
+    self.isSearchWebViewAccessoryShown = NO;
+    self.accessoryView.hidden = NO;
+    self.searchWebViewToolbar.hidden = NO;
+    [self.searchWebViewTextField becomeFirstResponder]; // that will start shownig keyboard
+    [self.searchWebViewAccessoryTextField becomeFirstResponder]; // that will target the input to the right textfield (accessory)
+    self.isSearchWebViewAccessoryShown = NO;
+}
+
+- (IBAction)hideWebViewSearchBar:(id)sender {
+    self.isSearchWebViewAccessoryShown = YES;
+    self.accessoryView.hidden = YES;
+    self.searchWebViewToolbar.hidden = YES;
+    [self becomeFirstResponder];
+    self.isSearchWebViewAccessoryShown = YES;
+}
+
+- (BOOL)canBecomeFirstResponder
+{
+    return self.isSearchWebViewAccessoryShown;
 }
 
 #pragma mark - TKAURLProtocol
@@ -642,8 +697,26 @@
 
 - (void)webViewDidFinishLoadTheWholePage:(UIWebView*)webView {
     self.readBarButtonItem.enabled = YES;
+    
+    [self highlightAllOccurencesOfString:@"он"];
 }
 
+#pragma mark - UITextFieldDelegate
+//-(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+//{
+//    [self.searchWebViewToolbar removeFromSuperview];
+//    self.searchWebViewToolbar.frame = CGRectMake(0, -self.searchWebViewToolbar.frame.size.height, self.searchWebViewToolbar.frame.size.width, self.searchWebViewToolbar.frame.size.height);
+//    [self.accessoryView addSubview:self.searchWebViewToolbar];
+//    return YES;
+//}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+}
 
 #pragma mark - ScrollViewDelegate
 
