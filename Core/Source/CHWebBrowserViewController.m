@@ -471,20 +471,30 @@
 
 - (NSInteger)highlightAllOccurencesOfString:(NSString*)str
 {
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"SearchWebView" ofType:@"js"];
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"CHSearchWebView" ofType:@"js"];
     NSString *jsCode = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
     [self.webView stringByEvaluatingJavaScriptFromString:jsCode];
     
-    NSString *startSearch = [NSString stringWithFormat:@"MyApp_HighlightAllOccurencesOfString('%@')",str];
+    NSString *startSearch = [NSString stringWithFormat:@"SPNS.search.search('%@')",str];
     [self.webView stringByEvaluatingJavaScriptFromString:startSearch];
     
-    NSString *result = [self.webView stringByEvaluatingJavaScriptFromString:@"MyApp_SearchResultCount"];
+    NSString *result = [self.webView stringByEvaluatingJavaScriptFromString:@"SPNS.search.SearchResultCount"];
     return [result integerValue];
+}
+
+- (void)highlightNextResult
+{
+    [self.webView stringByEvaluatingJavaScriptFromString:@"SPNS.search.highlightNextResult()"];
+}
+
+- (void)highlightPreviousResult
+{
+    [self.webView stringByEvaluatingJavaScriptFromString:@"SPNS.search.highlightPreviousResult()"];
 }
 
 - (void)removeAllHighlights
 {
-    [self.webView stringByEvaluatingJavaScriptFromString:@"MyApp_RemoveAllHighlights()"];
+    [self.webView stringByEvaluatingJavaScriptFromString:@"SPNS.search.RemoveAllHighlights()"];
 }
 
 
@@ -508,6 +518,14 @@
     if (s && s.length) {
         CHWebBrowserLog(@"  readable script: %@\n  outputs: %@", content, s);
     }
+}
+
+- (IBAction)searchWebViewNextResult:(id)sender {
+    [self highlightNextResult];
+}
+
+- (IBAction)searchWebViewPreviousResult:(id)sender {
+    [self highlightPreviousResult];
 }
 
 #pragma mark - Private actions

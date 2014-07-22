@@ -118,9 +118,17 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <items>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Veb-UQ-tIF"/>
-                        <barButtonItem title="&lt;" id="VvM-H7-mtp"/>
+                        <barButtonItem title="&lt;" id="VvM-H7-mtp">
+                            <connections>
+                                <action selector="searchWebViewPreviousResult:" destination="-1" id="2Wm-f4-gIn"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="UyB-sW-UH3"/>
-                        <barButtonItem title=">" id="5Bx-Ux-krq"/>
+                        <barButtonItem title=">" id="5Bx-Ux-krq">
+                            <connections>
+                                <action selector="searchWebViewNextResult:" destination="-1" id="1cV-vl-ceQ"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="rPt-NV-T1J"/>
                         <barButtonItem style="plain" id="SRN-VE-iDf">
                             <textField key="customView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="LWy-6v-UMz">
@@ -168,9 +176,17 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <items>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="pJb-wT-gYC"/>
-                        <barButtonItem title="&lt;" id="t3l-Gf-eju"/>
+                        <barButtonItem title="&lt;" id="t3l-Gf-eju">
+                            <connections>
+                                <action selector="searchWebViewPreviousResult:" destination="-1" id="zGU-JI-gTx"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="jSR-uw-4hC"/>
-                        <barButtonItem title=">" id="BfL-6H-BOb"/>
+                        <barButtonItem title=">" id="BfL-6H-BOb">
+                            <connections>
+                                <action selector="searchWebViewNextResult:" destination="-1" id="5kk-CZ-hl9"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="lnG-2B-YtP"/>
                         <barButtonItem style="plain" id="pfW-u5-YwD">
                             <textField key="customView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="yrF-lN-M1M">
