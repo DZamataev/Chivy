@@ -29,6 +29,8 @@
 		9292F8341828EDC9007445BF /* exit@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9292F8301828EDC9007445BF /* exit@2x.png */; };
 		9292F8351828EDC9007445BF /* read.png in Resources */ = {isa = PBXBuildFile; fileRef = 9292F8311828EDC9007445BF /* read.png */; };
 		9292F8361828EDC9007445BF /* read@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9292F8321828EDC9007445BF /* read@2x.png */; };
+		92AE7D53197D55E5005642A2 /* CHFindOnPageActivity@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 92AE7D51197D55E5005642A2 /* CHFindOnPageActivity@2x.png */; };
+		92AE7D54197D55E5005642A2 /* CHFindOnPageActivity@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 92AE7D52197D55E5005642A2 /* CHFindOnPageActivity@2x~ipad.png */; };
 		92B8B31718461B70005BE407 /* CHWebBrowserViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 92B8B31618461B70005BE407 /* CHWebBrowserViewController_iPad.m */; };
 		92B8B31A18461B9A005BE407 /* CHWebBrowserViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 92B8B31918461B9A005BE407 /* CHWebBrowserViewController_iPhone.m */; };
 		92EEA2771976788F000BA125 /* SearchWebView.js in Sources */ = {isa = PBXBuildFile; fileRef = 92EEA2761976788F000BA125 /* SearchWebView.js */; };
@@ -72,6 +74,8 @@
 		9292F8311828EDC9007445BF /* read.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = read.png; sourceTree = "<group>"; };
 		9292F8321828EDC9007445BF /* read@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "read@2x.png"; sourceTree = "<group>"; };
 		9292F840182912DC007445BF /* Chivy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Chivy.h; sourceTree = "<group>"; };
+		92AE7D51197D55E5005642A2 /* CHFindOnPageActivity@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CHFindOnPageActivity@2x.png"; sourceTree = "<group>"; };
+		92AE7D52197D55E5005642A2 /* CHFindOnPageActivity@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CHFindOnPageActivity@2x~ipad.png"; sourceTree = "<group>"; };
 		92B8B31518461B70005BE407 /* CHWebBrowserViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHWebBrowserViewController_iPad.h; sourceTree = "<group>"; };
 		92B8B31618461B70005BE407 /* CHWebBrowserViewController_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHWebBrowserViewController_iPad.m; sourceTree = "<group>"; };
 		92B8B31818461B9A005BE407 /* CHWebBrowserViewController_iPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHWebBrowserViewController_iPhone.h; sourceTree = "<group>"; };
@@ -180,6 +184,8 @@
 				927DD9A418239270003A078F /* arrow_back@2x.png */,
 				927DD99D1823914F003A078F /* arrow_forward.png */,
 				927DD9A618239270003A078F /* arrow_forward@2x.png */,
+				92AE7D51197D55E5005642A2 /* CHFindOnPageActivity@2x.png */,
+				92AE7D52197D55E5005642A2 /* CHFindOnPageActivity@2x~ipad.png */,
 				9240584018228A0800C4EB84 /* CHWebBrowserViewController_iPhone.xib */,
 				923D239018311BDC00AD3C9F /* CHWebBrowserViewController_iPad.xib */,
 				921E76DE1869AC6E0072122E /* ChivyLocalizable.strings */,
@@ -287,6 +293,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				92EEA278197678C0000BA125 /* SearchWebView.js in Resources */,
+				92AE7D53197D55E5005642A2 /* CHFindOnPageActivity@2x.png in Resources */,
 				921E76DC1869AC6E0072122E /* ChivyLocalizable.strings in Resources */,
 				927DD9AA18239270003A078F /* arrow_forward@2x.png in Resources */,
 				923D239118311BDC00AD3C9F /* CHWebBrowserViewController_iPad.xib in Resources */,
@@ -295,6 +302,7 @@
 				9292F8331828EDC9007445BF /* exit.png in Resources */,
 				92F1589218E5A8460088A10D /* Main.storyboard in Resources */,
 				9292F8361828EDC9007445BF /* read@2x.png in Resources */,
+				92AE7D54197D55E5005642A2 /* CHFindOnPageActivity@2x~ipad.png in Resources */,
 				9292F8351828EDC9007445BF /* read.png in Resources */,
 				927DD9A21823914F003A078F /* arrow_forward.png in Resources */,
 				92F1588F18E5A7AE0088A10D /* Images.xcassets in Resources */,

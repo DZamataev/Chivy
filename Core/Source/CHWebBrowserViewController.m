@@ -524,7 +524,7 @@
         }
         
         CHButtonActivity *searchWebViewActivity = [[CHButtonActivity alloc] initWithTitle:@"Search on Page"
-                                                                                    image:[UIImage imageNamed:@"ARChromeActivity"]];
+                                                                                    image:[UIImage imageNamed:@"CHFindOnPageActivity"]];
         CHWebBrowserViewController __weak *weakSelf = self;
         searchWebViewActivity.actionBlock = ^void(CHButtonActivity *sender) {
             if (weakSelf) {
@@ -542,8 +542,10 @@
     self.isSearchWebViewAccessoryShown = NO;
     self.accessoryView.hidden = NO;
     self.searchWebViewToolbar.hidden = NO;
+    _isForcingFirstResponder = YES;
     [self.searchWebViewTextField becomeFirstResponder]; // that will start shownig keyboard
     [self.searchWebViewAccessoryTextField becomeFirstResponder]; // that will target the input to the right textfield (accessory)
+    _isForcingFirstResponder = NO;
     self.isSearchWebViewAccessoryShown = NO;
 }
 
@@ -551,7 +553,9 @@
     self.isSearchWebViewAccessoryShown = YES;
     self.accessoryView.hidden = YES;
     self.searchWebViewToolbar.hidden = YES;
+    _isForcingFirstResponder = YES;
     [self becomeFirstResponder];
+    _isForcingFirstResponder = NO;
     self.isSearchWebViewAccessoryShown = YES;
 }
 
@@ -697,8 +701,6 @@
 
 - (void)webViewDidFinishLoadTheWholePage:(UIWebView*)webView {
     self.readBarButtonItem.enabled = YES;
-    
-    [self highlightAllOccurencesOfString:@"он"];
 }
 
 #pragma mark - UITextFieldDelegate
@@ -709,9 +711,29 @@
 //    [self.accessoryView addSubview:self.searchWebViewToolbar];
 //    return YES;
 //}
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if (textField == self.searchWebViewAccessoryTextField) {
+        self.searchWebViewTextField.text = self.searchWebViewAccessoryTextField.text;
+        [self.searchWebViewAccessoryTextField resignFirstResponder];
+        self.accessoryView.hidden = YES;
+        [self highlightAllOccurencesOfString:self.searchWebViewTextField.text];
+    }
+    return YES;
+}
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    if (textField == self.searchWebViewTextField && !_isForcingFirstResponder) {
+        [self showWebViewSearchBar:textField];
+        return NO;
+    }
+    return YES;
+}
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
+    
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField

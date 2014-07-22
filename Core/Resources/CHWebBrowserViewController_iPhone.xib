@@ -142,12 +142,6 @@
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="xHH-V5-Niy"/>
                     </items>
                 </toolbar>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lTs-UA-aNS">
-                    <rect key="frame" x="112" y="71" width="97" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits"/>
-                </textField>
             </subviews>
             <color key="backgroundColor" red="0.74117647058823533" green="0.74117647058823533" blue="0.76078431372549016" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>

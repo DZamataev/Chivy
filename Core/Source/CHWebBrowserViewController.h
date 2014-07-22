@@ -72,6 +72,7 @@ typedef void (^CHValuesInAffectedViewsSetterBlock)(UIView *topBar,
     BOOL _isMovingViews;
     BOOL _isAnimatingViews;
     BOOL _isAnimatingResettingViews;
+    BOOL _isForcingFirstResponder;
     NJKWebViewProgress *_progressDelegateProxy;
     NJKWebViewProgressView *_progressView;
     NSInteger _loadsInProgressCount;

@@ -3,7 +3,7 @@
 "1sY-5Z-8Wd.normalTitle" = "Clear cache, credentials, cookies";
 
 /* Class = "IBUITextField"; text = "http://br.my1.ru/news/16-0-2"; ObjectID = "7tl-3n-OX3"; */
-"7tl-3n-OX3.text" = "http://br.my1.ru/news/16-0-2";
+"7tl-3n-OX3.text" = "http://www.lipsum.com/";
 
 /* Class = "IBUIButton"; normalTitle = "Switch nav bar visibility"; ObjectID = "AAg-uc-0br"; */
 "AAg-uc-0br.normalTitle" = "Switch nav bar visibility";
