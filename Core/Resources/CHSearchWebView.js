@@ -64,9 +64,9 @@ SPNS.search = (function () {
                if (SearchResultCount > 0) {
                // sort elements by their top offset from smaller to higher
                FoundElements.sort(function (a, b) {
-                                  var offsetA = getOffset(a);
-                                  var offsetB = getOffset(b);
-                                  return offsetA.top - offsetB.top;
+                                  var offsetA = a.offsetTop;
+                                  var offsetB = b.offsetTop;
+                                  return offsetA - offsetB;
                                   });
                }
                };
