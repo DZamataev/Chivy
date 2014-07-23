@@ -101,11 +101,13 @@ typedef void (^CHValuesInAffectedViewsSetterBlock)(UIView *topBar,
 @property (nonatomic, strong) IBOutlet UITextField *searchWebViewAccessoryTextField;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *searchWebViewAccessoryPreviousResultButton;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *searchWebViewAccessoryNextResultButton;
+@property (nonatomic, strong) IBOutlet UILabel *searchWebViewAccessoryFoundLabel;
 
 @property (nonatomic, strong) IBOutlet UIToolbar *searchWebViewToolbar;
 @property (nonatomic, strong) IBOutlet UITextField *searchWebViewTextField;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *searchWebViewPreviousResultButton;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *searchWebViewNextResultButton;
+@property (nonatomic, strong) IBOutlet UILabel *searchWebViewFoundLabel;
 
 @property (nonatomic, strong) IBOutlet UINavigationBar *localNavigationBar;
 @property (nonatomic, strong) IBOutlet UIView *localTitleView;

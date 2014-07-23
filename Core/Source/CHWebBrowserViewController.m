@@ -273,6 +273,11 @@
     return self.cAttributes.preferredStatusBarStyle;
 }
 
+- (BOOL)canBecomeFirstResponder
+{
+    return self.isSearchWebViewAccessoryShown;
+}
+
 #pragma mark - View lifecycle
 - (void)viewDidLoad
 {
@@ -469,35 +474,6 @@
     }
 }
 
-- (NSInteger)highlightAllOccurencesOfString:(NSString*)str
-{
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"CHSearchWebView" ofType:@"js"];
-    NSString *jsCode = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
-    [self.webView stringByEvaluatingJavaScriptFromString:jsCode];
-    
-    NSString *startSearch = [NSString stringWithFormat:@"SPNS.search.search('%@')",str];
-    [self.webView stringByEvaluatingJavaScriptFromString:startSearch];
-    
-    NSString *result = [self.webView stringByEvaluatingJavaScriptFromString:@"SPNS.search.SearchResultCount"];
-    return [result integerValue];
-}
-
-- (void)highlightNextResult
-{
-    [self.webView stringByEvaluatingJavaScriptFromString:@"SPNS.search.highlightNextResult()"];
-}
-
-- (void)highlightPreviousResult
-{
-    [self.webView stringByEvaluatingJavaScriptFromString:@"SPNS.search.highlightPreviousResult()"];
-}
-
-- (void)removeAllHighlights
-{
-    [self.webView stringByEvaluatingJavaScriptFromString:@"SPNS.search.RemoveAllHighlights()"];
-}
-
-
 #pragma mark - IBActions
 
 - (IBAction)buttonActionTouchUp:(id)sender {
@@ -528,34 +504,6 @@
     [self highlightPreviousResult];
 }
 
-#pragma mark - Private actions
-
-- (void)showActivities {
-    NSURL* url = [self.webView.request URL];
-    
-    if (url && url.absoluteString.length > 0) {
-        ARSafariActivity *safariActivity = [[ARSafariActivity alloc] init];
-        
-        ARChromeActivity *chromeActivity = [[ARChromeActivity alloc] init];
-        if (self.chromeActivityCallbackUrl) {
-            chromeActivity.callbackURL = self.chromeActivityCallbackUrl;
-        }
-        
-        CHButtonActivity *searchWebViewActivity = [[CHButtonActivity alloc] initWithTitle:@"Search on Page"
-                                                                                    image:[UIImage imageNamed:@"CHFindOnPageActivity"]];
-        CHWebBrowserViewController __weak *weakSelf = self;
-        searchWebViewActivity.actionBlock = ^void(CHButtonActivity *sender) {
-            if (weakSelf) {
-                [weakSelf showWebViewSearchBar:sender];
-            }
-        };
-        
-        UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[url]
-                                                                                 applicationActivities:@[searchWebViewActivity, safariActivity, chromeActivity]];
-        [self presentViewController:activityVC animated:YES completion:nil];
-    }
-}
-
 - (IBAction)showWebViewSearchBar:(id)sender {
     self.isSearchWebViewAccessoryShown = NO;
     self.accessoryView.hidden = NO;
@@ -575,11 +523,77 @@
     [self becomeFirstResponder];
     _isForcingFirstResponder = NO;
     self.isSearchWebViewAccessoryShown = YES;
+    [self removeAllHighlights];
 }
 
-- (BOOL)canBecomeFirstResponder
+#pragma mark - Private actions
+
+- (void)showActivities {
+    NSURL* url = [self.webView.request URL];
+    
+    if (url && url.absoluteString.length > 0) {
+        ARSafariActivity *safariActivity = [[ARSafariActivity alloc] init];
+        
+        ARChromeActivity *chromeActivity = [[ARChromeActivity alloc] init];
+        if (self.chromeActivityCallbackUrl) {
+            chromeActivity.callbackURL = self.chromeActivityCallbackUrl;
+        }
+        
+        CHButtonActivity *searchWebViewActivity = [[CHButtonActivity alloc] initWithTitle:NSLocalizedStringFromTable(@"Search on page", LocalizationTableName, nil)
+                                                                                    image:[UIImage imageNamed:@"CHFindOnPageActivity"]];
+        CHWebBrowserViewController __weak *weakSelf = self;
+        searchWebViewActivity.actionBlock = ^void(CHButtonActivity *sender) {
+            if (weakSelf) {
+                [weakSelf showWebViewSearchBar:sender];
+            }
+        };
+        
+        UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[url]
+                                                                                 applicationActivities:@[searchWebViewActivity, safariActivity, chromeActivity]];
+        [self presentViewController:activityVC animated:YES completion:nil];
+    }
+}
+
+
+
+- (NSInteger)highlightAllOccurencesOfString:(NSString*)str
 {
-    return self.isSearchWebViewAccessoryShown;
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"CHSearchWebView" ofType:@"js"];
+    NSString *jsCode = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
+    [self.webView stringByEvaluatingJavaScriptFromString:jsCode];
+    
+    NSString *startSearch = [NSString stringWithFormat:@"SPNS.search.search('%@')",str];
+    [self.webView stringByEvaluatingJavaScriptFromString:startSearch];
+    
+    [self updateFoundNubmerLabels];
+    
+    NSString *result = [self.webView stringByEvaluatingJavaScriptFromString:@"SPNS.search.SearchResultCount"];
+    return [result integerValue];
+}
+
+- (void)highlightNextResult
+{
+    [self.webView stringByEvaluatingJavaScriptFromString:@"SPNS.search.highlightNextResult()"];
+    [self updateFoundNubmerLabels];
+}
+
+- (void)highlightPreviousResult
+{
+    [self.webView stringByEvaluatingJavaScriptFromString:@"SPNS.search.highlightPreviousResult()"];
+    [self updateFoundNubmerLabels];
+}
+
+- (void)removeAllHighlights
+{
+    [self.webView stringByEvaluatingJavaScriptFromString:@"SPNS.search.RemoveAllHighlights()"];
+}
+
+- (void)updateFoundNubmerLabels
+{
+    NSString *totalFound = [self.webView stringByEvaluatingJavaScriptFromString:@"SPNS.search.SearchResultCount"];
+    NSString *currentlyChosen = [self.webView stringByEvaluatingJavaScriptFromString:@"SPNS.search.FoundElementsCurrentPosition"];
+    NSString *labelText = [NSString stringWithFormat:@"%@ %@ %@", currentlyChosen, NSLocalizedStringFromTable(@"a_of_b found", LocalizationTableName, nil), totalFound];
+    self.searchWebViewFoundLabel.text = self.searchWebViewAccessoryFoundLabel.text = labelText;
 }
 
 #pragma mark - TKAURLProtocol

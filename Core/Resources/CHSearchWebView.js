@@ -159,6 +159,8 @@ SPNS.search = (function () {
                search: search,
                searchFromElement: searchFromElement,
                highlightNextResult: highlightNextResult,
-               highlightPreviousResult: highlightPreviousResult
+               highlightPreviousResult: highlightPreviousResult,
+               SearchResultCount: SearchResultCount,
+               FoundElementsCurrentPosition: FoundElementsCurrentPosition
                };
                })();

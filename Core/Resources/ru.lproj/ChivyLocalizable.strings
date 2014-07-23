@@ -15,3 +15,5 @@
 "Could not load page" = "Не удалось загрузить страницу";
 "OK" = "OK";
 "Authentication required" = "Требуется аутентификация";
+"Search on page" = "Поиск на странице";
+"a_of_b found" = "из";
