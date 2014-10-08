@@ -548,8 +548,20 @@
             }
         };
         
+        CHButtonActivity *viewPageSourceActivity = [[CHButtonActivity alloc] initWithTitle:NSLocalizedStringFromTable(@"View page source", LocalizationTableName, nil) image:[UIImage imageNamed:@"read"]];
+        viewPageSourceActivity.actionBlock = ^void(CHButtonActivity *sender) {
+            if (weakSelf) {
+                NSString *source = [weakSelf.webView stringByEvaluatingJavaScriptFromString:
+                                    @"document.getElementsByTagName('html')[0].outerHTML"];
+                UITextView *textView = [[UITextView alloc] init];
+                textView.frame = CGRectMake(weakSelf.webView.scrollView.contentInset.left,  weakSelf.webView.scrollView.contentInset.top, weakSelf.view.bounds.size.width - weakSelf.webView.scrollView.contentInset.right, weakSelf.view.bounds.size.height - weakSelf.webView.scrollView.contentInset.bottom);
+                [weakSelf.view addSubview:textView];
+                textView.text = source;
+            }
+        };
+        
         UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[url]
-                                                                                 applicationActivities:@[searchWebViewActivity, safariActivity, chromeActivity]];
+                                                                                 applicationActivities:@[searchWebViewActivity, safariActivity, chromeActivity, viewPageSourceActivity]];
         [self presentViewController:activityVC animated:YES completion:nil];
     }
 }
