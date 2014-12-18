@@ -22,7 +22,7 @@
 
 - (IBAction)openWebBrowserModally:(id)sender
 {
-    [CHWebBrowserViewController openWebBrowserControllerModallyWithHomeUrlWithSupressionNAvigationByClick:[CHWebBrowserViewController URLWithString:_urlTextField.text]
+    [CHWebBrowserViewController openWebBrowserControllerModallyWithHomeUrl:[CHWebBrowserViewController URLWithString:_urlTextField.text]
                                                                   animated:YES
                                                                 completion:^{
                                                                     NSLog(@"Modal animation completed");

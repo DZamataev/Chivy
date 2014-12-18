@@ -170,7 +170,6 @@ typedef void (^CHValuesInAffectedViewsSetterBlock)(UIView *topBar,
 + (void)openWebBrowserController:(CHWebBrowserViewController*)vc modallyWithUrl:(NSURL*)url animated:(BOOL)animated;
 + (void)openWebBrowserControllerModallyWithHomeUrl:(NSURL*)url animated:(BOOL)animated;
 + (void)openWebBrowserControllerModallyWithHomeUrl:(NSURL*)url animated:(BOOL)animated completion:(void (^)(void))completion;
-+ (void)openWebBrowserControllerModallyWithHomeUrlWithSupressionNAvigationByClick:(NSURL*)url animated:(BOOL)animated completion:(void (^)(void))completion;
 /*
  This method will handle proper encoding both host (domain) and path parts of your URL provided as string.
  It will add http:// scheme if there is no other scheme.

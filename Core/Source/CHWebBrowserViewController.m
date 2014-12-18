@@ -91,16 +91,7 @@
                                               completion:completion];
 }
 
-+ (void)openWebBrowserControllerModallyWithHomeUrlWithSupressionNAvigationByClick:(NSURL*)url animated:(BOOL)animated completion:(void (^)(void))completion {
-    CHWebBrowserViewController *webBrowserController = [[CHWebBrowserViewController alloc] initWithNibName:[CHWebBrowserViewController defaultNibFileName]
-                                                                                                    bundle:nil];
-    webBrowserController.isNeedSuppressNavigationClick=YES;
-    
-    [CHWebBrowserViewController openWebBrowserController:webBrowserController
-                                          modallyWithUrl:url
-                                                animated:animated
-                                              completion:completion];
-}
+
 + (void)openWebBrowserControllerModallyWithHomeUrl:(NSURL*)url animated:(BOOL)animated {
     [CHWebBrowserViewController openWebBrowserControllerModallyWithHomeUrl:url
                                                                   animated:animated
