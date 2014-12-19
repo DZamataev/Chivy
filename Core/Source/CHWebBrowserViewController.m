@@ -27,6 +27,7 @@
     defaultAttributes.preferredStatusBarStyle = UIStatusBarStyleDefault;
     defaultAttributes.isHttpAuthenticationPromptEnabled = NO;
     defaultAttributes.progressBarViewThickness = 1.0f;
+    defaultAttributes.isNeedSuppressNavigationClick=NO;
     defaultAttributes.toolbarTintColor = nil; // will be taken from nav bar tint color
     return defaultAttributes;
 }
@@ -84,17 +85,19 @@
 + (void)openWebBrowserControllerModallyWithHomeUrl:(NSURL*)url animated:(BOOL)animated completion:(void (^)(void))completion {
     CHWebBrowserViewController *webBrowserController = [[CHWebBrowserViewController alloc] initWithNibName:[CHWebBrowserViewController defaultNibFileName]
                                                                                                     bundle:nil];
-    [CHWebBrowserViewController openWebBrowserController:webBrowserController
+   [CHWebBrowserViewController openWebBrowserController:webBrowserController
                                           modallyWithUrl:url
                                                 animated:animated
                                               completion:completion];
 }
+
 
 + (void)openWebBrowserControllerModallyWithHomeUrl:(NSURL*)url animated:(BOOL)animated {
     [CHWebBrowserViewController openWebBrowserControllerModallyWithHomeUrl:url
                                                                   animated:animated
                                                                 completion:nil];
 }
+
 
 #pragma mark - Initialization
 
@@ -683,7 +686,9 @@
     self.webView.hidden = NO;
     
     self.readBarButtonItem.enabled = NO;
-    
+    if (navigationType==UIWebViewNavigationTypeLinkClicked && self.isNeedSuppressNavigationClick==YES) {
+        return NO;
+    }
     return YES;
 }
 

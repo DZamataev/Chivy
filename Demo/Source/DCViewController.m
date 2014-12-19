@@ -33,7 +33,6 @@
 {
     NSURL *urlToOpen = [CHWebBrowserViewController URLWithString:_urlTextField.text];
     CHWebBrowserViewController *webBrowserVC = [CHWebBrowserViewController webBrowserControllerWithDefaultNibAndHomeUrl:urlToOpen];
-    
     webBrowserVC.cAttributes.titleScrollingSpeed = 10.0f;
     webBrowserVC.cAttributes.animationDurationPerOnePixel = 0.0008f; // faster animation on hiding bars
     webBrowserVC.cAttributes.titleTextAlignment = NSTextAlignmentLeft;

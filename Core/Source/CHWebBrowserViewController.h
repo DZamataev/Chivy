@@ -55,6 +55,7 @@ typedef void (^CHValuesInAffectedViewsSetterBlock)(UIView *topBar,
 @property (nonatomic, assign) BOOL isProgressBarEnabled;
 @property (nonatomic, assign) BOOL isHidingBarsOnScrollingEnabled;
 @property (nonatomic, assign) BOOL isReadabilityButtonHidden;
+@property (nonatomic, assign) BOOL isNeedSuppressNavigationClick;
 @property (nonatomic, assign) BOOL shouldAutorotate;
 @property (nonatomic, assign) NSUInteger supportedInterfaceOrientations;
 @property (nonatomic, assign) UIStatusBarStyle preferredStatusBarStyle;
@@ -72,6 +73,7 @@ typedef void (^CHValuesInAffectedViewsSetterBlock)(UIView *topBar,
     BOOL _isMovingViews;
     BOOL _isAnimatingViews;
     BOOL _isAnimatingResettingViews;
+    BOOL _isNeedSuppressNavigationClick;
     BOOL _isForcingFirstResponder;
     NJKWebViewProgress *_progressDelegateProxy;
     NJKWebViewProgressView *_progressView;
@@ -88,7 +90,7 @@ typedef void (^CHValuesInAffectedViewsSetterBlock)(UIView *topBar,
 @property (nonatomic, strong) CHWebBrowserViewControllerAttributes *cAttributes;
 
 @property (nonatomic, strong) IBOutlet UIWebView *webView;
-
+@property (nonatomic, assign) BOOL isNeedSuppressNavigationClick;
 @property (nonatomic, strong) IBOutlet UIToolbar *bottomToolbar;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *navigateBackButton;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *navigateForwardButton;

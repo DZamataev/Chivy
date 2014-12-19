@@ -1,15 +1,15 @@
 PODS:
-  - ARChromeActivity (1.0.1)
+  - ARChromeActivity (1.0.4)
   - ARSafariActivity (0.0.1)
   - AutoScrollLabel (0.2.1)
   - DKNavbarBackButton (0.1.4):
     - DKNavbarBackButton/core
   - DKNavbarBackButton/core (0.1.4)
-  - NJKWebViewProgress (0.2.2):
+  - NJKWebViewProgress (0.2.3):
     - NJKWebViewProgress/Core
     - NJKWebViewProgress/ProgressView
-  - NJKWebViewProgress/Core (0.2.2)
-  - NJKWebViewProgress/ProgressView (0.2.2)
+  - NJKWebViewProgress/Core (0.2.3)
+  - NJKWebViewProgress/ProgressView (0.2.3)
 
 DEPENDENCIES:
   - ARChromeActivity
@@ -19,10 +19,10 @@ DEPENDENCIES:
   - NJKWebViewProgress
 
 SPEC CHECKSUMS:
-  ARChromeActivity: eb9770a933cfe2b914b8e4e22b684eb7f43f24df
-  ARSafariActivity: 5a99ddb49c748d32682fab566452f002d9177bbb
-  AutoScrollLabel: 4978b57536512a3ebf4705b1b5618354bcf4ac84
-  DKNavbarBackButton: f8302431f4fd2bfbb31ab4075247524d07a889df
-  NJKWebViewProgress: 4f905b9ab7eb91525dc899cacebd2941a6d4553b
+  ARChromeActivity: d8471d0f78b7fcc1de57929cfc1751b3a7f58bad
+  ARSafariActivity: fe7568751149f1e19deaf9e62f4bfa1a29344ffe
+  AutoScrollLabel: 605c089cd1ab7522b9dd11ef4e355979a245bae7
+  DKNavbarBackButton: 6df85c1407f7c89d4be03e10ab1f87f3c712ffd5
+  NJKWebViewProgress: 721b57080c840c76f70ff6c2dda4f836ee1b27c1
 
-COCOAPODS: 0.32.1
+COCOAPODS: 0.34.1
