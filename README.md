@@ -1,3 +1,8 @@
+[![Build Status](https://travis-ci.org/DZamataev/Chivy.svg)](https://travis-ci.org/DZamataev/Chivy)
+[![Version](https://img.shields.io/cocoapods/v/Chivy.svg?style=flat)](http://cocoadocs.org/docsets/Chivy)
+[![License](https://img.shields.io/cocoapods/l/Chivy.svg?style=flat)](http://cocoadocs.org/docsets/Chivy)
+[![Platform](https://img.shields.io/cocoapods/p/Chivy.svg?style=flat)](http://cocoadocs.org/docsets/Chivy)
+
 Chivy
 =====
 
