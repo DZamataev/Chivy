@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "Chivy"
-  s.version      = "0.2.0"
+  s.version      = "0.4.0"
   s.summary      = "iOS web browser control which looks and behaves like modern Safari and is highly customizable"
   s.homepage     = "https://github.com/DZamataev/Chivy.git"
   s.license      = { :type => 'MIT', :file => 'LICENSE'}
@@ -30,7 +30,6 @@ Pod::Spec.new do |s|
   s.subspec 'Core-no-arc' do |cna|
     cna.requires_arc = false
     cna.source_files = 'Core/Source-no-arc/*'
-	cna.dependency 'Chivy/Core'
   end
 
   s.subspec 'Demo' do |d|
