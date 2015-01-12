@@ -6,4 +6,3 @@
 //  Copyright (c) 2014 Denis Zamataev. All rights reserved.
 //
 
-${TEST_EXAMPLE}
