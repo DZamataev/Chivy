@@ -1,0 +1,11 @@
+source 'https://github.com/CocoaPods/Specs.git'
+
+target 'Chivy', :exclusive => true do
+  pod "Chivy", :path => "../"
+end
+
+target 'Tests', :exclusive => true do
+  pod "Chivy", :path => "../"
+
+  
+end

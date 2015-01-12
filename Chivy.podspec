@@ -1,43 +1,36 @@
 Pod::Spec.new do |s|
-  s.name         = "Chivy"
-  s.version      = "0.4.0"
-  s.summary      = "iOS web browser control which looks and behaves like modern Safari and is highly customizable"
-  s.homepage     = "https://github.com/DZamataev/Chivy.git"
-  s.license      = { :type => 'MIT', :file => 'LICENSE'}
-  s.author       = { "Denis Zamataev" => "denis.zamataev@gmail.com" }
-  
-  s.source       = {
-      :git => "https://github.com/DZamataev/Chivy.git",
-      :tag => s.version.to_s
-    }
-	
-  s.ios.deployment_target = '7.0'
+  s.name             = "Chivy"
+  s.version          = "0.4.0"
+  s.summary          = "iOS web browser control which looks and behaves like modern Safari and is highly customizable"
+  s.homepage         = "https://github.com/<GITHUB_USERNAME>/Chivy"
+  s.screenshots     = "https://raw.githubusercontent.com/DZamataev/Chivy/master/Chivy-0.2.0-iPhone-screenshot.png"
+  s.license          = 'MIT'
+  s.author           = { "Denis Zamataev" => "denis.zamataev@gmail.com" }
+  s.source           = { :git => "https://github.com/DZamataev/Chivy.git", :tag => s.version.to_s }
+  s.social_media_url = 'https://twitter.com/dzamataev'
+
+  s.platform     = :ios, '7.0'
+  s.requires_arc = true
     
   s.default_subspec = 'Core'
-
+  
   s.subspec 'Core' do |c|
     c.requires_arc = true
-    c.source_files = 'Core/Source/*'
-    c.resources = 'Core/Resources/*'
-	c.dependency 'Chivy/Core-no-arc'
+    c.source_files = 'Pod/Classes/*'
+    c.resources = 'Pod/Assets/*'
+  
+  	c.dependency 'Chivy/Core-no-arc'
+    
     c.dependency 'NJKWebViewProgress'
     c.dependency 'AutoScrollLabel'
-	c.dependency 'DKNavbarBackButton'
-	c.dependency 'ARChromeActivity'
-	c.dependency 'ARSafariActivity'
+  	c.dependency 'DKNavbarBackButton'
+  	c.dependency 'ARChromeActivity'
+  	c.dependency 'ARSafariActivity'
   end
   
   s.subspec 'Core-no-arc' do |cna|
     cna.requires_arc = false
-    cna.source_files = 'Core/Source-no-arc/*'
+    cna.source_files = 'Pod/Classes-no-arc/*'
   end
-
-  s.subspec 'Demo' do |d|
-    d.requires_arc = true
-    d.source_files = 'Demo/Source/*'
-    d.resources = 'Demo/Resources/*'
-    d.preserve_paths = "Chivy.xcodeproj", "Podfile"
-    d.dependency 'Chivy/Core'
-  end
-
+  
 end

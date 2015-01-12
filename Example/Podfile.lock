@@ -2,27 +2,38 @@ PODS:
   - ARChromeActivity (1.0.4)
   - ARSafariActivity (0.0.1)
   - AutoScrollLabel (0.2.1)
+  - Chivy (0.4.0):
+    - Chivy/Core (= 0.4.0)
+  - Chivy/Core (0.4.0):
+    - ARChromeActivity
+    - ARSafariActivity
+    - AutoScrollLabel
+    - Chivy/Core-no-arc
+    - DKNavbarBackButton
+    - NJKWebViewProgress
+  - Chivy/Core-no-arc (0.4.0)
   - DKNavbarBackButton (0.1.4):
-    - DKNavbarBackButton/core
+    - DKNavbarBackButton/core (= 0.1.4)
   - DKNavbarBackButton/core (0.1.4)
   - NJKWebViewProgress (0.2.3):
-    - NJKWebViewProgress/Core
-    - NJKWebViewProgress/ProgressView
+    - NJKWebViewProgress/Core (= 0.2.3)
+    - NJKWebViewProgress/ProgressView (= 0.2.3)
   - NJKWebViewProgress/Core (0.2.3)
   - NJKWebViewProgress/ProgressView (0.2.3)
 
 DEPENDENCIES:
-  - ARChromeActivity
-  - ARSafariActivity
-  - AutoScrollLabel
-  - DKNavbarBackButton
-  - NJKWebViewProgress
+  - Chivy (from `../`)
+
+EXTERNAL SOURCES:
+  Chivy:
+    :path: ../
 
 SPEC CHECKSUMS:
   ARChromeActivity: d8471d0f78b7fcc1de57929cfc1751b3a7f58bad
   ARSafariActivity: fe7568751149f1e19deaf9e62f4bfa1a29344ffe
   AutoScrollLabel: 605c089cd1ab7522b9dd11ef4e355979a245bae7
+  Chivy: 2e57be27cc30ad88e9d90b78060c96e4a8c9761a
   DKNavbarBackButton: 6df85c1407f7c89d4be03e10ab1f87f3c712ffd5
   NJKWebViewProgress: 721b57080c840c76f70ff6c2dda4f836ee1b27c1
 
-COCOAPODS: 0.34.1
+COCOAPODS: 0.35.0
