@@ -15,10 +15,8 @@ Demo
 
 [Full Demo on YouTube (720p)](http://youtu.be/BtioTMk8IyM)
 
-Work in progress
-================
-
-### Main features and their state:
+Features
+========
 
 * helps you to get URL from text including hostname IDN encoding, path percent escaping, schema check. Use URL instantiation helper: ```[CHWebBrowserViewController URLWithString:s]``` or set internal property named ```homeUrlString``` instead of passing url;
 * all the features are customizable and can be turned off. Main customization point is ```webBrowserController.cAttributes``` property. Feel free to access it from storyboard runtime attributes section;
