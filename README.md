@@ -36,17 +36,12 @@ Work in progress
 Installation
 ============
 
-### via CocoaPods (not yet released)
-
-the project is not yet released to CocoaPods, so choose between the bleeding edge version and tags
+### via CocoaPods
 
 ```
-pod 'Chivy', :git => 'https://github.com/DZamataev/Chivy.git', :branch => 'master'
+pod 'Chivy'
 ```
 
-### no Cocoapods
-copy everything from folder named ```Core```
-and deal with bundles as you like, here i dont care (excuse me for forcing you to use CocoaPods)
 
 ---------------
 
