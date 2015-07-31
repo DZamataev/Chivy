@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "Chivy"
-  s.version          = "0.4.0"
+  s.version          = "0.5.0"
   s.summary          = "iOS web browser control which looks and behaves like modern Safari and is highly customizable"
   s.homepage         = "https://github.com/DZamataev/Chivy"
   s.screenshots     = "https://raw.githubusercontent.com/DZamataev/Chivy/master/Chivy-0.2.0-iPhone-screenshot.png"
