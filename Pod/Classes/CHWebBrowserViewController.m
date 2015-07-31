@@ -83,8 +83,7 @@
 }
 
 + (void)openWebBrowserControllerModallyWithHomeUrl:(NSURL*)url animated:(BOOL)animated completion:(void (^)(void))completion {
-    CHWebBrowserViewController *webBrowserController = [[CHWebBrowserViewController alloc] initWithNibName:[CHWebBrowserViewController defaultNibFileName]
-                                                                                                    bundle:nil];
+    CHWebBrowserViewController *webBrowserController = [[CHWebBrowserViewController alloc] initWithNibName:[CHWebBrowserViewController defaultNibFileName] bundle:[NSBundle bundleForClass:[CHWebBrowserViewController class]]];
    [CHWebBrowserViewController openWebBrowserController:webBrowserController
                                           modallyWithUrl:url
                                                 animated:animated
@@ -103,8 +102,7 @@
 
 + (id)webBrowserControllerWithDefaultNibAndHomeUrl:(NSURL*)url
 {
-    CHWebBrowserViewController *webBrowserController = [[CHWebBrowserViewController alloc] initWithNibName:[CHWebBrowserViewController defaultNibFileName]
-                                                                                                    bundle:nil];
+    CHWebBrowserViewController *webBrowserController = [[CHWebBrowserViewController alloc] initWithNibName:[CHWebBrowserViewController defaultNibFileName] bundle:[NSBundle bundleForClass:[CHWebBrowserViewController class]]];
     webBrowserController.homeUrl = url;
     return webBrowserController;
 }
@@ -491,7 +489,7 @@
 }
 
 - (IBAction)readingModeToggle:(id)sender {
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"MakeReadable" ofType:@"js"];
+    NSString *path = [[NSBundle bundleForClass:[CHWebBrowserViewController class]] pathForResource:@"MakeReadable" ofType:@"js"];
     NSString *content = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
     NSString *s = [self.webView stringByEvaluatingJavaScriptFromString:content];
     if (s && s.length) {
@@ -561,7 +559,7 @@
 
 - (NSInteger)highlightAllOccurencesOfString:(NSString*)str
 {
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"CHSearchWebView" ofType:@"js"];
+    NSString *path = [[NSBundle bundleForClass:[CHWebBrowserViewController class]] pathForResource:@"CHSearchWebView" ofType:@"js"];
     NSString *jsCode = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
     [self.webView stringByEvaluatingJavaScriptFromString:jsCode];
     
