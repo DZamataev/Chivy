@@ -7,12 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <CBAutoScrollLabel.h>
-#import <DKBackBarButtonItem.h>
-#import <ARSafariActivity.h>
-#import <ARChromeActivity.h>
-#import <NJKWebViewProgress.h>
-#import <NJKWebViewProgressView.h>
+#import <AutoScrollLabel/CBAutoScrollLabel.h>
+#import <DKNavbarBackButton/DKBackBarButtonItem.h>
+#import <ARSafariActivity/ARSafariActivity.h>
+#import <ARChromeActivity/ARChromeActivity.h>
+#import <NJKWebViewProgress/NJKWebViewProgress.h>
+#import <NJKWebViewProgress/NJKWebViewProgressView.h>
 #import "TKAURLProtocol.h"
 #import "NSURL+IDN.h"
 #import "CHButtonActivity.h"
