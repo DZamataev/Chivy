@@ -433,9 +433,11 @@ static NSLock*                      VariableLock                 = nil;
 }
 
 + (BOOL) getTrustSelfSignedCertificates{
-	[VariableLock lock];
-	return TrustSelfSignedCertificates;
+    BOOL Result;
+    [VariableLock lock];
+	Result = TrustSelfSignedCertificates;
 	[VariableLock unlock];
+    return Result;
 }
 
 + (BOOL) hasDownloadDelegateForRequest:(NSURLRequest*)request
